@@ -127,14 +127,14 @@ Participant <- setRefClass("Participant",
                            if (!has_graphemes()) {
                              stop("Tried to fetch plot data for participant without graphemes. Please add graphemes before calling get_plot_data().")
                            }
-                           num_responses <- length(graphemes[[1]]$response_colors)
+                           num_responses <- nrow(graphemes[[1]]$response_colors)
                            col_names <- c("symbol", "consistency_score",
                                           paste0("color_resp_", 1:num_responses))
                            plot_mat <- matrix(vector(), nrow=0, ncol=num_responses+2,
                                               dimnames=list(c(), col_names))
                            plot_df <- data.table::data.table(plot_mat, stringsAsFactors = FALSE)
                            for (g in graphemes) {
-                             plot_df <- data.table::rbindlist(plot_df, g$get_plot_data_list())
+                             plot_df <- data.table::rbindlist(list(plot_df, g$get_plot_data_list() ))
                            }
                            return(plot_df)
                          }
