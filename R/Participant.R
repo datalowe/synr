@@ -137,6 +137,63 @@ Participant <- setRefClass("Participant",
                              plot_df <- data.table::rbindlist(list(plot_df, g$get_plot_data_list() ))
                            }
                            return(plot_df)
+                         },
+
+                         get_plot = function(cutoff_line = TRUE) {
+                           "Returns a ggplot2 plot that describes this participant's
+                           grapheme color responses and per-grapheme consistency scores."
+                           plot_df <- get_plot_data()
+                           y_upper_limit <- ifelse(all(is.na(plot_df$consistency_score)),
+                                                   5,
+                                                   max(plot_df$consistency_score, na.rm=TRUE))
+                           y_breaks <- round(seq(0, y_upper_limit, length.out = 10), -floor(log10(y_upper_limit)) )
+
+                           consistency_plot <- ggplot2::ggplot(data=plot_df, ggplot2::aes(x=symbol, y=consistency_score)) +
+                             ggplot2::geom_col(fill="black", color="black", width=0.5) +
+                             ggplot2::scale_y_continuous(breaks= y_breaks) +
+                             ggplot2::labs(x="Grapheme", y="Sum distance between responses") +
+                             ggplot2::scale_x_discrete(labels=NULL) +
+                             ggplot2::theme(axis.ticks.x=ggplot2::element_blank(),
+                                            panel.grid.major.x=ggplot2::element_blank(),
+                                            panel.grid.minor.y=ggplot2::element_blank()) +
+                             ggplot2::coord_cartesian(y = c(-y_upper_limit / 10,
+                                                            y_upper_limit))
+
+                           pos_factor <- 0.04
+                           for (color_column in colnames(plot_df)[3:ncol(plot_df)]) {
+                             consistency_plot <- consistency_plot +
+                               ggplot2::geom_text(y=-y_upper_limit * pos_factor, label=plot_df[['symbol']], size = 3.5,
+                                                  color = plot_df[[color_column]])
+                             pos_factor <- pos_factor + 0.04
+                           }
+                           if (cutoff_line) {
+                             consistency_plot <- consistency_plot + ggplot2::geom_hline(yintercept=135.30, color="blue")
+                           }
+                           return(consistency_plot)
+                         },
+
+                         save_plot = function(path=NULL, file_format='png', dpi=300, ...) {
+                           "Saves a ggplot2 plot that describes this participant's
+                           grapheme color responses and per-grapheme consistency scores,
+                           using the ggsave function.
+                           If save_dir is not specified, the plot is saved to the current
+                           working directory. Otherwise, the plot is saved to the specified
+                           directory. The file is saved using the specified file_format,
+                           e. g. JPG (see ggplot2::ggsave documentation for list of
+                           supported formats), and the resolution specified with
+                           the dpi argument. Apart from these, all other arguments
+                           that ggsave accepts (e. g. 'scale') also work with this function, since
+                           all arguments are passed on to ggsave."
+                           getwd()
+                           consistency_plot <- get_plot()
+                           plot_file_name <- paste0(id, '_consistency_plot.', file_format)
+                           suppressWarnings(
+                             ggplot2::ggsave(filename = plot_file_name,
+                                           plot = consistency_plot,
+                                           path = path,
+                                           dpi = dpi,
+                                           ... = ...)
+                           )
                          }
                        )
 )
