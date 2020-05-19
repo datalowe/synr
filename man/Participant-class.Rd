@@ -50,6 +50,9 @@ that each grapheme has.}
 \item{\code{get_number_all_colored_graphemes()}}{Returns the number of graphemes for which all
 responses have an associated non-na color}
 
+\item{\code{get_plot(cutoff_line = TRUE)}}{Returns a ggplot2 plot that describes this participant's
+grapheme color responses and per-grapheme consistency scores.}
+
 \item{\code{get_plot_data()}}{Returns a data frame with the following columns:
                            1. Character: grapheme (grapheme names)
                            2. Numeric: consistency_score
@@ -66,6 +69,18 @@ graphemes associated with the participant.}
 \item{\code{has_graphemes()}}{Returns TRUE if there is at least one
 grapheme in the participant's graphemes list,
 otherwise returns FALSE}
+
+\item{\code{save_plot(path = NULL, file_format = "png", dpi = 300, ...)}}{Saves a ggplot2 plot that describes this participant's
+grapheme color responses and per-grapheme consistency scores,
+using the ggsave function.
+If save_dir is not specified, the plot is saved to the current
+working directory. Otherwise, the plot is saved to the specified
+directory. The file is saved using the specified file_format,
+e. g. JPG (see ggplot2::ggsave documentation for list of
+supported formats), and the resolution specified with
+the dpi argument. Apart from these, all other arguments
+that ggsave accepts (e. g. 'scale') also work with this function, since
+all arguments are passed on to ggsave.}
 
 \item{\code{set_date(in_date)}}{Takes in a one-element character vector with a date
 in the format 'YYYY-MM-DD' and sets the participant's

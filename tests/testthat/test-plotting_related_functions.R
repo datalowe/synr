@@ -37,7 +37,7 @@ test_that("Participant.get_plot_data() returns correctly formatted data for part
 })
 
 test_that("Participant.get_plot_data() returns correctly formatted data for participant with two graphemes with valid data", {
-  p <- Participant$new()
+  p <- Participant$new(id="kalleanka")
   g1 <- synr::Grapheme$new(symbol='Monday')
   g1$set_colors(c("#00DE00", "#00FF00", "#390000"), "Luv")
   p$add_grapheme(g1)
