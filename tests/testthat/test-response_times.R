@@ -15,6 +15,13 @@ test_that("Grapheme get_mean_response_time calculates correct mean", {
   expect_equal(a$get_mean_response_time(), 4.675)
 })
 
+test_that("Grapheme get_mean_response_time calculates correct mean, even if
+          the grapheme doesn't have any response colors set", {
+  a <- synr::Grapheme$new(symbol='a')
+  a$set_times(c(1.2, 8, 3.5, 6))
+  expect_equal(a$get_mean_response_time(), 4.675)
+})
+
 test_that("Grapheme get_mean_response_time returns NA when no valid times are set", {
   b <- synr::Grapheme$new(symbol='b')
   b$set_colors(c("#000000", "#000000", "#000000", "#000000"), "Luv")

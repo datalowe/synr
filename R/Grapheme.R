@@ -157,7 +157,7 @@ Grapheme<- setRefClass("Grapheme",
                                                 ' has no registered response time. Please register responses before calling get_mean_response_time().')
                              stop(err_mess)
                            }
-                           if (all(is.na(response_colors))) {
+                           if (all(is.na(response_times))) {
                              return(NA)
                            }
                            mean_rtime <- mean(response_times, na.rm=na.rm)
