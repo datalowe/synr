@@ -13,11 +13,13 @@ test_that("Only non NA colors are counted as such", {
   expect_equal(foo$get_num_non_na_colors(), 1)
 })
 
+
 test_that("has_only_non_na() returns TRUE when this is the case", {
   foo <- synr::Grapheme$new(symbol='foo')
   foo$set_colors(c("#880033"), "Luv")
   expect_true(foo$has_only_non_na_colors())
 })
+
 
 test_that("Color space is correctly stored", {
   a <- synr::Grapheme$new(symbol='a')
@@ -25,28 +27,6 @@ test_that("Color space is correctly stored", {
   expect_equal(a$color_space, "Luv")
 })
 
-test_that("Proportion of color responses that are
-          blue is 1 when all registered responses are blue", {
-  a <- synr::Grapheme$new(symbol='a')
-  a$set_colors(c("#0000DD", "#0000DE", "#0000FF", "#0000FF", "#3333DD"), "Luv")
-  expect_equal(a$get_prop_color(color_label="blue"), 1)
-})
-
-test_that("Proportion of color responses that are
-          blue is 0 when no registered responses are blue", {
-            a <- synr::Grapheme$new(symbol='a')
-            a$set_colors(c("#000000", "#AA0000", "#00BB00", "#000077", "#AADD11"), "Luv")
-            expect_equal(a$get_prop_color(color_label="blue"), 0)
-          })
-
-test_that("Proportion of color responses that are
-          blue is 0.5 when half of registered responses are blue,
-          using r/g/b specifications", {
-            a <- synr::Grapheme$new(symbol='a')
-            a$set_colors(c("#0000DD", "#0000FF", "#00FF00", "#CC0000"), "Luv")
-            expect_equal(a$get_prop_color(r=c(0.0, 0.3), g=c(0.0, 0.3), b=c(0.7, 1)),
-                                          0.5)
-          })
 
 test_that("Conversion to Luv and back to hex code using get_hex_colors() works", {
             a <- synr::Grapheme$new(symbol='a')
@@ -56,4 +36,45 @@ test_that("Conversion to Luv and back to hex code using get_hex_colors() works",
             expect_equal(reconverted_colors[2], "#0000FF")
             expect_equal(reconverted_colors[3], "#00FF00")
             expect_equal(reconverted_colors[4], "#CC0000")
+          })
+
+
+test_that("get_numbers_all_colored_graphemes() returns correct number of graphemes
+          with all colored graphemes for 1 participant", {
+            g1 <- Grapheme$new(symbol="a")
+            g2 <- Grapheme$new(symbol="b")
+            g1$set_colors(c("#800020", "#F08000", "#993322"), "Luv")
+            g2$set_colors(c(NA, "#F08000", "#993322"), "Luv")
+
+            p1 <- Participant$new(id="1")
+            p1$add_graphemes(list(g1, g2))
+
+            pl <- ParticipantGroup$new()
+            pl$add_participants(list(p1))
+
+            expect_equal(pl$get_numbers_all_colored_graphemes()[1], 1)
+          })
+
+
+test_that("get_numbers_all_colored_graphemes() returns correct number of graphemes
+          with all colored graphemes for 2 participants", {
+            g1 <- Grapheme$new(symbol="a")
+            g2 <- Grapheme$new(symbol="b")
+            g1$set_colors(c("#800020", "#F08000", "#993322"), "Luv")
+            g2$set_colors(c(NA, "#F08000", "#993322"), "Luv")
+            g3 <- Grapheme$new(symbol="a")
+            g4 <- Grapheme$new(symbol="b")
+            g3$set_colors(c("#800020", "#F08000", "#993322"), "Luv")
+            g4$set_colors(c(NA, NA, NA), "Luv")
+
+            p1 <- Participant$new(id="1")
+            p1$add_graphemes(list(g1, g2))
+            p2 <- Participant$new(id="2")
+            p2$add_graphemes(list(g3, g4))
+
+            pl <- ParticipantGroup$new()
+            pl$add_participants(list(p1, p2))
+
+            expect_equal(pl$get_numbers_all_colored_graphemes()[1], 1)
+            expect_equal(pl$get_numbers_all_colored_graphemes()[2], 1)
           })

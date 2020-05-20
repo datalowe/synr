@@ -114,6 +114,27 @@ Participant <- setRefClass("Participant",
                            return(mean(cons_vec, na.rm=na.rm))
                          },
 
+                         get_prop_color = function(color_label=NULL,
+                                                   r=NULL, g=NULL, b=NULL) {
+                           "Get the proportion of all of participant's response colors that
+                           are within a specified color range. The range is specified using
+                           color_label or the r/g/b arguments. Possible color_label
+                           specifications are: \"blue\", \"red\", \"green\", \"white\",
+                           \"black\" or \"hazy\". For r/g/b arguments, value ranges are specified
+                           using two-element numeric vectors, with rgb values on a 0-1 scale.
+                           E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range."
+                           if (!has_graphemes()) {
+                             stop("Tried to fetch proportion of responses within a color range for participant without graphemes. Please add graphemes before calling get_prop_color().")
+                           }
+                           grapheme_level_color_props <- numeric()
+                           for (grapheme in graphemes) {
+                             weight <- nrow(grapheme$response_colors)
+                             g_prop_col <- grapheme$get_prop_color(color_label=color_label, r=r, g=g, b=b)
+                             grapheme_level_color_props <- c(grapheme_level_color_props, rep(g_prop_col, weight))
+                           }
+                           return(mean(grapheme_level_color_props, na.rm=TRUE))
+                         },
+
                          get_plot_data = function() {
                            "Returns a data frame with the following columns:
                            1. Character: grapheme (grapheme names)
@@ -140,6 +161,11 @@ Participant <- setRefClass("Participant",
                          },
 
                          get_plot = function(cutoff_line = TRUE) {
+                           # TO DO change the plotting functionality so that it can handle
+                           # all-black graphemes (this leads to clustering of symbols at
+                           # one position atm)
+                           # TO DO add support for more than three graphemes (this leads
+                           # to one symbol ending up below the plot area and cut off atm)
                            "Returns a ggplot2 plot that describes this participant's
                            grapheme color responses and per-grapheme consistency scores."
                            plot_df <- get_plot_data()
@@ -184,7 +210,6 @@ Participant <- setRefClass("Participant",
                            the dpi argument. Apart from these, all other arguments
                            that ggsave accepts (e. g. 'scale') also work with this function, since
                            all arguments are passed on to ggsave."
-                           getwd()
                            consistency_plot <- get_plot()
                            plot_file_name <- paste0(id, '_consistency_plot.', file_format)
                            suppressWarnings(
