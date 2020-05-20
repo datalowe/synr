@@ -45,40 +45,43 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                                "Returns a character vector with all ids for
                            participants associated with the participantgroup."
                                return(names(participants))
+                             },
+
+                             get_mean_response_times = function(na.rm=FALSE) {
+                               "Returns the mean response times, with respect to
+                           Grapheme instances associated with each participant. See
+                               the documentation for the Participant class for more
+                               information."
+                               if (!has_participants()) {
+                                 stop("Tried to fetch mean response times for participantgroup without participants. Please add participants before calling get_mean_response_times().")
+                               }
+                               participant_level_response_times <- numeric(length(participants))
+                               loop_index <- 1
+                               for (p in participants) {
+                                 p_time <- p$get_mean_response_time()
+                                 participant_level_response_times[loop_index] <- p_time
+                                 loop_index <- loop_index + 1
+                               }
+                               return(participant_level_response_times)
+                             },
+
+                             get_numbers_all_colored_graphemes = function() {
+                               "Returns the a list with number representing how many
+                               graphemes with all-valid (non-na) response colors that each
+                               participant has."
+                               if (!has_participants()) {
+                                 stop("Tried to fetch mean numbers of all colored graphemes for participantgroup without participants. Please add participants before calling get_numbers_all_colored_graphemes().")
+                               }
+                               participant_level_number_all_colored_graphemes <- numeric(length(participants))
+                               loop_index <- 1
+                               for (p in participants) {
+                                 p_num_all_colored <- p$get_number_all_colored_graphemes()
+                                 participant_level_number_all_colored_graphemes[loop_index] <- p_num_all_colored
+                                 loop_index <- loop_index + 1
+                               }
+                               return(participant_level_number_all_colored_graphemes)
                              }
 
-                           #   get_mean_response_times = function(na.rm=FALSE) {
-                           #     "Returns the mean response times, with respect to
-                           # Grapheme instances associated with each participant. See
-                           #     the documentation for the Participant class for more
-                           #     information."
-                           #     if (!has_participants()) {
-                           #       stop("Tried to fetch mean response times for participantgroup without participants. Please add participants before calling get_mean_response_times().")
-                           #     }
-                           #     grapheme_level_response_times <- numeric()
-                           #     for (g in graphemes) {
-                           #       weight <- length(g$response_times)
-                           #       g_time <- g$get_mean_response_time()
-                           #       grapheme_level_response_times <- c(grapheme_level_response_times, rep(g_time, weight))
-                           #     }
-                           #     return(mean(grapheme_level_response_times, na.rm=na.rm))
-                           #   },
-                           #
-                           #   get_number_all_colored_graphemes = function() {
-                           #     "Returns the number of graphemes for which all
-                           # responses have an associated non-na color"
-                           #     if (!has_graphemes()) {
-                           #       return(0)
-                           #     }
-                           #     num_all_colored_response <- 0
-                           #     for (g in graphemes) {
-                           #       if (g$has_only_non_na_colors()) {
-                           #         num_all_colored_response <- num_all_colored_response + 1
-                           #       }
-                           #     }
-                           #     return(num_all_colored_response)
-                           #   },
-                           #
                            #   get_consistency_scores = function(na.rm=FALSE) {
                            #     "Returns a list of grapheme symbols with associated consistency scores"
                            #     if (!has_graphemes()) {
