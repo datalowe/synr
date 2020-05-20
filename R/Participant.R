@@ -33,13 +33,13 @@ Participant <- setRefClass("Participant",
                            graphemes[[gs]] <<- grapheme
                          },
 
-                         add_graphemes = function(grapheme_vector) {
+                         add_graphemes = function(grapheme_list) {
                            "Go through a passed list of Grapheme instances
                            and add each one using the add_grapheme() method."
-                           for (i in grapheme_vector) {
-                             add_grapheme(i)
+                           for (g in grapheme_list) {
+                             add_grapheme(g)
                            }
-                           rm(i)
+                           rm(g)
                          },
 
                          set_date = function(in_date) {
