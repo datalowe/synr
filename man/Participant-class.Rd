@@ -63,6 +63,14 @@ grapheme color responses and per-grapheme consistency scores.}
                            if not all of the participant's graphemes have the same number
                            of color responses. This is intended.}
 
+\item{\code{get_prop_color(color_label = NULL, r = NULL, g = NULL, b = NULL)}}{Get the proportion of all of participant's response colors that
+are within a specified color range. The range is specified using
+color_label or the r/g/b arguments. Possible color_label
+specifications are: "blue", "red", "green", "white",
+"black" or "hazy". For r/g/b arguments, value ranges are specified
+using two-element numeric vectors, with rgb values on a 0-1 scale.
+E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range.}
+
 \item{\code{get_symbols()}}{Returns a character vector with all symbols for
 graphemes associated with the participant.}
 

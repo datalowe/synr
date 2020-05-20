@@ -33,8 +33,33 @@ and add each one using the add_participant() method.}
 \item{\code{get_ids()}}{Returns a character vector with all ids for
 participants associated with the participantgroup.}
 
+\item{\code{get_mean_consistency_scores(na.rm = FALSE)}}{Returns a vector mean consistency scores for
+participants in the group}
+
+\item{\code{get_mean_response_times(na.rm = FALSE)}}{Returns the mean response times, with respect to
+Grapheme instances associated with each participant. See
+    the documentation for the Participant class for more
+    information.}
+
+\item{\code{get_numbers_all_colored_graphemes()}}{Returns the a list with number representing how many
+graphemes with all-valid (non-na) response colors that each
+participant has.}
+
 \item{\code{has_participants()}}{Returns TRUE if there is at least one
 participant in the participantgroup's participants list,
 otherwise returns FALSE}
+
+\item{\code{save_plots(path = NULL, file_format = "png", dpi = 300, ...)}}{Goes through all participants and for each one produces and saves
+    a ggplot2 plot that describes the participant's
+grapheme color responses and per-grapheme consistency scores,
+using the ggsave function.
+If save_dir is not specified, plots are saved to the current
+working directory. Otherwise, plots are saved to the specified
+directory. The file is saved using the specified file_format,
+e. g. JPG (see ggplot2::ggsave documentation for list of
+supported formats), and the resolution specified with
+the dpi argument. Apart from these, all other arguments
+that ggsave accepts (e. g. 'scale') also work with this function, since
+all arguments are passed on to ggsave.}
 }}
 
