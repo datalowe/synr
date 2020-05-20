@@ -166,8 +166,8 @@ Grapheme<- setRefClass("Grapheme",
 
                          get_plot_data_list = function() {
                            "Get a list of the grapheme's data, bundled up in
-                           a format ready for use in Participant
-                           .get_plot_data() method as a row of plot
+                           a format ready for use in Participant.get_plot_data()
+                           method as a row of plot
                            data."
                            if (!nrow(response_colors)) {
                              err_mess <- paste0("This grapheme, with symbol ", symbol,

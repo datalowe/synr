@@ -33,7 +33,7 @@ participant's list of graphemes, the
 already existing same-symbol grapheme
 is overwritten.}
 
-\item{\code{add_graphemes(grapheme_vector)}}{Go through a passed list of Grapheme instances
+\item{\code{add_graphemes(grapheme_list)}}{Go through a passed list of Grapheme instances
 and add each one using the add_grapheme() method.}
 
 \item{\code{get_consistency_scores(na.rm = FALSE)}}{Returns a list of grapheme symbols with associated consistency scores}

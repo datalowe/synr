@@ -47,8 +47,8 @@ response times.}
 a one-element numeric vector.}
 
 \item{\code{get_plot_data_list()}}{Get a list of the grapheme's data, bundled up in
-a format ready for use in Participant
-.get_plot_data() method as a row of plot
+a format ready for use in Participant.get_plot_data()
+method as a row of plot
 data.}
 
 \item{\code{get_prop_color(color_label = NULL, r = NULL, g = NULL, b = NULL)}}{Get the proportion of response colors that are within a

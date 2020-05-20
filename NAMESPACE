@@ -2,7 +2,9 @@
 
 export(Grapheme)
 export(Participant)
+export(ParticipantGroup)
 export(build_grapheme_vector)
 exportClasses(Grapheme)
 exportClasses(Participant)
+exportClasses(ParticipantGroup)
 importFrom(methods,new)
