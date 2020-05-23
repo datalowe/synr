@@ -14,7 +14,7 @@
 #' response_colors=c("84AE99", "9E3300", "000000"), color_space_spec="Luv")
 #' @export
 create_grapheme <- function(symbol, response_times=NULL, response_colors, color_space_spec="Luv") {
-  has_no_pound <- !grepl("^#", response_colors)
+  has_no_pound <- (!grepl("^#", response_colors) & !is.na(response_colors) & !is.null(response_colors))
   response_colors[has_no_pound] <- paste0("#", response_colors[has_no_pound])
   new_grapheme <- Grapheme$new(symbol=symbol)
   if (!is.null(response_times)) {
