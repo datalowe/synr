@@ -4,17 +4,25 @@
 \alias{create_grapheme}
 \title{create_grapheme}
 \usage{
-create_grapheme(symbol, response_times, response_colors, color_space_spec)
+create_grapheme(
+  symbol,
+  response_times = NULL,
+  response_colors,
+  color_space_spec = "Luv"
+)
 }
 \arguments{
 \item{symbol}{A one-element character vector holding a symbol/grapheme.}
 
-\item{response_times}{A numeric vector. Times from presentation to response, in order.}
+\item{response_times}{(optional) A numeric vector. Times from presentation to
+response, in order.}
 
-\item{response_colors}{A character vector. Response colors, as hex color codes.}
+\item{response_colors}{A character vector. Response colors, as hex color
+codes.}
 
-\item{color_space_spec}{A one-element character vector. What color space is to be used? The
-following color spaces are supported: "XYZ", "sRGB", "Apple RGB", "Lab", and "Luv"}
+\item{color_space_spec}{A one-element character vector. What color space
+is to be used? The following color spaces are supported:
+"XYZ", "sRGB", "Apple RGB", "Lab", and "Luv"}
 }
 \description{
 Takes in a symbol/grapheme and sets of response times/colors,
