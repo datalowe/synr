@@ -33,13 +33,24 @@ and add each one using the add_participant() method.}
 \item{\code{get_ids()}}{Returns a character vector with all ids for
 participants associated with the participantgroup.}
 
-\item{\code{get_mean_consistency_scores(na.rm = FALSE)}}{Returns a vector mean consistency scores for
-participants in the group}
+\item{\code{get_mean_consistency_scores(na.rm = FALSE)}}{Returns a vector of mean consistency scores for
+participants in the group. If na.rm=FALSE, for each
+participant calculates the mean consistency score if
+all of the participants' graphemes only have response
+colors that are non-NA, otherwise puts an NA value
+for that participant in returned vector. If na.rm=TRUE,
+for each participant calculates the mean consistency score for
+all of the participant's graphemes that only have
+non-NA response colors, while ignoring graphemes
+that have at least one NA response color value. Note that
+for participants whose graphemes ALL have at least one NA
+response color value, an NA is put in the returned vector for
+that participant, regardless of what na.rm is set to.}
 
 \item{\code{get_mean_response_times(na.rm = FALSE)}}{Returns the mean response times, with respect to
 Grapheme instances associated with each participant. See
-    the documentation for the Participant class for more
-    information.}
+the documentation for the Participant class for more
+information.}
 
 \item{\code{get_numbers_all_colored_graphemes()}}{Returns the a list with number representing how many
 graphemes with all-valid (non-na) response colors that each

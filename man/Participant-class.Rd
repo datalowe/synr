@@ -36,16 +36,32 @@ is overwritten.}
 \item{\code{add_graphemes(grapheme_list)}}{Go through a passed list of Grapheme instances
 and add each one using the add_grapheme() method.}
 
-\item{\code{get_consistency_scores(na.rm = FALSE)}}{Returns a list of grapheme symbols with associated consistency scores}
+\item{\code{get_consistency_scores(na.rm = FALSE)}}{Returns a list of grapheme symbols with associated consistency scores.
+If na.rm=TRUE, for each grapheme a consistency score calculation is
+forced (except if ALL response colors associated with the grapheme
+are NA). That probably isn't what you want, because it leads to things
+like a perfect consistency score if all except one response color are
+NA. Defaults to na.rm=FALSE.}
 
-\item{\code{get_mean_consistency_score(na.rm = FALSE)}}{Returns the mean consistency score, with respect to
-Grapheme instances, that only have valid response colors,
-associated with the participant.}
+\item{\code{get_mean_consistency_score(na.rm = FALSE)}}{Returns the mean consistency score with respect to
+Grapheme instances associated with the participant.
+If na.rm=FALSE, calculates the mean consistency score if
+all of the participants' graphemes only have response
+colors that are non-NA, otherwise returns NA.
+If na.rm=TRUE, returns the mean consistency score for
+all of the participant's graphemes that only have
+non-NA response colors, while ignoring graphemes
+that have at least one NA response color value. Note that
+NA is returned in either case, if ALL of the participants'
+graphemes have at least one NA response color value.}
 
 \item{\code{get_mean_response_time(na.rm = FALSE)}}{Returns the mean response time, with respect to all
 Grapheme instances associated with the participant.
 Weights response times based on number of valid responses
-that each grapheme has.}
+that each grapheme has. If na.rm=TRUE, returns mean response
+time even if there are missing response times. If na.rm=FALSE,
+returns mean response time if there is at least one response time
+value for at least one of the participants' graphemes.}
 
 \item{\code{get_number_all_colored_graphemes()}}{Returns the number of graphemes for which all
 responses have an associated non-na color}
