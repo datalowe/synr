@@ -174,10 +174,10 @@ Grapheme<- setRefClass("Grapheme",
                                                 ' has no registered response colors. Please register responses before calling .get_plot_data_row().')
                              stop(err_mess)
                            }
-                           color_hexes <- get_hex_colors()
+                           color_hexes <- as.character(get_hex_colors())
                            plot_data_list <- list()
-                           plot_data_list[[1]] <- get_abbreviated_symbol()
-                           plot_data_list[[2]] <- get_consistency_score()
+                           plot_data_list[[1]] <- as.character(get_abbreviated_symbol())
+                           plot_data_list[[2]] <- as.numeric(get_consistency_score())
                            for (hex in color_hexes) {
                              plot_data_list[[length(plot_data_list)+1]] <- hex
                            }
