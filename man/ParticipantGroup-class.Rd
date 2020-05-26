@@ -33,7 +33,7 @@ and add each one using the add_participant() method.}
 \item{\code{get_ids()}}{Returns a character vector with all ids for
 participants associated with the participantgroup.}
 
-\item{\code{get_mean_consistency_scores(na.rm = FALSE)}}{Returns a vector of mean consistency scores for
+\item{\code{get_mean_consistency_scores(na.rm = FALSE, symbol_filter = NULL)}}{Returns a vector of mean consistency scores for
 participants in the group. If na.rm=FALSE, for each
 participant calculates the mean consistency score if
 all of the participants' graphemes only have response
@@ -45,16 +45,42 @@ non-NA response colors, while ignoring graphemes
 that have at least one NA response color value. Note that
 for participants whose graphemes ALL have at least one NA
 response color value, an NA is put in the returned vector for
-that participant, regardless of what na.rm is set to.}
+that participant, regardless of what na.rm is set to.
+If a character vector is passed to symbol_filter, only
+data from graphemes with symbols in the passed vector
+are used when calculating each participant's mean score.}
 
-\item{\code{get_mean_response_times(na.rm = FALSE)}}{Returns the mean response times, with respect to
-Grapheme instances associated with each participant. See
-the documentation for the Participant class for more
-information.}
+\item{\code{get_mean_response_times(na.rm = FALSE, symbol_filter = NULL)}}{Returns the mean response times, with respect to
+Grapheme instances associated with each participant.
+If na.rm=TRUE, for each participant returns mean response time even
+if there are missing response times. If na.rm=FALSE, returns
+mean response time if there is at least one response time
+value for at least one of the participants' graphemes. If a
+character vector is passed to symbol_filter, only data from
+graphemes with symbols in the passed vector are used when
+calculating each participant's mean response time.}
 
-\item{\code{get_numbers_all_colored_graphemes()}}{Returns the a list with number representing how many
+\item{\code{get_numbers_all_colored_graphemes(symbol_filter = NULL)}}{Returns a vector with numbers representing how many
 graphemes with all-valid (non-na) response colors that each
-participant has.}
+participant has.  If a character vector is passed to symbol_filter,
+only data from graphemes with symbols in the passed vector are
+used when calculating the mean response time.}
+
+\item{\code{get_prop_color_values(
+  color_label = NULL,
+  r = NULL,
+  g = NULL,
+  b = NULL,
+  symbol_filter = NULL
+)}}{For each participants, get the proportion of its response colors that
+are within a specified color range. The range is specified using
+color_label or the r/g/b arguments. Possible color_label
+specifications are: "blue", "red", "green", "white",
+"black" or "hazy". For r/g/b arguments, value ranges are specified
+using two-element numeric vectors, with rgb values on a 0-1 scale.
+E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range.
+If a character vector is passed to symbol_filter, only data for graphemes
+with symbols in the passed vector are used.}
 
 \item{\code{has_participants()}}{Returns TRUE if there is at least one
 participant in the participantgroup's participants list,

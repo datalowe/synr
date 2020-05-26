@@ -99,17 +99,19 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                                return(participant_level_prop_cols)
                              },
 
-                             get_numbers_all_colored_graphemes = function() {
-                               "Returns a list with number representing how many
+                             get_numbers_all_colored_graphemes = function(symbol_filter=NULL) {
+                               "Returns a vector with numbers representing how many
                                graphemes with all-valid (non-na) response colors that each
-                               participant has."
+                               participant has.  If a character vector is passed to symbol_filter,
+                               only data from graphemes with symbols in the passed vector are
+                               used when calculating the mean response time."
                                if (!has_participants()) {
                                  stop("Tried to fetch mean numbers of all colored graphemes for participantgroup without participants. Please add participants before calling get_numbers_all_colored_graphemes().")
                                }
                                participant_level_number_all_colored_graphemes <- numeric(length(participants))
                                loop_index <- 1
                                for (p in participants) {
-                                 p_num_all_colored <- p$get_number_all_colored_graphemes()
+                                 p_num_all_colored <- p$get_number_all_colored_graphemes(symbol_filter=symbol_filter)
                                  participant_level_number_all_colored_graphemes[loop_index] <- p_num_all_colored
                                  loop_index <- loop_index + 1
                                }

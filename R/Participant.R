@@ -89,15 +89,21 @@ Participant <- setRefClass("Participant",
                            return(mean(grapheme_level_response_times, na.rm=na.rm))
                          },
 
-                         get_number_all_colored_graphemes = function() {
+                         get_number_all_colored_graphemes = function(symbol_filter=NULL) {
                            "Returns the number of graphemes for which all
-                           responses have an associated non-na color"
+                           responses have an associated non-na color. If a
+                           character vector is passed to symbol_filter, only data from
+                           graphemes with symbols in the passed vector are used when
+                           calculating the mean response time."
                            if (!has_graphemes()) {
                              return(0)
                            }
                            num_all_colored_response <- 0
-                           for (g in graphemes) {
-                             if (g$has_only_non_na_colors()) {
+                           for (grapheme in graphemes) {
+                             if ( (!is.null(symbol_filter)) && (!grapheme$symbol %in% symbol_filter)) {
+                               next
+                             }
+                             if (grapheme$has_only_non_na_colors()) {
                                num_all_colored_response <- num_all_colored_response + 1
                              }
                            }
