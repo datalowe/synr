@@ -1,7 +1,9 @@
 #' @title build_grapheme_vector
 #' @description Uses internal data constants to build a character vector
 #' containing graphemes in accordance with specifications passed as
-#' function arguments. Supports English and Swedish language specifications.
+#' function arguments. Supports English and Swedish language specifications. Note that
+#' all "use_" parameters default to FALSE, meaning you only need to pass the value TRUE
+#' for grapheme kinds that you want to use.
 #' @param language A character element. What language should be used for the vector?
 #' @param use_digits A logical scalar. Should digits be included in the vector?
 #' @param use_letters A logical scalar. Should letters be included in the vector?
@@ -11,7 +13,10 @@
 #' build_grapheme_vector(language="english", use_digits=TRUE, use_letters=FALSE,
 #' use_weekdays=TRUE, uppercase=TRUE)
 #' @export
-build_grapheme_vector <- function(language, use_digits, use_letters, use_weekdays,
+build_grapheme_vector <- function(language,
+                                  use_digits=FALSE,
+                                  use_letters=FALSE,
+                                  use_weekdays=FALSE,
                                   uppercase=TRUE) {
   language = tolower(language)
   if (!(language %in% c("english", "swedish"))) {
