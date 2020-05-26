@@ -243,3 +243,40 @@ test_that("ParticipantGroup.get_mean_consistency_scores() functions correctly wi
             expect_true(is.na(narm_scores[3]))
             expect_true(is.na(non_narm_scores[1]))
           })
+
+
+test_that("ParticipantGroup get_mean_consistency_scores() with 2 participants
+          functions correctly when symbol_filter is being used", {
+            p1 <- Participant$new(id='1')
+            g1 <- Grapheme$new(symbol='a')
+            g1$set_colors(c("#0000FF", "#000000", "#000000", "#000000"), "Luv")
+            g2 <- Grapheme$new(symbol='b')
+            g2$set_colors(c("#000000", "#000000", "#000000", "#000000"), "Luv")
+            g3 <- Grapheme$new(symbol='monday')
+            g3$set_colors(c("#000000", "#000000", "#000000", "#000000"), "Luv")
+            g_list1 <- list(g1, g2, g3)
+            p1$add_graphemes(g_list1)
+
+            p2 <- Participant$new(id='2')
+            g4 <- Grapheme$new(symbol='a')
+            g4$set_colors(c("#FFFFFF", "#000000", "#FFFFFF", "#000000"), "Luv")
+            g5 <- Grapheme$new(symbol='b')
+            g5$set_colors(c("#000000", "#FFFFFF", "#000000", "#FFFFFF"), "Luv")
+            g6 <- Grapheme$new(symbol='monday')
+            g6$set_colors(c("#0000FF", "#000000", "#FF0000", "#000000"), "Luv")
+            g_list2 <- list(g4, g5, g6)
+            p2$add_graphemes(g_list2)
+
+            pg <- ParticipantGroup$new()
+            pg$add_participants(list(p1, p2))
+            mean_cons_a <- pg$get_mean_consistency_scores(symbol_filter=c("a"))
+            mean_cons_monday <- pg$get_mean_consistency_scores(symbol_filter=c("monday"))
+
+
+            expect_gt(mean_cons_a[1], 30)
+            expect_lt(mean_cons_a[1], 500)
+            expect_lt(mean_cons_monday[1], 0.01)
+            expect_gt(mean_cons_monday[2], 30)
+
+
+          })
