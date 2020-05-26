@@ -6,9 +6,9 @@
 \usage{
 build_grapheme_vector(
   language,
-  use_digits,
-  use_letters,
-  use_weekdays,
+  use_digits = FALSE,
+  use_letters = FALSE,
+  use_weekdays = FALSE,
   uppercase = TRUE
 )
 }
@@ -26,7 +26,9 @@ build_grapheme_vector(
 \description{
 Uses internal data constants to build a character vector
 containing graphemes in accordance with specifications passed as
-function arguments. Supports English and Swedish language specifications.
+function arguments. Supports English and Swedish language specifications. Note that
+all "use_" parameters default to FALSE, meaning you only need to pass the value TRUE
+for grapheme kinds that you want to use.
 }
 \examples{
 build_grapheme_vector(language="english", use_digits=TRUE, use_letters=FALSE,
