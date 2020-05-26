@@ -116,7 +116,8 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                                return(participant_level_number_all_colored_graphemes)
                              },
 
-                             get_mean_consistency_scores = function(na.rm=FALSE) {
+                             get_mean_consistency_scores = function(na.rm=FALSE,
+                                                                    symbol_filter=NULL) {
                                "Returns a vector of mean consistency scores for
                                participants in the group. If na.rm=FALSE, for each
                                participant calculates the mean consistency score if
@@ -129,14 +130,18 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                                that have at least one NA response color value. Note that
                                for participants whose graphemes ALL have at least one NA
                                response color value, an NA is put in the returned vector for
-                               that participant, regardless of what na.rm is set to."
+                               that participant, regardless of what na.rm is set to.
+                               If a character vector is passed to symbol_filter, only
+                               data from graphemes with symbols in the passed vector
+                               are used when calculating each participant's mean score."
                                if (!has_participants()) {
                                  stop("Tried to fetch mean numbers of all colored graphemes for participantgroup without participants. Please add participants before calling get_numbers_all_colored_graphemes().")
                                }
                                participant_level_mean_consistency_scores <- numeric(length(participants))
                                loop_index <- 1
                                for (p in participants) {
-                                 p_mean_c_score <- p$get_mean_consistency_score(na.rm=na.rm)
+                                 p_mean_c_score <- p$get_mean_consistency_score(na.rm=na.rm,
+                                                                                symbol_filter=symbol_filter)
                                  participant_level_mean_consistency_scores[loop_index] <- p_mean_c_score
                                  loop_index <- loop_index + 1
                                }
