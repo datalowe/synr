@@ -106,7 +106,7 @@ Grapheme<- setRefClass("Grapheme",
                            For r/g/b arguments, value ranges are specified using two-element
                            numeric vectors, with rgb values on a 0-1 scale. E. g. r=c(0, 0.3),
                            g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range."
-                           non_na_colors <- response_colors[complete.cases(response_colors), ]
+                           non_na_colors <- response_colors[complete.cases(response_colors), , drop=FALSE]
                            num_non_na <- nrow(non_na_colors)
                            if (num_non_na==0) {
                              return(NA)
