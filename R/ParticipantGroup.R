@@ -47,26 +47,60 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                                return(names(participants))
                              },
 
-                             get_mean_response_times = function(na.rm=FALSE) {
+                             get_mean_response_times = function(na.rm=FALSE,
+                                                                symbol_filter=NULL) {
                                "Returns the mean response times, with respect to
-                               Grapheme instances associated with each participant. See
-                               the documentation for the Participant class for more
-                               information."
+                               Grapheme instances associated with each participant.
+                               If na.rm=TRUE, for each participant returns mean response time even
+                               if there are missing response times. If na.rm=FALSE, returns
+                               mean response time if there is at least one response time
+                               value for at least one of the participants' graphemes. If a
+                               character vector is passed to symbol_filter, only data from
+                               graphemes with symbols in the passed vector are used when
+                               calculating each participant's mean response time."
                                if (!has_participants()) {
                                  stop("Tried to fetch mean response times for participantgroup without participants. Please add participants before calling get_mean_response_times().")
                                }
                                participant_level_response_times <- numeric(length(participants))
                                loop_index <- 1
                                for (p in participants) {
-                                 p_time <- p$get_mean_response_time(na.rm=na.rm)
+                                 p_time <- p$get_mean_response_time(na.rm=na.rm,
+                                                                    symbol_filter=symbol_filter)
                                  participant_level_response_times[loop_index] <- p_time
                                  loop_index <- loop_index + 1
                                }
                                return(participant_level_response_times)
                              },
 
+                             get_prop_color_values = function(color_label=NULL,
+                                                              r=NULL, g=NULL, b=NULL,
+                                                              symbol_filter=NULL) {
+                               "For each participants, get the proportion of its response colors that
+                             are within a specified color range. The range is specified using
+                             color_label or the r/g/b arguments. Possible color_label
+                             specifications are: \"blue\", \"red\", \"green\", \"white\",
+                             \"black\" or \"hazy\". For r/g/b arguments, value ranges are specified
+                             using two-element numeric vectors, with rgb values on a 0-1 scale.
+                             E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range.
+                             If a character vector is passed to symbol_filter, only data for graphemes
+                             with symbols in the passed vector are used."
+                               if (!has_participants()) {
+                                 stop("Tried to get 'proportion of specified color' values for participantgroup without participants. Please add participants before calling get_prop_color_values().")
+                               }
+                               participant_level_prop_cols <- numeric(length(participants))
+                               loop_index <- 1
+                               for (p in participants) {
+                                 p_prop_col <- p$get_prop_color(color_label=color_label,
+                                                                r=r, g=g, b=b,
+                                                                symbol_filter=symbol_filter)
+                                 participant_level_prop_cols[loop_index] <- p_prop_col
+                                 loop_index <- loop_index + 1
+                               }
+                               return(participant_level_prop_cols)
+                             },
+
                              get_numbers_all_colored_graphemes = function() {
-                               "Returns the a list with number representing how many
+                               "Returns a list with number representing how many
                                graphemes with all-valid (non-na) response colors that each
                                participant has."
                                if (!has_participants()) {

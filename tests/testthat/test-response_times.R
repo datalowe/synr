@@ -120,3 +120,31 @@ test_that("get_mean_response_times() returns correct mean response times for
             expect_lt(abs(pl$get_mean_response_times()[1] - 6.716667), 0.0001)
             expect_lt(abs(pl$get_mean_response_times()[2] - 4.436667), 0.0001)
           })
+
+
+test_that("get_mean_response_times() returns correct mean response times for
+          2 participants, when using filtering", {
+            g1 <- Grapheme$new(symbol="a")
+            g2 <- Grapheme$new(symbol="b")
+            g1$set_times(c(3, 8, 5))
+            g2$set_times(c(20, 0.3, 4))
+
+            g3 <- Grapheme$new(symbol="a")
+            g4 <- Grapheme$new(symbol="b")
+            g3$set_times(c(10, 0.3, 0.02))
+            g4$set_times(c(9, 0.3, 7))
+
+            p1 <- Participant$new(id="1")
+            p1$add_graphemes(list(g1, g2))
+
+            p2 <- Participant$new(id="2")
+            p2$add_graphemes(list(g3, g4))
+
+            pl <- ParticipantGroup$new()
+            pl$add_participants(list(p1, p2))
+
+            meanresptime_a <- pl$get_mean_response_times(na.rm=TRUE,
+                                                         symbol_filter=c("a"))
+            expect_lt(abs(meanresptime_a[1] - 5.333333), 0.0001)
+
+          })
