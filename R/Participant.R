@@ -97,24 +97,37 @@ Participant <- setRefClass("Participant",
                            return(num_all_colored_response)
                          },
 
-                         get_consistency_scores = function(na.rm=FALSE) {
+                         get_consistency_scores = function(na.rm=FALSE,
+                                                           symbol_filter=NULL) {
                            "Returns a list of grapheme symbols with associated consistency scores.
                            If na.rm=TRUE, for each grapheme a consistency score calculation is
                            forced (except if ALL response colors associated with the grapheme
                            are NA). That probably isn't what you want, because it leads to things
                            like a perfect consistency score if all except one response color are
-                           NA. Defaults to na.rm=FALSE."
+                           NA. Defaults to na.rm=FALSE. If a character vector is passed to
+                           symbol_filter, only consistency scores for graphemes with symbols
+                           in the passed vector are returned.
+                           "
                            if (!has_graphemes()) {
                              stop("Tried to fetch mean consistency score for participant without graphemes. Please add graphemes before calling get_mean_consistency_score().")
                            }
                            grapheme_level_consistency_scores <- list()
-                           for (g in graphemes) {
-                             grapheme_level_consistency_scores[[g$symbol]] <- g$get_consistency_score(na.rm=na.rm)
+                           if (!is.null(symbol_filter)) {
+                             for (g in graphemes) {
+                               if (g$symbol %in% symbol_filter) {
+                               grapheme_level_consistency_scores[[g$symbol]] <- g$get_consistency_score(na.rm=na.rm)
+                               }
+                             }
+                           } else {
+                             for (g in graphemes) {
+                               grapheme_level_consistency_scores[[g$symbol]] <- g$get_consistency_score(na.rm=na.rm)
+                             }
                            }
                            return(grapheme_level_consistency_scores)
                          },
 
-                         get_mean_consistency_score = function(na.rm=FALSE) {
+                         get_mean_consistency_score = function(na.rm=FALSE,
+                                                               symbol_filter=NULL) {
                            "Returns the mean consistency score with respect to
                            Grapheme instances associated with the participant.
                            If na.rm=FALSE, calculates the mean consistency score if
@@ -125,8 +138,12 @@ Participant <- setRefClass("Participant",
                            non-NA response colors, while ignoring graphemes
                            that have at least one NA response color value. Note that
                            NA is returned in either case, if ALL of the participants'
-                           graphemes have at least one NA response color value."
-                           cons_vec <- unlist(get_consistency_scores())
+                           graphemes have at least one NA response color value.
+                           If a character vector is passed to
+                           symbol_filter, only data from graphemes with symbols
+                           in the passed vector are used when calculating the
+                           mean score."
+                           cons_vec <- unlist(get_consistency_scores(symbol_filter=symbol_filter))
                            return(mean(cons_vec, na.rm=na.rm))
                          },
 

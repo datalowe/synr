@@ -81,6 +81,22 @@ test_that("Participant get_consistency_scores() returns correct list for nonvali
   expect_true(is.na(cons_list[['a']]))
 })
 
+test_that("Participant get_consistency_scores() returns correct list for valid response graphemes,
+          when using filter", {
+  p <- Participant$new()
+  g1 <- Grapheme$new(symbol='a')
+  g1$set_colors(c("#FFFFFF", "#000000", "#FFFFFF", "#000000"), "Luv")
+  g2 <- Grapheme$new(symbol='b')
+  g2$set_colors(c("#000000", "#000000", "#000000", "#000000"), "Luv")
+  g3 <- Grapheme$new(symbol='monday')
+  g3$set_colors(c("#000000", "#000000", "#000000", "#000000"), "Luv")
+  g_list <- list(g1, g2, g3)
+  p$add_graphemes(g_list)
+  cons_list <- p$get_consistency_scores(symbol_filter=c("a", "monday"))
+  expect_equal(length(cons_list), 2)
+  expect_lt(cons_list[['monday']], 0.01)
+  expect_gt(cons_list[['a']], 100)
+})
 
 test_that("Participant get_mean_consistency_score() returns value close to 0 for all black response graphemes", {
   p <- Participant$new()
@@ -106,6 +122,23 @@ test_that("Participant get_mean_consistency_score() returns higher than 200 for 
   g_list <- list(g1, g2, g3)
   p$add_graphemes(g_list)
   expect_gt(p$get_mean_consistency_score(), 200)
+})
+
+test_that("Participant get_mean_consistency_score() returns correct
+          values based on what's used for the symbol filter", {
+  p <- Participant$new()
+  g1 <- Grapheme$new(symbol='a')
+  g1$set_colors(c("#FFFFFF", "#FF0000", "#FFAAFF", "#000000"), "Luv")
+  g2 <- Grapheme$new(symbol='b')
+  g2$set_colors(c("#000000", "#FFFFFF", "#000000", "#FFFFFF"), "Luv")
+  g3 <- Grapheme$new(symbol='monday')
+  g3$set_colors(c("#000000", "#000000", "#000000", "#000000"), "Luv")
+  g_list <- list(g1, g2, g3)
+  p$add_graphemes(g_list)
+  expect_gt(p$get_mean_consistency_score(), 200)
+  expect_lt(p$get_mean_consistency_score(symbol_filter=c("monday")), 1)
+  expect_gt(p$get_mean_consistency_score(symbol_filter=c("a", "b", "monday")), 200)
+  expect_gt(p$get_mean_consistency_score(symbol_filter=c("a", "b")), 500)
 })
 
 test_that("Participant get_mean_consistency_score() returns NA value for no valid responses graphemes", {
