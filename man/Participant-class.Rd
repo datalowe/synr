@@ -36,14 +36,16 @@ is overwritten.}
 \item{\code{add_graphemes(grapheme_list)}}{Go through a passed list of Grapheme instances
 and add each one using the add_grapheme() method.}
 
-\item{\code{get_consistency_scores(na.rm = FALSE)}}{Returns a list of grapheme symbols with associated consistency scores.
+\item{\code{get_consistency_scores(na.rm = FALSE, symbol_filter = NULL)}}{Returns a list of grapheme symbols with associated consistency scores.
 If na.rm=TRUE, for each grapheme a consistency score calculation is
 forced (except if ALL response colors associated with the grapheme
 are NA). That probably isn't what you want, because it leads to things
 like a perfect consistency score if all except one response color are
-NA. Defaults to na.rm=FALSE.}
+NA. Defaults to na.rm=FALSE. If a character vector is passed to
+symbol_filter, only consistency scores for graphemes with symbols
+in the passed vector are returned.}
 
-\item{\code{get_mean_consistency_score(na.rm = FALSE)}}{Returns the mean consistency score with respect to
+\item{\code{get_mean_consistency_score(na.rm = FALSE, symbol_filter = NULL)}}{Returns the mean consistency score with respect to
 Grapheme instances associated with the participant.
 If na.rm=FALSE, calculates the mean consistency score if
 all of the participants' graphemes only have response
@@ -53,18 +55,28 @@ all of the participant's graphemes that only have
 non-NA response colors, while ignoring graphemes
 that have at least one NA response color value. Note that
 NA is returned in either case, if ALL of the participants'
-graphemes have at least one NA response color value.}
+graphemes have at least one NA response color value.
+If a character vector is passed to
+symbol_filter, only data from graphemes with symbols
+in the passed vector are used when calculating the
+mean score.}
 
-\item{\code{get_mean_response_time(na.rm = FALSE)}}{Returns the mean response time, with respect to all
+\item{\code{get_mean_response_time(na.rm = FALSE, symbol_filter = NULL)}}{Returns the mean response time, with respect to all
 Grapheme instances associated with the participant.
 Weights response times based on number of valid responses
 that each grapheme has. If na.rm=TRUE, returns mean response
 time even if there are missing response times. If na.rm=FALSE,
 returns mean response time if there is at least one response time
-value for at least one of the participants' graphemes.}
+value for at least one of the participants' graphemes. If a
+character vector is passed to symbol_filter, only data from
+graphemes with symbols in the passed vector are used when
+calculating the mean response time.}
 
-\item{\code{get_number_all_colored_graphemes()}}{Returns the number of graphemes for which all
-responses have an associated non-na color}
+\item{\code{get_number_all_colored_graphemes(symbol_filter = NULL)}}{Returns the number of graphemes for which all
+responses have an associated non-na color. If a
+character vector is passed to symbol_filter, only data from
+graphemes with symbols in the passed vector are used when
+calculating the mean response time.}
 
 \item{\code{get_plot(cutoff_line = TRUE)}}{Returns a ggplot2 plot that describes this participant's
 grapheme color responses and per-grapheme consistency scores.}
@@ -79,13 +91,21 @@ grapheme color responses and per-grapheme consistency scores.}
                            if not all of the participant's graphemes have the same number
                            of color responses. This is intended.}
 
-\item{\code{get_prop_color(color_label = NULL, r = NULL, g = NULL, b = NULL)}}{Get the proportion of all of participant's response colors that
+\item{\code{get_prop_color(
+  color_label = NULL,
+  r = NULL,
+  g = NULL,
+  b = NULL,
+  symbol_filter = NULL
+)}}{Get the proportion of participant's response colors that
 are within a specified color range. The range is specified using
 color_label or the r/g/b arguments. Possible color_label
 specifications are: "blue", "red", "green", "white",
 "black" or "hazy". For r/g/b arguments, value ranges are specified
 using two-element numeric vectors, with rgb values on a 0-1 scale.
-E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range.}
+E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range.
+If a character vector is passed to symbol_filter, only data for graphemes
+with symbols in the passed vector are used.}
 
 \item{\code{get_symbols()}}{Returns a character vector with all symbols for
 graphemes associated with the participant.}
