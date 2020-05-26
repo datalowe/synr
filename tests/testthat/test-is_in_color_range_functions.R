@@ -85,9 +85,11 @@ test_that("Participant.get_prop_color(): proportion of color responses that are
           using r/g/b specifications", {
             a <- synr::Grapheme$new(symbol='a')
             a$set_colors(c("#0000DD", "#0000FF", "#00FF00", "#CC0000"), "Luv")
-
+            b <- synr::Grapheme$new(symbol='b')
+            b$set_colors(c("#0000DD", "#0000FF", "#00FF00", "#CC0000"), "Luv")
             p <- Participant$new(id='1')
             p$add_grapheme(a)
+            p$add_grapheme(b)
             expect_equal(p$get_prop_color(r=c(0.0, 0.3), g=c(0.0, 0.3), b=c(0.7, 1)),
                          0.5)
           })
@@ -133,3 +135,91 @@ test_that("Participant.get_prop_color(): returns NA if there are no valid respon
             expect_true(is.na(p$get_prop_color(r=c(0.0, 0.3), g=c(0.0, 0.3), b=c(0.7, 1))))
           })
 
+
+test_that("Participant.get_prop_color(): proportion of color responses that are
+          blue is 0.5 when half of registered responses are blue,
+          using r/g/b specifications, with filter on", {
+            a <- synr::Grapheme$new(symbol='a')
+            a$set_colors(c("#0000DD", "#0000FF", "#00FF00", "#CC0000"), "Luv")
+            b <- synr::Grapheme$new(symbol='b')
+            b$set_colors(c("#0000DD", "#0000FF", "#00FF00", "#CC0000"), "Luv")
+            p <- Participant$new(id='1')
+            p$add_grapheme(a)
+            p$add_grapheme(b)
+            expect_equal(p$get_prop_color(r=c(0.0, 0.3),
+                                          g=c(0.0, 0.3),
+                                          b=c(0.7, 1),
+                                          symbol_filter=c("a")),
+                         0.5)
+          })
+
+test_that("Participant.get_prop_color(): proportion of color being
+          blue is correctly changed by symbol filter", {
+            a <- synr::Grapheme$new(symbol='a')
+            a$set_colors(c("#0000DD", "#0000FF", "#00FF00", "#CC0000"), "Luv")
+            b <- synr::Grapheme$new(symbol='b')
+            b$set_colors(c("#000000", "#000000", "#000000", "#000000"), "Luv")
+            p <- Participant$new(id='1')
+            p$add_grapheme(a)
+            p$add_grapheme(b)
+            expect_equal(p$get_prop_color(r=c(0.0, 0.3),
+                                          g=c(0.0, 0.3),
+                                          b=c(0.7, 1),
+                                          symbol_filter=c("a")),
+                         0.5)
+            expect_equal(p$get_prop_color(r=c(0.0, 0.3),
+                                          g=c(0.0, 0.3),
+                                          b=c(0.7, 1),
+                                          symbol_filter=c("a", "b")),
+                         0.25)
+            expect_equal(p$get_prop_color(r=c(0.0, 0.3),
+                                          g=c(0.0, 0.3),
+                                          b=c(0.7, 1),
+                                          symbol_filter=c("b")),
+                         0)
+          })
+
+test_that("ParticipantGroup.get_prop_color(): proportion of color being
+          blue/green is correctly changed by symbol filter", {
+            a1 <- synr::Grapheme$new(symbol='a')
+            a1$set_colors(c("#0000DD", "#0000FF", "#00FF00", "#CC0000"), "Luv")
+            b1 <- synr::Grapheme$new(symbol='b')
+            b1$set_colors(c("#000000", "#000000", "#000000", "#000000"), "Luv")
+            p1 <- Participant$new(id='1')
+            p1$add_grapheme(a1)
+            p1$add_grapheme(b1)
+
+            a2 <- synr::Grapheme$new(symbol='a')
+            a2$set_colors(c("#FF0000", "#FF0000", "#000000", "#000000"), "Luv")
+            b2 <- synr::Grapheme$new(symbol='b')
+            b2$set_colors(c("#000000", "#000000", "#00FF00", "#000000"), "Luv")
+            p2 <- Participant$new(id='2')
+            p2$add_grapheme(a2)
+            p2$add_grapheme(b2)
+
+
+            pg <- ParticipantGroup$new()
+            pg$add_participant(p1)
+            pg$add_participant(p2)
+
+            prop_col_vals_a <- pg$get_prop_color_values(r=c(0.0, 0.3),
+                                                     g=c(0.0, 0.3),
+                                                     b=c(0.7, 1),
+                                                     symbol_filter=c("a"))
+
+            prop_col_vals_b <- pg$get_prop_color_values(r=c(0.0, 0.3),
+                                                        g=c(0.7, 1),
+                                                        b=c(0.0, 0.3),
+                                                        symbol_filter=c("b"))
+
+            expect_equal(prop_col_vals_a[1],
+                         0.5)
+            expect_lt(prop_col_vals_a[2],
+                         0.01)
+
+            expect_lt(prop_col_vals_b[1],
+                         0.01)
+            expect_equal(prop_col_vals_b[2],
+                      0.25)
+
+          })

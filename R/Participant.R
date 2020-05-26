@@ -62,21 +62,28 @@ Participant <- setRefClass("Participant",
                            return(names(graphemes))
                          },
 
-                         get_mean_response_time = function(na.rm=FALSE) {
+                         get_mean_response_time = function(na.rm=FALSE,
+                                                           symbol_filter=NULL) {
                            "Returns the mean response time, with respect to all
                            Grapheme instances associated with the participant.
                            Weights response times based on number of valid responses
                            that each grapheme has. If na.rm=TRUE, returns mean response
                            time even if there are missing response times. If na.rm=FALSE,
                            returns mean response time if there is at least one response time
-                           value for at least one of the participants' graphemes."
+                           value for at least one of the participants' graphemes. If a
+                           character vector is passed to symbol_filter, only data from
+                           graphemes with symbols in the passed vector are used when
+                           calculating the mean response time."
                            if (!has_graphemes()) {
                              stop("Tried to fetch mean response time for participant without graphemes. Please add graphemes before calling get_mean_response_time().")
                            }
                            grapheme_level_response_times <- numeric()
-                           for (g in graphemes) {
-                             weight <- length(g$response_times)
-                             g_time <- g$get_mean_response_time(na.rm=na.rm)
+                           for (grapheme in graphemes) {
+                             if ( (!is.null(symbol_filter)) && (!grapheme$symbol %in% symbol_filter)) {
+                               next
+                             }
+                             weight <- length(grapheme$response_times)
+                             g_time <- grapheme$get_mean_response_time(na.rm=na.rm)
                              grapheme_level_response_times <- c(grapheme_level_response_times, rep(g_time, weight))
                            }
                            return(mean(grapheme_level_response_times, na.rm=na.rm))
@@ -148,19 +155,25 @@ Participant <- setRefClass("Participant",
                          },
 
                          get_prop_color = function(color_label=NULL,
-                                                   r=NULL, g=NULL, b=NULL) {
-                           "Get the proportion of all of participant's response colors that
+                                                   r=NULL, g=NULL, b=NULL,
+                                                   symbol_filter=NULL) {
+                           "Get the proportion of participant's response colors that
                            are within a specified color range. The range is specified using
                            color_label or the r/g/b arguments. Possible color_label
                            specifications are: \"blue\", \"red\", \"green\", \"white\",
                            \"black\" or \"hazy\". For r/g/b arguments, value ranges are specified
                            using two-element numeric vectors, with rgb values on a 0-1 scale.
-                           E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range."
+                           E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range.
+                           If a character vector is passed to symbol_filter, only data for graphemes
+                           with symbols in the passed vector are used."
                            if (!has_graphemes()) {
                              stop("Tried to fetch proportion of responses within a color range for participant without graphemes. Please add graphemes before calling get_prop_color().")
                            }
                            grapheme_level_color_props <- numeric()
                            for (grapheme in graphemes) {
+                             if ( (!is.null(symbol_filter)) && (!grapheme$symbol %in% symbol_filter)) {
+                               next
+                             }
                              weight <- nrow(grapheme$response_colors)
                              g_prop_col <- grapheme$get_prop_color(color_label=color_label, r=r, g=g, b=b)
                              grapheme_level_color_props <- c(grapheme_level_color_props, rep(g_prop_col, weight))
