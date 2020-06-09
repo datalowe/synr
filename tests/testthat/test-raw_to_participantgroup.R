@@ -47,10 +47,10 @@ test_that("a single row of data (split into symbol/color/time vectors)
             expect_equal(p$get_symbols()[1], "A")
           })
 
-test_that("the example_raw_df is correctly converted into a participantgroup when using
+test_that("the synr_example_small is correctly converted into a participantgroup when using
           create_participantgroup() and the resulting group produces correct mean consistency
           scores", {
-            pg <- create_participantgroup(raw_df=example_raw_df,
+            pg <- create_participantgroup(raw_df=synr_example_small,
                                           n_trials_per_grapheme=2,
                                           participant_col_name="participant_id",
                                           symbol_col_regex="symbol",
