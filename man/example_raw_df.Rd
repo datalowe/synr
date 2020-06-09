@@ -3,7 +3,7 @@
 \docType{data}
 \name{example_raw_df}
 \alias{example_raw_df}
-\title{Raw consistency test data example}
+\title{Raw consistency test data example (small)}
 \format{
 A data frame with 3 rows and 8 columns:
 \describe{
