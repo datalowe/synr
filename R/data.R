@@ -1,4 +1,4 @@
-#' Raw consistency test data example
+#' Raw consistency test data example (small)
 #'
 #' A data frame with an example of raw consistency test data that are
 #' compatible with the synr package, with data for three participants
@@ -37,3 +37,24 @@
 #'   presentation to response, for sixth response}
 #' }
 "example_raw_df"
+
+
+
+#' Raw consistency test data example (full)
+#'
+#' A data frame with an example of raw consistency test data that are
+#' compatible with the synr package, with data for ten participants
+#' from a test that used English letters and weekdays, and digits. Has three responses
+#' per grapheme. More graphemes and/or
+#' responses per grapheme can be handled by the package (though participant
+#' plots do not function correctly if there are more than three responses
+#' per grapheme, and too many graphemes might make the plots look odd)
+#'
+#' @format A data frame with 10 rows and 389 columns. The
+#' first two columns are participant id and time/date of testing.
+#' The remaining columns describe trial data, with each trial
+#' represented by a set of 3 columns. The 3 columsn represent
+#' the symbol (grapheme) used, response time, and the color code that
+#' the participant responded with.
+#'
+"example_full_raw_df"
