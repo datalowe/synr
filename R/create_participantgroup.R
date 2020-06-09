@@ -1,7 +1,7 @@
 #' @title create_participantgroup
 #' @description Takes in a data frame of raw consistency test data and returns a
 #' ParticipantGroup instance, to which all the relevant data are linked. See the
-#' example data frame example_raw_df and its documentation (help(example_raw_df))
+#' example data frame synr_example_small and its documentation (help(synr_example_small))
 #' for information on the format that this function expects data to be in.
 #'
 #' Participant id and (optional) test date column names are specified with the
@@ -23,7 +23,7 @@
 #' of trials per grapheme that was used in the consistency test the data are from.
 #' @param participant_col_name A one-element character vector that holds the
 #' column name used for the column in raw_df that holds participant id's.
-#' (e. g. "participant_id" for the synr::example_raw_df)
+#' (e. g. "participant_id" for the synr::synr_example_small)
 #' @param symbol_col_regex A one-element character vector with a regular expression
 #' (see above) unique to columns in the passed data frame that hold trial graphemes/symbols.
 #' @param color_col_regex A one-element character vector with a regular expression
@@ -38,7 +38,7 @@
 #' space is to be used for analyses of the data? The following color spaces are supported:
 #' "XYZ", "sRGB", "Apple RGB", "Lab", and "Luv"
 #' @examples
-#' pg <- create_participantgroup(raw_df=example_raw_df,
+#' pg <- create_participantgroup(raw_df=synr_example_small,
 #'                               n_trials_per_grapheme=2,
 #'                               participant_col_name="participant_id",
 #'                               symbol_col_regex="symbol",

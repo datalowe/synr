@@ -36,7 +36,7 @@
 #'   \item{response_time_6}{(optional) Column with time from
 #'   presentation to response, for sixth response}
 #' }
-"example_raw_df"
+"synr_example_small"
 
 
 
@@ -57,4 +57,4 @@
 #' the symbol (grapheme) used, response time, and the color code that
 #' the participant responded with.
 #'
-"example_full_raw_df"
+"synr_example_full"
