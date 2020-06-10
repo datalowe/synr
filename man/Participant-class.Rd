@@ -36,14 +36,25 @@ is overwritten.}
 \item{\code{add_graphemes(grapheme_list)}}{Go through a passed list of Grapheme instances
 and add each one using the add_grapheme() method.}
 
-\item{\code{get_consistency_scores(na.rm = FALSE, symbol_filter = NULL)}}{Returns a list of grapheme symbols with associated consistency scores.
-If na.rm=TRUE, for each grapheme a consistency score calculation is
-forced (except if ALL response colors associated with the grapheme
-are NA). That probably isn't what you want, because it leads to things
-like a perfect consistency score if all except one response color are
-NA. Defaults to na.rm=FALSE. If a character vector is passed to
-symbol_filter, only consistency scores for graphemes with symbols
-in the passed vector are returned.}
+\item{\code{get_consistency_scores(
+  na.rm = FALSE,
+  symbol_filter = NULL,
+  method = "euclidean"
+)}}{Returns a list of grapheme symbols with associated consistency scores.
+                           If na.rm=TRUE, for each grapheme a consistency score calculation is
+                           forced (except if ALL response colors associated with the grapheme
+                           are NA). That probably isn't what you want, because it leads to things
+                           like a perfect consistency score if all except one response color are
+                           NA. Defaults to na.rm=FALSE.
+
+                           If a character vector is passed to
+                           symbol_filter, only consistency scores for graphemes with symbols
+                           in the passed vector are returned.
+
+                           Use the method argument to specify what kind of color space
+                           distances should be used when calculating consistency scores
+                           (usually 'manhattan' or 'euclidean' - see documentation for
+                           the base R dist function for all options)}
 
 \item{\code{get_mean_consistency_score(na.rm = FALSE, symbol_filter = NULL)}}{Returns the mean consistency score with respect to
 Grapheme instances associated with the participant.
@@ -78,8 +89,19 @@ character vector is passed to symbol_filter, only data from
 graphemes with symbols in the passed vector are used when
 calculating the mean response time.}
 
-\item{\code{get_plot(cutoff_line = TRUE)}}{Returns a ggplot2 plot that describes this participant's
-grapheme color responses and per-grapheme consistency scores.}
+\item{\code{get_plot(cutoff_line = FALSE, grapheme_size = 2, grapheme_angle = 0)}}{Returns a ggplot2 plot that describes this participant's
+grapheme color responses and per-grapheme consistency scores.
+If cutoff_line=TRUE, the plot will include a line that indicates
+the value 135.30, which is the cut-off score recommended by
+Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+Pass a value to grapheme_size to adjust the size of graphemes
+shown at the bottom of the plot, e. g. increasing the size if
+there's empty space otherwise, or decreasing the size if the
+graphemes don't fit. Similarly, you can use the grapheme_angle
+argument to rotate the graphemes, which might help them fit better.
+Graphemes are sorted left-to-right by 1. length and
+2. unicode value (this means among other things that digits
+come before letters).}
 
 \item{\code{get_plot_data()}}{Returns a data frame with the following columns:
                            1. Character: grapheme (grapheme names)
@@ -87,7 +109,7 @@ grapheme color responses and per-grapheme consistency scores.}
                            3... Character columns: color_resp<x> hold response colors (number of columns depends on number of response colors associated with each grapheme).
 
                            The data frame is intended to be used for plotting participant data,
-                           using .get_consistency_plot(). The call will end with an error
+                           using .get_plot(). The call will end with an error
                            if not all of the participant's graphemes have the same number
                            of color responses. This is intended.}
 
@@ -114,17 +136,37 @@ graphemes associated with the participant.}
 grapheme in the participant's graphemes list,
 otherwise returns FALSE}
 
-\item{\code{save_plot(path = NULL, file_format = "png", dpi = 300, ...)}}{Saves a ggplot2 plot that describes this participant's
-grapheme color responses and per-grapheme consistency scores,
-using the ggsave function.
-If save_dir is not specified, the plot is saved to the current
-working directory. Otherwise, the plot is saved to the specified
-directory. The file is saved using the specified file_format,
-e. g. JPG (see ggplot2::ggsave documentation for list of
-supported formats), and the resolution specified with
-the dpi argument. Apart from these, all other arguments
-that ggsave accepts (e. g. 'scale') also work with this function, since
-all arguments are passed on to ggsave.}
+\item{\code{save_plot(
+  path = NULL,
+  file_format = "png",
+  dpi = 300,
+  cutoff_line = FALSE,
+  grapheme_size = 2,
+  grapheme_angle = 0,
+  ...
+)}}{Saves a ggplot2 plot that describes this participant's
+                           grapheme color responses and per-grapheme consistency scores,
+                           using the ggsave function.
+
+                           If save_dir is not specified, the plot is saved to the current
+                           working directory. Otherwise, the plot is saved to the specified
+                           directory. The file is saved using the specified file_format,
+                           e. g. JPG (see ggplot2::ggsave documentation for list of
+                           supported formats), and the resolution specified with
+                           the dpi argument.
+
+                           If cutoff_line=TRUE, the plot will include a line that indicates
+                           the value 135.30, which is the cut-off score recommended by
+                           Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                           Pass a value to grapheme_size to adjust the size of graphemes
+                           shown at the bottom of the plot, e. g. increasing the size if
+                           there's empty space otherwise, or decreasing the size if the
+                           graphemes don't fit. Similarly, you can use the grapheme_angle
+                           argument to rotate the graphemes, which might help them fit better.
+
+                           Apart from these, all other arguments
+                           that ggsave accepts (e. g. 'scale') also work with this function, since
+                           all arguments are passed on to ggsave.}
 
 \item{\code{set_date(in_date)}}{Takes in a one-element character vector with a date
 in the format 'YYYY-MM-DD' and sets the participant's
