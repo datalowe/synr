@@ -111,16 +111,23 @@ Participant <- setRefClass("Participant",
                          },
 
                          get_consistency_scores = function(na.rm=FALSE,
-                                                           symbol_filter=NULL) {
+                                                           symbol_filter=NULL,
+                                                           method="euclidean") {
                            "Returns a list of grapheme symbols with associated consistency scores.
                            If na.rm=TRUE, for each grapheme a consistency score calculation is
                            forced (except if ALL response colors associated with the grapheme
                            are NA). That probably isn't what you want, because it leads to things
                            like a perfect consistency score if all except one response color are
-                           NA. Defaults to na.rm=FALSE. If a character vector is passed to
+                           NA. Defaults to na.rm=FALSE.
+
+                           If a character vector is passed to
                            symbol_filter, only consistency scores for graphemes with symbols
                            in the passed vector are returned.
-                           "
+
+                           Use the method argument to specify what kind of color space
+                           distances should be used when calculating consistency score
+                           (usually 'manhattan' or 'euclidean' - see documentation for
+                           the base R dist function for all options)"
                            if (!has_graphemes()) {
                              stop("Tried to fetch mean consistency score for participant without graphemes. Please add graphemes before calling get_mean_consistency_score().")
                            }
@@ -128,21 +135,25 @@ Participant <- setRefClass("Participant",
                            if (!is.null(symbol_filter)) {
                              for (g in graphemes) {
                                if (g$symbol %in% symbol_filter) {
-                               grapheme_level_consistency_scores[[g$symbol]] <- g$get_consistency_score(na.rm=na.rm)
+                               grapheme_level_consistency_scores[[g$symbol]] <- g$get_consistency_score(na.rm=na.rm,
+                                                                                                        method=method)
                                }
                              }
                            } else {
                              for (g in graphemes) {
-                               grapheme_level_consistency_scores[[g$symbol]] <- g$get_consistency_score(na.rm=na.rm)
+                               grapheme_level_consistency_scores[[g$symbol]] <- g$get_consistency_score(na.rm=na.rm,
+                                                                                                        method=method)
                              }
                            }
                            return(grapheme_level_consistency_scores)
                          },
 
                          get_mean_consistency_score = function(na.rm=FALSE,
-                                                               symbol_filter=NULL) {
+                                                               symbol_filter=NULL,
+                                                               method='euclidean') {
                            "Returns the mean consistency score with respect to
                            Grapheme instances associated with the participant.
+
                            If na.rm=FALSE, calculates the mean consistency score if
                            all of the participants' graphemes only have response
                            colors that are non-NA, otherwise returns NA.
@@ -152,11 +163,18 @@ Participant <- setRefClass("Participant",
                            that have at least one NA response color value. Note that
                            NA is returned in either case, if ALL of the participants'
                            graphemes have at least one NA response color value.
+
                            If a character vector is passed to
                            symbol_filter, only data from graphemes with symbols
                            in the passed vector are used when calculating the
-                           mean score."
-                           cons_vec <- unlist(get_consistency_scores(symbol_filter=symbol_filter))
+                           mean score.
+
+                           Use the method argument to specify what kind of color space
+                           distances should be used when calculating consistency score
+                           (usually 'manhattan' or 'euclidean' - see documentation for
+                           the base R dist function for all options)"
+                           cons_vec <- unlist(get_consistency_scores(symbol_filter=symbol_filter,
+                                                                     method=method))
                            return(mean(cons_vec, na.rm=na.rm))
                          },
 
@@ -194,7 +212,7 @@ Participant <- setRefClass("Participant",
                            3... Character columns: color_resp<x> hold response colors (number of columns depends on number of response colors associated with each grapheme).
 
                            The data frame is intended to be used for plotting participant data,
-                           using .get_consistency_plot(). The call will end with an error
+                           using .get_plot(). The call will end with an error
                            if not all of the participant's graphemes have the same number
                            of color responses. This is intended."
                            if (!has_graphemes()) {
@@ -209,17 +227,31 @@ Participant <- setRefClass("Participant",
                            for (g in graphemes) {
                              plot_df <- data.table::rbindlist(list(plot_df, g$get_plot_data_list() ))
                            }
+                           plot_df <- plot_df[order(nchar(plot_df$symbol), plot_df$symbol), ]
+                           plot_df$symbol <- factor(plot_df$symbol, levels=plot_df$symbol)
                            return(plot_df)
                          },
 
-                         get_plot = function(cutoff_line = TRUE) {
+                         get_plot = function(cutoff_line=FALSE, grapheme_size=2,
+                                             grapheme_angle=0) {
                            # TO DO change the plotting functionality so that it can handle
                            # all-black graphemes (this leads to clustering of symbols at
                            # one position atm)
                            # TO DO add support for more than three graphemes (this leads
                            # to one symbol ending up below the plot area and cut off atm)
                            "Returns a ggplot2 plot that describes this participant's
-                           grapheme color responses and per-grapheme consistency scores."
+                           grapheme color responses and per-grapheme consistency scores.
+                           If cutoff_line=TRUE, the plot will include a line that indicates
+                           the value 135.30, which is the cut-off score recommended by
+                           Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                           Pass a value to grapheme_size to adjust the size of graphemes
+                           shown at the bottom of the plot, e. g. increasing the size if
+                           there's empty space otherwise, or decreasing the size if the
+                           graphemes don't fit. Similarly, you can use the grapheme_angle
+                           argument to rotate the graphemes, which might help them fit better.
+                           Graphemes are sorted left-to-right by 1. length and
+                           2. unicode value (this means among other things that digits
+                           come before letters)."
                            plot_df <- get_plot_data()
                            y_upper_limit <- ifelse(all(is.na(plot_df$consistency_score)),
                                                    5,
@@ -240,8 +272,11 @@ Participant <- setRefClass("Participant",
                            pos_factor <- 0.04
                            for (color_column in colnames(plot_df)[3:ncol(plot_df)]) {
                              consistency_plot <- consistency_plot +
-                               ggplot2::geom_text(y=-y_upper_limit * pos_factor, label=plot_df[['symbol']], size = 3.5,
-                                                  color = plot_df[[color_column]])
+                               ggplot2::geom_text(y=-y_upper_limit * pos_factor,
+                                                  label=plot_df[['symbol']],
+                                                  size=grapheme_size,
+                                                  angle=grapheme_angle,
+                                                  color=plot_df[[color_column]])
                              pos_factor <- pos_factor + 0.04
                            }
                            if (cutoff_line) {
@@ -250,26 +285,42 @@ Participant <- setRefClass("Participant",
                            return(consistency_plot)
                          },
 
-                         save_plot = function(path=NULL, file_format='png', dpi=300, ...) {
+                         save_plot = function(path=NULL, file_format='png', dpi=300,
+                                              cutoff_line=FALSE, grapheme_size=2,
+                                              grapheme_angle=0, ...) {
                            "Saves a ggplot2 plot that describes this participant's
                            grapheme color responses and per-grapheme consistency scores,
                            using the ggsave function.
+
                            If save_dir is not specified, the plot is saved to the current
                            working directory. Otherwise, the plot is saved to the specified
                            directory. The file is saved using the specified file_format,
                            e. g. JPG (see ggplot2::ggsave documentation for list of
                            supported formats), and the resolution specified with
-                           the dpi argument. Apart from these, all other arguments
+                           the dpi argument.
+
+                           If cutoff_line=TRUE, the plot will include a line that indicates
+                           the value 135.30, which is the cut-off score recommended by
+                           Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                           Pass a value to grapheme_size to adjust the size of graphemes
+                           shown at the bottom of the plot, e. g. increasing the size if
+                           there's empty space otherwise, or decreasing the size if the
+                           graphemes don't fit. Similarly, you can use the grapheme_angle
+                           argument to rotate the graphemes, which might help them fit better.
+
+                           Apart from these, all other arguments
                            that ggsave accepts (e. g. 'scale') also work with this function, since
                            all arguments are passed on to ggsave."
-                           consistency_plot <- get_plot()
+                           consistency_plot <- get_plot(cutoff_line=cutoff_line,
+                                                        grapheme_size=grapheme_size,
+                                                        grapheme_angle=grapheme_angle)
                            plot_file_name <- paste0(id, '_consistency_plot.', file_format)
                            suppressWarnings(
-                             ggplot2::ggsave(filename = plot_file_name,
-                                           plot = consistency_plot,
-                                           path = path,
-                                           dpi = dpi,
-                                           ... = ...)
+                             ggplot2::ggsave(filename=plot_file_name,
+                                           plot=consistency_plot,
+                                           path=path,
+                                           dpi=dpi,
+                                           ...=...)
                            )
                          }
                        )

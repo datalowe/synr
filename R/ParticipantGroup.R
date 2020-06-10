@@ -10,7 +10,7 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                            methods = list(
                              add_participant = function(participant) {
                                "Add a passed participant to the participantgroup's list
-                           of participant The participant's entry in
+                           of participants. The participant's entry in
                            the list is named based on the participant's
                            id. Note that if you try to add
                            a participant with an id that's identical
@@ -119,7 +119,8 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                              },
 
                              get_mean_consistency_scores = function(na.rm=FALSE,
-                                                                    symbol_filter=NULL) {
+                                                                    symbol_filter=NULL,
+                                                                    method="euclidean") {
                                "Returns a vector of mean consistency scores for
                                participants in the group. If na.rm=FALSE, for each
                                participant calculates the mean consistency score if
@@ -133,9 +134,15 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                                for participants whose graphemes ALL have at least one NA
                                response color value, an NA is put in the returned vector for
                                that participant, regardless of what na.rm is set to.
+
                                If a character vector is passed to symbol_filter, only
                                data from graphemes with symbols in the passed vector
-                               are used when calculating each participant's mean score."
+                               are used when calculating each participant's mean score.
+
+                               Use the method argument to specify what kind of color space
+                               distances should be used when calculating consistency scores
+                               (usually 'manhattan' or 'euclidean' - see documentation for
+                               the base R dist function for all options)"
                                if (!has_participants()) {
                                  stop("Tried to fetch mean numbers of all colored graphemes for participantgroup without participants. Please add participants before calling get_numbers_all_colored_graphemes().")
                                }
@@ -143,31 +150,48 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                                loop_index <- 1
                                for (p in participants) {
                                  p_mean_c_score <- p$get_mean_consistency_score(na.rm=na.rm,
-                                                                                symbol_filter=symbol_filter)
+                                                                                symbol_filter=symbol_filter,
+                                                                                method=method)
                                  participant_level_mean_consistency_scores[loop_index] <- p_mean_c_score
                                  loop_index <- loop_index + 1
                                }
                                return(participant_level_mean_consistency_scores)
                              },
 
-                             save_plots = function(path=NULL, file_format='png', dpi=300, ...) {
-                               "Goes through all participants and for each one produces and saves
-                               a ggplot2 plot that describes the participant's
+                             save_plots = function(path=NULL, file_format='png', dpi=300,
+                                                   cutoff_line=FALSE, grapheme_size=2,
+                                                   grapheme_angle=0, ...) {
+                           "Goes through all participants and for each one produces and saves
+                           a ggplot2 plot that describes the participant's
                            grapheme color responses and per-grapheme consistency scores,
                            using the ggsave function.
+
                            If save_dir is not specified, plots are saved to the current
                            working directory. Otherwise, plots are saved to the specified
                            directory. The file is saved using the specified file_format,
                            e. g. JPG (see ggplot2::ggsave documentation for list of
                            supported formats), and the resolution specified with
-                           the dpi argument. Apart from these, all other arguments
+                           the dpi argument.
+
+                           If cutoff_line=TRUE, plots will include a line that indicates
+                           the value 135.30, which is the cut-off score recommended by
+                           Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                           Pass a value to grapheme_size to adjust the size of graphemes
+                           shown at the bottom of the plot, e. g. increasing the size if
+                           there's empty space otherwise, or decreasing the size if the
+                           graphemes don't fit. Similarly, you can use the grapheme_angle
+                           argument to rotate the graphemes, which might help them fit better.
+
+                           Apart from the ones above, all other arguments
                            that ggsave accepts (e. g. 'scale') also work with this function, since
-                           all arguments are passed on to ggsave."
+                           all arguments are passed on to ggsave. "
                                if (!has_participants()) {
                                  stop("Tried to fetch mean numbers of all colored graphemes for participantgroup without participants. Please add participants before calling get_numbers_all_colored_graphemes().")
                                }
                                for (p in participants) {
-                                 p$save_plot(path=path, file_format=file_format, dpi=dpi)
+                                 p$save_plot(path=path, file_format=file_format, dpi=dpi,
+                                             cutoff_line=cutoff_line, grapheme_size=grapheme_size,
+                                             grapheme_angle=grapheme_angle, ...)
                                }
                              }
                            )
