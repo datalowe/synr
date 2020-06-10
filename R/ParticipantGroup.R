@@ -1,4 +1,4 @@
-#' A Reference Class to represent a group of consistency test participants.
+#' A Reference Class for representing a group of consistency test participants
 #' @field participants A list of \code{\link[synr]{Participant}} class instances.
 #' @importFrom methods new
 #' @export ParticipantGroup

@@ -4,9 +4,9 @@
 \name{Grapheme-class}
 \alias{Grapheme-class}
 \alias{Grapheme}
-\title{A Reference Class to represent consistency test graphemes.}
+\title{A Reference Class for representing consistency test graphemes}
 \description{
-A Reference Class to represent consistency test graphemes.
+A Reference Class for representing consistency test graphemes
 }
 \section{Fields}{
 

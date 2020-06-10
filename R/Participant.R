@@ -1,4 +1,4 @@
-#' A Reference Class to represent consistency test participants.
+#' A Reference Class for representing consistency test participants
 #'
 #'
 #' @field id A one-element character vector containing the participant's ID.

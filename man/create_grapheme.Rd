@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_grapheme.R
 \name{create_grapheme}
 \alias{create_grapheme}
-\title{create_grapheme}
+\title{Create a grapheme instance}
 \usage{
 create_grapheme(
   symbol,

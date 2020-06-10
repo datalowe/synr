@@ -4,9 +4,9 @@
 \name{ParticipantGroup-class}
 \alias{ParticipantGroup-class}
 \alias{ParticipantGroup}
-\title{A Reference Class to represent a group of consistency test participants.}
+\title{A Reference Class for representing a group of consistency test participants}
 \description{
-A Reference Class to represent a group of consistency test participants.
+A Reference Class for representing a group of consistency test participants
 }
 \section{Fields}{
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/build_grapheme_vector.R
 \name{build_grapheme_vector}
 \alias{build_grapheme_vector}
-\title{build_grapheme_vector}
+\title{Build a vector of graphemes}
 \usage{
 build_grapheme_vector(
   language,

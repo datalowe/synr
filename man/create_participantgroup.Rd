@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_participantgroup.R
 \name{create_participantgroup}
 \alias{create_participantgroup}
-\title{create_participantgroup}
+\title{Create a ParticipantGroup instance}
 \usage{
 create_participantgroup(
   raw_df,

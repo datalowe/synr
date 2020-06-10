@@ -4,9 +4,9 @@
 \name{Participant-class}
 \alias{Participant-class}
 \alias{Participant}
-\title{A Reference Class to represent consistency test participants.}
+\title{A Reference Class for representing consistency test participants}
 \description{
-A Reference Class to represent consistency test participants.
+A Reference Class for representing consistency test participants
 }
 \section{Fields}{
 
@@ -52,25 +52,36 @@ and add each one using the add_grapheme() method.}
                            in the passed vector are returned.
 
                            Use the method argument to specify what kind of color space
-                           distances should be used when calculating consistency scores
+                           distances should be used when calculating consistency score
                            (usually 'manhattan' or 'euclidean' - see documentation for
                            the base R dist function for all options)}
 
-\item{\code{get_mean_consistency_score(na.rm = FALSE, symbol_filter = NULL)}}{Returns the mean consistency score with respect to
-Grapheme instances associated with the participant.
-If na.rm=FALSE, calculates the mean consistency score if
-all of the participants' graphemes only have response
-colors that are non-NA, otherwise returns NA.
-If na.rm=TRUE, returns the mean consistency score for
-all of the participant's graphemes that only have
-non-NA response colors, while ignoring graphemes
-that have at least one NA response color value. Note that
-NA is returned in either case, if ALL of the participants'
-graphemes have at least one NA response color value.
-If a character vector is passed to
-symbol_filter, only data from graphemes with symbols
-in the passed vector are used when calculating the
-mean score.}
+\item{\code{get_mean_consistency_score(
+  na.rm = FALSE,
+  symbol_filter = NULL,
+  method = "euclidean"
+)}}{Returns the mean consistency score with respect to
+                           Grapheme instances associated with the participant.
+
+                           If na.rm=FALSE, calculates the mean consistency score if
+                           all of the participants' graphemes only have response
+                           colors that are non-NA, otherwise returns NA.
+                           If na.rm=TRUE, returns the mean consistency score for
+                           all of the participant's graphemes that only have
+                           non-NA response colors, while ignoring graphemes
+                           that have at least one NA response color value. Note that
+                           NA is returned in either case, if ALL of the participants'
+                           graphemes have at least one NA response color value.
+
+                           If a character vector is passed to
+                           symbol_filter, only data from graphemes with symbols
+                           in the passed vector are used when calculating the
+                           mean score.
+
+                           Use the method argument to specify what kind of color space
+                           distances should be used when calculating consistency score
+                           (usually 'manhattan' or 'euclidean' - see documentation for
+                           the base R dist function for all options)}
 
 \item{\code{get_mean_response_time(na.rm = FALSE, symbol_filter = NULL)}}{Returns the mean response time, with respect to all
 Grapheme instances associated with the participant.

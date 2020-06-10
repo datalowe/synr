@@ -1,0 +1,2 @@
+# synr
+This is a package for working with data resulting from grapheme-color consistency tests for synesthesia. It relies heavily on Reference Classes. This means that the way the package works might be a bit different from what you're used to in R. Hopefully you'll find that what might seem unfamiliar at first becomes intuitive and powerful once you've learned about it. Please read the vignette 'synr: Package, summarize and visualize synesthesia consistency test data' for a tutorial on how to use the package.
