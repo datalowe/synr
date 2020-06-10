@@ -1,4 +1,4 @@
-#' @title build_grapheme_vector
+#' @title Build a vector of graphemes
 #' @description Uses internal data constants to build a character vector
 #' containing graphemes in accordance with specifications passed as
 #' function arguments. Supports English and Swedish language specifications. Note that

@@ -4,7 +4,7 @@ author: "Lowe Wilsson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{synr: Tutorial}
+  %\VignetteIndexEntry{synr: Package, summarize and visualize synesthesia consistency test data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -1,4 +1,4 @@
-#' @title create_participant
+#' @title Create a Participant instance.
 #' @description Takes in a participant id, set of symbols for which graphemes
 #' should be created and participant trial/response data. Returns a Participant
 #' instance with all the input data linked to it. For each grapheme, if there

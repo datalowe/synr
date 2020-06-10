@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_participant.R
 \name{create_participant}
 \alias{create_participant}
-\title{create_participant}
+\title{Create a Participant instance.}
 \usage{
 create_participant(
   participant_id,

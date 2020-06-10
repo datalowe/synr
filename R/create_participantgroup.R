@@ -1,4 +1,4 @@
-#' @title create_participantgroup
+#' @title Create a ParticipantGroup instance
 #' @description Takes in a data frame of raw consistency test data and returns a
 #' ParticipantGroup instance, to which all the relevant data are linked. See the
 #' example data frame synr_example_small and its documentation (help(synr_example_small))

@@ -1,4 +1,4 @@
-#' @title create_grapheme
+#' @title Create a grapheme instance
 #' @description Takes in a symbol/grapheme and sets of response times/colors,
 #' then creates a Grapheme instance that holds the passed information and returns it.
 #' @param symbol A one-element character vector holding a symbol/grapheme.

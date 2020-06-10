@@ -1,4 +1,4 @@
-#' A Reference Class to represent consistency test graphemes.
+#' A Reference Class for representing consistency test graphemes
 #'
 #'
 #' @field symbol A one-element character vector containing the symbol/set of symbols
