@@ -101,32 +101,43 @@ otherwise returns FALSE}
   file_format = "png",
   dpi = 300,
   cutoff_line = FALSE,
+  mean_line = FALSE,
   grapheme_size = 2,
   grapheme_angle = 0,
+  symbol_filter = NULL,
   ...
 )}}{Goes through all participants and for each one produces and saves
-                           a ggplot2 plot that describes the participant's
-                           grapheme color responses and per-grapheme consistency scores,
-                           using the ggsave function.
+                             a ggplot2 plot that describes the participant's
+                             grapheme color responses and per-grapheme consistency scores,
+                             using the ggsave function.
 
-                           If save_dir is not specified, plots are saved to the current
-                           working directory. Otherwise, plots are saved to the specified
-                           directory. The file is saved using the specified file_format,
-                           e. g. JPG (see ggplot2::ggsave documentation for list of
-                           supported formats), and the resolution specified with
-                           the dpi argument.
+                             If a character vector is passed to symbol_filter, only data for graphemes
+                             with symbols in the passed vector are used.
 
-                           If cutoff_line=TRUE, plots will include a line that indicates
-                           the value 135.30, which is the cut-off score recommended by
-                           Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
-                           Pass a value to grapheme_size to adjust the size of graphemes
-                           shown at the bottom of the plot, e. g. increasing the size if
-                           there's empty space otherwise, or decreasing the size if the
-                           graphemes don't fit. Similarly, you can use the grapheme_angle
-                           argument to rotate the graphemes, which might help them fit better.
+                             If save_dir is not specified, plots are saved to the current
+                             working directory. Otherwise, plots are saved to the specified
+                             directory. The file is saved using the specified file_format,
+                             e. g. JPG (see ggplot2::ggsave documentation for list of
+                             supported formats), and the resolution specified with
+                             the dpi argument.
 
-                           Apart from the ones above, all other arguments
-                           that ggsave accepts (e. g. 'scale') also work with this function, since
-                           all arguments are passed on to ggsave. }
+                             If cutoff_line=TRUE, plots will include a line that indicates
+                             the value 135.30, which is the cut-off score recommended by
+                             Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                             If mean_line=TRUE, the plot will include a green line that indicates
+                             the participant's mean consistency score (if the participant has any
+                             graphemes with all-valid response colors). If a vector is passed to
+                             symbol_filter, this green line represents the mean score for ONLY
+                             the symbols included in the filter.
+
+                             Pass a value to grapheme_size to adjust the size of graphemes
+                             shown at the bottom of the plot, e. g. increasing the size if
+                             there's empty space otherwise, or decreasing the size if the
+                             graphemes don't fit. Similarly, you can use the grapheme_angle
+                             argument to rotate the graphemes, which might help them fit better.
+
+                             Apart from the ones above, all other arguments
+                             that ggsave accepts (e. g. 'scale') also work with this function, since
+                             all arguments are passed on to ggsave. }
 }}
 
