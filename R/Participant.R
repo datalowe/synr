@@ -205,16 +205,19 @@ Participant <- setRefClass("Participant",
                            return(mean(grapheme_level_color_props, na.rm=TRUE))
                          },
 
-                         get_plot_data = function() {
-                           "Returns a data frame with the following columns:
-                           1. Character: grapheme (grapheme names)
-                           2. Numeric: consistency_score
-                           3... Character columns: color_resp<x> hold response colors (number of columns depends on number of response colors associated with each grapheme).
+                         get_plot_data = function(symbol_filter=NULL) {
+                           "Returns a data frame with the following columns:\n
+                           1. grapheme (grapheme names - of type character)\n
+                           2. consistency_score (of type numeric)\n
+                           3... color_resp<x>, where x is a digit: hold response hex color codes (number of columns depends on number of response colors associated with each grapheme).
 
                            The data frame is intended to be used for plotting participant data,
                            using .get_plot(). The call will end with an error
                            if not all of the participant's graphemes have the same number
-                           of color responses. This is intended."
+                           of color responses. This is intended.
+
+                           If a character vector is passed to symbol_filter, only data for graphemes
+                           with symbols in the passed vector are used."
                            if (!has_graphemes()) {
                              stop("Tried to fetch plot data for participant without graphemes. Please add graphemes before calling get_plot_data().")
                            }
@@ -224,16 +227,20 @@ Participant <- setRefClass("Participant",
                            plot_mat <- matrix(vector(), nrow=0, ncol=num_responses+2,
                                               dimnames=list(c(), col_names))
                            plot_df <- data.table::data.table(plot_mat, stringsAsFactors = FALSE)
-                           for (g in graphemes) {
-                             plot_df <- data.table::rbindlist(list(plot_df, g$get_plot_data_list() ))
+                           for (grapheme in graphemes) {
+                             if ( (!is.null(symbol_filter)) && (!grapheme$symbol %in% symbol_filter)) {
+                               next
+                             }
+                             plot_df <- data.table::rbindlist(list(plot_df, grapheme$get_plot_data_list() ))
                            }
                            plot_df <- plot_df[order(nchar(plot_df$symbol), plot_df$symbol), ]
                            plot_df$symbol <- factor(plot_df$symbol, levels=plot_df$symbol)
                            return(plot_df)
                          },
 
-                         get_plot = function(cutoff_line=FALSE, grapheme_size=2,
-                                             grapheme_angle=0) {
+                         get_plot = function(cutoff_line=FALSE, mean_line=FALSE,
+                                             grapheme_size=2, grapheme_angle=0,
+                                             symbol_filter=NULL) {
                            # TO DO change the plotting functionality so that it can handle
                            # all-black graphemes (this leads to clustering of symbols at
                            # one position atm)
@@ -241,18 +248,29 @@ Participant <- setRefClass("Participant",
                            # to one symbol ending up below the plot area and cut off atm)
                            "Returns a ggplot2 plot that describes this participant's
                            grapheme color responses and per-grapheme consistency scores.
-                           If cutoff_line=TRUE, the plot will include a line that indicates
-                           the value 135.30, which is the cut-off score recommended by
-                           Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+
+                           If cutoff_line=TRUE, the plot will include a blue line that
+                           indicates the value 135.30, which is the cut-off score recommended
+                           by Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                           If mean_line=TRUE, the plot will include a green line that indicates
+                           the participant's mean consistency score (if the participant has any
+                           graphemes with all-valid response colors). If a vector is passed to
+                           symbol_filter, this green line represents the mean score for ONLY
+                           the symbols included in the filter.
+
                            Pass a value to grapheme_size to adjust the size of graphemes
                            shown at the bottom of the plot, e. g. increasing the size if
-                           there's empty space otherwise, or decreasing the size if the
+                           there's a lot of empty space otherwise, or decreasing the size if the
                            graphemes don't fit. Similarly, you can use the grapheme_angle
                            argument to rotate the graphemes, which might help them fit better.
+
+                           If a character vector is passed to symbol_filter, only data for graphemes
+                           with symbols in the passed vector are used.
+
                            Graphemes are sorted left-to-right by 1. length and
                            2. unicode value (this means among other things that digits
                            come before letters)."
-                           plot_df <- get_plot_data()
+                           plot_df <- get_plot_data(symbol_filter=symbol_filter)
                            y_upper_limit <- ifelse(all(is.na(plot_df$consistency_score)),
                                                    5,
                                                    max(plot_df$consistency_score, na.rm=TRUE))
@@ -282,15 +300,23 @@ Participant <- setRefClass("Participant",
                            if (cutoff_line) {
                              consistency_plot <- consistency_plot + ggplot2::geom_hline(yintercept=135.30, color="blue")
                            }
+                           if (mean_line && get_number_all_colored_graphemes() > 0) {
+                             mean_cs <- mean(plot_df$consistency_score, na.rm=TRUE)
+                             consistency_plot <- consistency_plot + ggplot2::geom_hline(yintercept=mean_cs, color="green")
+                           }
                            return(consistency_plot)
                          },
 
                          save_plot = function(path=NULL, file_format='png', dpi=300,
-                                              cutoff_line=FALSE, grapheme_size=2,
-                                              grapheme_angle=0, ...) {
+                                              cutoff_line=FALSE, mean_line=FALSE,
+                                              grapheme_size=2, grapheme_angle=0,
+                                              symbol_filter=NULL, ...) {
                            "Saves a ggplot2 plot that describes this participant's
                            grapheme color responses and per-grapheme consistency scores,
                            using the ggsave function.
+
+                           If a character vector is passed to symbol_filter, only data for graphemes
+                           with symbols in the passed vector are used.
 
                            If save_dir is not specified, the plot is saved to the current
                            working directory. Otherwise, the plot is saved to the specified
@@ -302,6 +328,10 @@ Participant <- setRefClass("Participant",
                            If cutoff_line=TRUE, the plot will include a line that indicates
                            the value 135.30, which is the cut-off score recommended by
                            Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                           If mean_line=TRUE, the plot will include a green line that indicates
+                           the participant's mean consistency score (if the participant has any
+                           graphemes with all-valid response colors).
+
                            Pass a value to grapheme_size to adjust the size of graphemes
                            shown at the bottom of the plot, e. g. increasing the size if
                            there's empty space otherwise, or decreasing the size if the
@@ -312,8 +342,10 @@ Participant <- setRefClass("Participant",
                            that ggsave accepts (e. g. 'scale') also work with this function, since
                            all arguments are passed on to ggsave."
                            consistency_plot <- get_plot(cutoff_line=cutoff_line,
+                                                        mean_line=mean_line,
                                                         grapheme_size=grapheme_size,
-                                                        grapheme_angle=grapheme_angle)
+                                                        grapheme_angle=grapheme_angle,
+                                                        symbol_filter=symbol_filter)
                            plot_file_name <- paste0(id, '_consistency_plot.', file_format)
                            suppressWarnings(
                              ggplot2::ggsave(filename=plot_file_name,

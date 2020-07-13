@@ -100,29 +100,52 @@ character vector is passed to symbol_filter, only data from
 graphemes with symbols in the passed vector are used when
 calculating the mean response time.}
 
-\item{\code{get_plot(cutoff_line = FALSE, grapheme_size = 2, grapheme_angle = 0)}}{Returns a ggplot2 plot that describes this participant's
-grapheme color responses and per-grapheme consistency scores.
-If cutoff_line=TRUE, the plot will include a line that indicates
-the value 135.30, which is the cut-off score recommended by
-Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
-Pass a value to grapheme_size to adjust the size of graphemes
-shown at the bottom of the plot, e. g. increasing the size if
-there's empty space otherwise, or decreasing the size if the
-graphemes don't fit. Similarly, you can use the grapheme_angle
-argument to rotate the graphemes, which might help them fit better.
-Graphemes are sorted left-to-right by 1. length and
-2. unicode value (this means among other things that digits
-come before letters).}
+\item{\code{get_plot(
+  cutoff_line = FALSE,
+  mean_line = FALSE,
+  grapheme_size = 2,
+  grapheme_angle = 0,
+  symbol_filter = NULL
+)}}{Returns a ggplot2 plot that describes this participant's
+                           grapheme color responses and per-grapheme consistency scores.
 
-\item{\code{get_plot_data()}}{Returns a data frame with the following columns:
-                           1. Character: grapheme (grapheme names)
-                           2. Numeric: consistency_score
-                           3... Character columns: color_resp<x> hold response colors (number of columns depends on number of response colors associated with each grapheme).
+                           If cutoff_line=TRUE, the plot will include a blue line that
+                           indicates the value 135.30, which is the cut-off score recommended
+                           by Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                           If mean_line=TRUE, the plot will include a green line that indicates
+                           the participant's mean consistency score (if the participant has any
+                           graphemes with all-valid response colors). If a vector is passed to
+                           symbol_filter, this green line represents the mean score for ONLY
+                           the symbols included in the filter.
+
+                           Pass a value to grapheme_size to adjust the size of graphemes
+                           shown at the bottom of the plot, e. g. increasing the size if
+                           there's a lot of empty space otherwise, or decreasing the size if the
+                           graphemes don't fit. Similarly, you can use the grapheme_angle
+                           argument to rotate the graphemes, which might help them fit better.
+
+                           If a character vector is passed to symbol_filter, only data for graphemes
+                           with symbols in the passed vector are used.
+
+                           Graphemes are sorted left-to-right by 1. length and
+                           2. unicode value (this means among other things that digits
+                           come before letters).}
+
+\item{\code{get_plot_data(symbol_filter = NULL)}}{Returns a data frame with the following columns:
+
+                           1. grapheme (grapheme names - of type character)
+
+                           2. consistency_score (of type numeric)
+
+                           3... color_resp<x>, where x is a digit: hold response hex color codes (number of columns depends on number of response colors associated with each grapheme).
 
                            The data frame is intended to be used for plotting participant data,
                            using .get_plot(). The call will end with an error
                            if not all of the participant's graphemes have the same number
-                           of color responses. This is intended.}
+                           of color responses. This is intended.
+
+                           If a character vector is passed to symbol_filter, only data for graphemes
+                           with symbols in the passed vector are used.}
 
 \item{\code{get_prop_color(
   color_label = NULL,
@@ -152,12 +175,17 @@ otherwise returns FALSE}
   file_format = "png",
   dpi = 300,
   cutoff_line = FALSE,
+  mean_line = FALSE,
   grapheme_size = 2,
   grapheme_angle = 0,
+  symbol_filter = NULL,
   ...
 )}}{Saves a ggplot2 plot that describes this participant's
                            grapheme color responses and per-grapheme consistency scores,
                            using the ggsave function.
+
+                           If a character vector is passed to symbol_filter, only data for graphemes
+                           with symbols in the passed vector are used.
 
                            If save_dir is not specified, the plot is saved to the current
                            working directory. Otherwise, the plot is saved to the specified
@@ -169,6 +197,10 @@ otherwise returns FALSE}
                            If cutoff_line=TRUE, the plot will include a line that indicates
                            the value 135.30, which is the cut-off score recommended by
                            Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                           If mean_line=TRUE, the plot will include a green line that indicates
+                           the participant's mean consistency score (if the participant has any
+                           graphemes with all-valid response colors).
+
                            Pass a value to grapheme_size to adjust the size of graphemes
                            shown at the bottom of the plot, e. g. increasing the size if
                            there's empty space otherwise, or decreasing the size if the
