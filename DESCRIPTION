@@ -1,6 +1,6 @@
 Package: synr
 Type: Package
-Title: An Interface To Synesthesia Consistency Test Data
+Title: An Interface to Synesthesia Consistency Test Data
 Version: 0.1
 Author: Lowe Wilsson
 Maintainer: Lowe Wilsson <datalowe@posteo.de>

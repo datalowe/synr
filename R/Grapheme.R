@@ -149,6 +149,16 @@ Grapheme<- setRefClass("Grapheme",
                            return(sum_distances)
                          },
 
+                         get_mean_color = function(na.rm=FALSE) {
+                           "Average all registered response's colors and
+                           return the result (using the color space
+                           set at grapheme initialization) as a 3-element vector."
+                           if (all(is.na(response_colors))) {
+                             return(NA)
+                           }
+                           return(colMeans(response_colors))
+                         },
+
                          get_mean_response_time = function(na.rm=FALSE) {
                            "Get the mean of the grapheme's associated
                            response times."
