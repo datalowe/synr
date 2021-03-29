@@ -110,13 +110,13 @@ calculating the mean response time.}
                            grapheme color responses and per-grapheme consistency scores.
 
                            If cutoff_line=TRUE, the plot will include a blue line that
-                           indicates the value 135.30, which is the cut-off score recommended
+                           indicates the value 135.30, which is the synesthesia cut-off score recommended
                            by Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
                            If mean_line=TRUE, the plot will include a green line that indicates
-                           the participant's mean consistency score (if the participant has any
-                           graphemes with all-valid response colors). If a vector is passed to
-                           symbol_filter, this green line represents the mean score for ONLY
-                           the symbols included in the filter.
+                           the participant's mean consistency score for graphemes with all-valid
+                           response colors (if the participant has any such graphemes). If a vector
+                           is passed to symbol_filter, this green line represents the mean score
+                           for ONLY the symbols included in the filter.
 
                            Pass a value to grapheme_size to adjust the size of graphemes
                            shown at the bottom of the plot, e. g. increasing the size if
@@ -194,12 +194,14 @@ otherwise returns FALSE}
                            supported formats), and the resolution specified with
                            the dpi argument.
 
-                           If cutoff_line=TRUE, the plot will include a line that indicates
-                           the value 135.30, which is the cut-off score recommended by
-                           Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                           If cutoff_line=TRUE, the plot will include a blue line that
+                           indicates the value 135.30, which is the synesthesia cut-off score recommended
+                           by Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
                            If mean_line=TRUE, the plot will include a green line that indicates
-                           the participant's mean consistency score (if the participant has any
-                           graphemes with all-valid response colors).
+                           the participant's mean consistency score for graphemes with all-valid
+                           response colors (if the participant has any such graphemes). If a vector
+                           is passed to symbol_filter, this green line represents the mean score
+                           for ONLY the symbols included in the filter.
 
                            Pass a value to grapheme_size to adjust the size of graphemes
                            shown at the bottom of the plot, e. g. increasing the size if

@@ -75,13 +75,19 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                              get_prop_color_values = function(color_label=NULL,
                                                               r=NULL, g=NULL, b=NULL,
                                                               symbol_filter=NULL) {
-                               "For each participants, get the proportion of its response colors that
+                               "For each participant, get the proportion of its response colors that
                              are within a specified color range. The range is specified using
-                             color_label or the r/g/b arguments. Possible color_label
-                             specifications are: \"blue\", \"red\", \"green\", \"white\",
-                             \"black\" or \"hazy\". For r/g/b arguments, value ranges are specified
+                             color_label or the r/g/b arguments.
+
+                             Possible color_label specifications are: \"blue\", \"red\", \"green\", \"white\",
+                             \"black\" or \"hazy\". Note that the ranges associated with each color
+                             label are extremely arbitrary and cannot be relied on - use them only,
+                             if at all, to get a very rough idea of sample characteristics.
+
+                             For r/g/b arguments, value ranges are specified
                              using two-element numeric vectors, with rgb values on a 0-1 scale.
                              E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range.
+
                              If a character vector is passed to symbol_filter, only data for graphemes
                              with symbols in the passed vector are used."
                                if (!has_participants()) {
@@ -171,21 +177,21 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                              If a character vector is passed to symbol_filter, only data for graphemes
                              with symbols in the passed vector are used.
 
-                             If save_dir is not specified, plots are saved to the current
+                             If path is not specified, plots are saved to the current
                              working directory. Otherwise, plots are saved to the specified
                              directory. The file is saved using the specified file_format,
                              e. g. JPG (see ggplot2::ggsave documentation for list of
                              supported formats), and the resolution specified with
                              the dpi argument.
 
-                             If cutoff_line=TRUE, plots will include a line that indicates
-                             the value 135.30, which is the cut-off score recommended by
-                             Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
+                             If cutoff_line=TRUE, each plot will include a blue line that
+                             indicates the value 135.30, which is the synesthesia cut-off score recommended
+                             by Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
                              If mean_line=TRUE, the plot will include a green line that indicates
-                             the participant's mean consistency score (if the participant has any
-                             graphemes with all-valid response colors). If a vector is passed to
-                             symbol_filter, this green line represents the mean score for ONLY
-                             the symbols included in the filter.
+                             the participant's mean consistency score for graphemes with all-valid
+                             response colors (if the participant has any such graphemes). If a vector
+                             is passed to symbol_filter, this green line represents the mean score
+                             for ONLY the symbols included in the filter.
 
                              Pass a value to grapheme_size to adjust the size of graphemes
                              shown at the bottom of the plot, e. g. increasing the size if
