@@ -4,10 +4,10 @@
 \name{synr-package}
 \alias{synr}
 \alias{synr-package}
-\title{synr: An Interface to Synesthesia Consistency Test Data}
+\title{synr: Explore and Process Synesthesia Consistency Test Data}
 \description{
-synr helps you work with data resulting from grapheme-color consistency tests for synesthesia.
+`synr` helps you work with data resulting from grapheme-color consistency tests for synesthesia.
 
-To learn more about synr, start with the vignettes:
+To learn more about `synr`, start with the vignettes:
 \verb{browseVignettes(package = "synr")}
 }
