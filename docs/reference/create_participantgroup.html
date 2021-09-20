@@ -89,7 +89,7 @@ but symbol_col_regex=&quot;grapheme_&quot; or even symbol_col_regex=&quot;graphe
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@ but symbol_col_regex=&quot;grapheme_&quot; or even symbol_col_regex=&quot;graphe
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -158,16 +158,16 @@ column you want to indicate. So if your symbol/grapheme columns are named
 but symbol_col_regex="grapheme_" or even symbol_col_regex="graphe" would.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_participantgroup</span>(
-  <span class='no'>raw_df</span>,
-  <span class='kw'>n_trials_per_grapheme</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='no'>participant_col_name</span>,
-  <span class='no'>symbol_col_regex</span>,
-  <span class='kw'>color_col_regex</span> <span class='kw'>=</span> <span class='st'>"colou*r"</span>,
-  <span class='kw'>time_col_regex</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>testdate_col_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>color_space_spec</span> <span class='kw'>=</span> <span class='st'>"Luv"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>create_participantgroup</span><span class='op'>(</span>
+  <span class='va'>raw_df</span>,
+  n_trials_per_grapheme <span class='op'>=</span> <span class='fl'>3</span>,
+  <span class='va'>participant_col_name</span>,
+  <span class='va'>symbol_col_regex</span>,
+  color_col_regex <span class='op'>=</span> <span class='st'>"colou*r"</span>,
+  time_col_regex <span class='op'>=</span> <span class='cn'>NULL</span>,
+  testdate_col_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color_space_spec <span class='op'>=</span> <span class='st'>"Luv"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -219,16 +219,17 @@ space is to be used for analyses of the data? The following color spaces are sup
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>pg</span> <span class='kw'>&lt;-</span> <span class='fu'>create_participantgroup</span>(<span class='kw'>raw_df</span><span class='kw'>=</span><span class='no'>synr_example_small</span>,
-                              <span class='kw'>n_trials_per_grapheme</span><span class='kw'>=</span><span class='fl'>2</span>,
-                              <span class='kw'>participant_col_name</span><span class='kw'>=</span><span class='st'>"participant_id"</span>,
-                              <span class='kw'>symbol_col_regex</span><span class='kw'>=</span><span class='st'>"symbol"</span>,
-                              <span class='kw'>color_col_regex</span><span class='kw'>=</span><span class='st'>"colou*r"</span>,
-                              <span class='kw'>time_col_regex</span><span class='kw'>=</span><span class='st'>"response_time"</span>,
-                              <span class='kw'>color_space_spec</span><span class='kw'>=</span><span class='st'>"Luv"</span>
-)
-<span class='no'>cons_means</span> <span class='kw'>&lt;-</span> <span class='no'>pg</span>$<span class='fu'>get_mean_consistency_scores</span>()
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>cons_means</span>)</div><div class='output co'>#&gt; [1] 105.9028 135.8346 124.1099</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>pg</span> <span class='op'>&lt;-</span> <span class='fu'>create_participantgroup</span><span class='op'>(</span>raw_df<span class='op'>=</span><span class='va'>synr_example_small</span>,
+                              n_trials_per_grapheme<span class='op'>=</span><span class='fl'>2</span>,
+                              participant_col_name<span class='op'>=</span><span class='st'>"participant_id"</span>,
+                              symbol_col_regex<span class='op'>=</span><span class='st'>"symbol"</span>,
+                              color_col_regex<span class='op'>=</span><span class='st'>"colou*r"</span>,
+                              time_col_regex<span class='op'>=</span><span class='st'>"response_time"</span>,
+                              color_space_spec<span class='op'>=</span><span class='st'>"Luv"</span>
+<span class='op'>)</span>
+<span class='va'>cons_means</span> <span class='op'>&lt;-</span> <span class='va'>pg</span><span class='op'>$</span><span class='fu'>get_mean_consistency_scores</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>cons_means</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 105.9028 135.8346 124.1099</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -244,7 +245,7 @@ space is to be used for analyses of the data? The following color spaces are sup
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
