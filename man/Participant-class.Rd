@@ -105,6 +105,7 @@ calculating the mean response time.}
   mean_line = FALSE,
   grapheme_size = 2,
   grapheme_angle = 0,
+  grapheme_spacing = 0.25,
   symbol_filter = NULL
 )}}{Returns a ggplot2 plot that describes this participant's
                            grapheme color responses and per-grapheme consistency scores.
@@ -121,8 +122,9 @@ calculating the mean response time.}
                            Pass a value to grapheme_size to adjust the size of graphemes
                            shown at the bottom of the plot, e. g. increasing the size if
                            there's a lot of empty space otherwise, or decreasing the size if the
-                           graphemes don't fit. Similarly, you can use the grapheme_angle
-                           argument to rotate the graphemes, which might help them fit better.
+                           graphemes don't fit. The grapheme_angle
+                           argument allows rotating graphemes. grapheme_spacing is for adjusting
+                           how far grapheme symbols are spaced from each other.
 
                            If a character vector is passed to symbol_filter, only data for graphemes
                            with symbols in the passed vector are used.

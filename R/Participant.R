@@ -233,13 +233,14 @@ Participant <- setRefClass("Participant",
                              }
                              plot_df <- data.table::rbindlist(list(plot_df, grapheme$get_plot_data_list() ))
                            }
-                           plot_df <- plot_df[order(nchar(plot_df$symbol), plot_df$symbol), ]
+                           plot_df <- plot_df[order(nchar(plot_df$symbol), plot_df$symbol, decreasing = TRUE), ]
                            plot_df$symbol <- factor(plot_df$symbol, levels=plot_df$symbol)
                            return(plot_df)
                          },
 
                          get_plot = function(cutoff_line=FALSE, mean_line=FALSE,
                                              grapheme_size=2, grapheme_angle=0,
+                                             grapheme_spacing=0.25,
                                              symbol_filter=NULL) {
                            # TO DO change the plotting functionality so that it can handle
                            # all-black graphemes (this leads to clustering of symbols at
@@ -261,8 +262,9 @@ Participant <- setRefClass("Participant",
                            Pass a value to grapheme_size to adjust the size of graphemes
                            shown at the bottom of the plot, e. g. increasing the size if
                            there's a lot of empty space otherwise, or decreasing the size if the
-                           graphemes don't fit. Similarly, you can use the grapheme_angle
-                           argument to rotate the graphemes, which might help them fit better.
+                           graphemes don't fit. The grapheme_angle
+                           argument allows rotating graphemes. grapheme_spacing is for adjusting
+                           how far grapheme symbols are spaced from each other.
 
                            If a character vector is passed to symbol_filter, only data for graphemes
                            with symbols in the passed vector are used.
@@ -281,21 +283,33 @@ Participant <- setRefClass("Participant",
                              ggplot2::scale_y_continuous(breaks= y_breaks) +
                              ggplot2::labs(x="Grapheme", y="Sum distance between responses") +
                              ggplot2::scale_x_discrete(labels=NULL) +
-                             ggplot2::theme(axis.ticks.x=ggplot2::element_blank(),
-                                            panel.grid.major.x=ggplot2::element_blank(),
-                                            panel.grid.minor.y=ggplot2::element_blank()) +
-                             ggplot2::coord_cartesian(y = c(-y_upper_limit / 10,
+                             ggplot2::theme(
+                               axis.ticks.y = ggplot2::element_blank(),
+                               panel.grid.major.y = ggplot2::element_blank(),
+                               panel.grid.minor.x = ggplot2::element_blank(),
+                               panel.grid.major.x = ggplot2::element_line(color = "#ADD8E6"),
+                               panel.background = ggplot2::element_rect(fill = '#FFFFFF'),
+                               panel.border = ggplot2::element_rect(
+                                 fill = "transparent",
+                                 color = "#ADD8E6",
+                                 size = 0.4
+                               )
+                             ) +
+                             ggplot2::coord_flip(y = c(-y_upper_limit*0.7,
                                                             y_upper_limit))
 
-                           pos_factor <- 0.04
+                           pos_factor <- grapheme_spacing/2
                            for (color_column in colnames(plot_df)[3:ncol(plot_df)]) {
+
                              consistency_plot <- consistency_plot +
-                               ggplot2::geom_text(y=-y_upper_limit * pos_factor,
-                                                  label=plot_df[['symbol']],
-                                                  size=grapheme_size,
-                                                  angle=grapheme_angle,
-                                                  color=plot_df[[color_column]])
-                             pos_factor <- pos_factor + 0.04
+                               ggplot2::geom_text(
+                                 y = -y_upper_limit * pos_factor,
+                                 label = plot_df[['symbol']],
+                                 size = grapheme_size,
+                                 angle = grapheme_angle,
+                                 color = plot_df[[color_column]]
+                               )
+                             pos_factor <- pos_factor + grapheme_spacing
                            }
                            if (cutoff_line) {
                              consistency_plot <- consistency_plot + ggplot2::geom_hline(yintercept=135.30, color="blue")
