@@ -108,9 +108,8 @@ ParticipantGroup <- setRefClass("ParticipantGroup",
                              get_numbers_all_colored_graphemes = function(symbol_filter=NULL) {
                                "Returns a vector with numbers representing how many
                                graphemes with all-valid (non-na) response colors that each
-                               participant has.  If a character vector is passed to symbol_filter,
-                               only data from graphemes with symbols in the passed vector are
-                               used when calculating the mean response time."
+                               participant has.  If a character vector is passed to symbol_filter, 
+                               only data connected to graphemes with symbols in the passed vector are used."
                                if (!has_participants()) {
                                  stop("Tried to fetch mean numbers of all colored graphemes for participantgroup without participants. Please add participants before calling get_numbers_all_colored_graphemes().")
                                }

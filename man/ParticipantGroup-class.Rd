@@ -72,9 +72,8 @@ calculating each participant's mean response time.}
 
 \item{\code{get_numbers_all_colored_graphemes(symbol_filter = NULL)}}{Returns a vector with numbers representing how many
 graphemes with all-valid (non-na) response colors that each
-participant has.  If a character vector is passed to symbol_filter,
-only data from graphemes with symbols in the passed vector are
-used when calculating the mean response time.}
+participant has.  If a character vector is passed to symbol_filter, 
+only data connected to graphemes with symbols in the passed vector are used.}
 
 \item{\code{get_prop_color_values(
   color_label = NULL,
