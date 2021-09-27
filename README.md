@@ -7,17 +7,17 @@ This is an [R](https://www.r-project.org/) package for working with data resulti
 TODO: This section will be updated once it's been decided where to make synr binaries available. 
 
 ## Usage
-Once data are in an appropriately formatted data frame/tibble, everything starts with rolling up participant data into a 'ParticipantGroup' object with `create_participantgroup_widedata`:
+Once data are in an appropriately formatted data frame/tibble ('long format' - see vignettes for more information), everything starts with rolling up participant data into a 'ParticipantGroup' object with `create_participantgroup_widedata`:
 
 ```r
 library(synr)
 
-pgroup <- create_participantgroup_widedata(
-    formatted_df, # data frame/tibble to use
+pgroup <- create_participantgroup(
+    formatted_df, # data frame/tibble to use, with data in 'long format'
     n_trials_per_grapheme=3, # number of trials that grapheme was used for
     participant_col_name="participant_id", # name of column which holds participant ID's
-    symbol_col_regex='symbol', # regex pattern matching columns which hold grapheme symbol strings
-    color_col_regex='color', # regex pattern matching columns which hold response color HEX codes
+    symbol_col_name='symbol', # name of column which holds grapheme symbol strings
+    color_col_name='color', # rname of column which holds response color HEX codes
     color_space_spec = "Luv" # color space to use for all calculations with participant group
 )
 ```
@@ -32,4 +32,4 @@ Using the resulting object (`pgroup`), you can call various methods. A couple of
 <img src="man/figures/example_consistency_plot.png" width="400" alt="Example bar plot of grapheme-level consistency scores">
 
 ### Detailed usage information
-More details on required data format and how to use synr itself can be found in the [tutorial vignette](https://datalowe.github.io/synr/articles/synr-tutorial.html), which is also included in the package itself (run `help(synr)` to find it).
+More details on required data format and how to use synr itself can be found in the [package's vignettes](https://datalowe.github.io/synr/articles), which are also included in the package itself (run `help(synr)` to find them).

@@ -2,6 +2,9 @@ pandoc: '2.13'
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  dingemanse-data-example: dingemanse-data-example.html
+  quick-start: quick-start.html
+  synr-creategroup: synr-creategroup.html
   synr-tutorial: synr-tutorial.html
-last_built: 2021-09-20T12:00Z
+last_built: 2021-09-27T18:33Z
 

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -56,6 +56,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/dingemanse-data-example.html">Using synr with real data: Coloured vowels</a>
+    </li>
+    <li>
+      <a href="articles/quick-start.html">synr: Quick start</a>
+    </li>
+    <li>
+      <a href="articles/synr-creategroup.html">Creating ParticipantGroup objects</a>
+    </li>
+    <li>
       <a href="articles/synr-tutorial.html">synr: Package, summarize and visualize synesthesia consistency test data</a>
     </li>
   </ul>
@@ -86,16 +95,16 @@
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>Once data are in an appropriately formatted data frame/tibble, everything starts with rolling up participant data into a ‘ParticipantGroup’ object with <code>create_participantgroup</code>:</p>
+<p>Once data are in an appropriately formatted data frame/tibble (‘long format’ - see vignettes for more information), everything starts with rolling up participant data into a ‘ParticipantGroup’ object with <code>create_participantgroup_widedata</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">synr</span><span class="op">)</span>
 
 <span class="va">pgroup</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_participantgroup.html">create_participantgroup</a></span><span class="op">(</span>
-    <span class="va">formatted_df</span>, <span class="co"># data frame/tibble to use</span>
+    <span class="va">formatted_df</span>, <span class="co"># data frame/tibble to use, with data in 'long format'</span>
     n_trials_per_grapheme<span class="op">=</span><span class="fl">3</span>, <span class="co"># number of trials that grapheme was used for</span>
     participant_col_name<span class="op">=</span><span class="st">"participant_id"</span>, <span class="co"># name of column which holds participant ID's</span>
-    symbol_col_regex<span class="op">=</span><span class="st">'symbol'</span>, <span class="co"># regex pattern matching columns which hold grapheme symbol strings</span>
-    color_col_regex<span class="op">=</span><span class="st">'color'</span>, <span class="co"># regex pattern matching columns which hold response color HEX codes</span>
+    symbol_col_name<span class="op">=</span><span class="st">'symbol'</span>, <span class="co"># name of column which holds grapheme symbol strings</span>
+    color_col_name<span class="op">=</span><span class="st">'color'</span>, <span class="co"># rname of column which holds response color HEX codes</span>
     color_space_spec <span class="op">=</span> <span class="st">"Luv"</span> <span class="co"># color space to use for all calculations with participant group</span>
 <span class="op">)</span></code></pre></div>
 <p>Using the resulting object (<code>pgroup</code>), you can call various methods. A couple of examples follow.</p>
@@ -104,16 +113,16 @@
 <a href="#example-group-level-method-get_mean_consistency_scores" class="anchor"></a>Example group-level method: get_mean_consistency_scores</h3>
 <p><code>pgroup$get_mean_consistency_scores(symbol_filter=LETTERS)</code> would return a vector of <a href="https://en.wikipedia.org/wiki/CIELUV">CIELUV</a>-based consistency scores, using only data from trials involving capital letters.</p>
 </div>
-<div id="example-participant-level-method-get_mean_consistency_scores" class="section level3">
+<div id="example-participant-level-method-get_plot" class="section level3">
 <h3 class="hasAnchor">
-<a href="#example-participant-level-method-get_mean_consistency_scores" class="anchor"></a>Example participant-level method: get_mean_consistency_scores</h3>
+<a href="#example-participant-level-method-get_plot" class="anchor"></a>Example participant-level method: get_plot</h3>
 <p><code>pgroup$participants[[1]]$get_plot(symbol_filter=LETTERS)</code> would produce a bar plot of per-grapheme consistency scores for a single participant, using only data from trials involving capital letters. You can see an example below.</p>
 <p><img src="reference/figures/example_consistency_plot.png" width="400" alt="Example bar plot of grapheme-level consistency scores"></p>
 </div>
 <div id="detailed-usage-information" class="section level3">
 <h3 class="hasAnchor">
 <a href="#detailed-usage-information" class="anchor"></a>Detailed usage information</h3>
-<p>More details on required data format and how to use synr itself can be found in the <a href="https://datalowe.github.io/synr/articles/synr-tutorial.html">tutorial vignette</a>, which is also included in the package itself (run <code><a href="reference/synr-package.html">help(synr)</a></code> to find it).</p>
+<p>More details on required data format and how to use synr itself can be found in the <a href="https://datalowe.github.io/synr/articles">package’s vignettes</a>, which are also included in the package itself (run <code><a href="reference/synr-package.html">help(synr)</a></code> to find them).</p>
 </div>
 </div>
 </div>

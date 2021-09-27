@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a grapheme instance — create_grapheme • synr</title>
+<title>Raw consistency test data example, long format (small) — synr_exampledf_long_small • synr</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,16 @@
 
 
 
-<meta property="og:title" content="Create a grapheme instance — create_grapheme" />
-<meta property="og:description" content="Takes in a symbol/grapheme and sets of response times/colors,
-then creates a Grapheme instance that holds the passed information and returns it." />
+<meta property="og:title" content="Raw consistency test data example, long format (small) — synr_exampledf_long_small" />
+<meta property="og:description" content="A data frame with an example of raw consistency test data that are
+compatible with the synr package's `create_participantgroup_widedata` function,
+with data for three participants from a test that included three
+graphemes (&quot;A&quot;, &quot;D&quot;, 7) and two responses
+per grapheme. More graphemes and/or
+responses per grapheme can be handled by the package (though participant
+plots do not function correctly if there are more than three responses
+per grapheme). Note that response times are optional. If you don't have
+them, you can still use synr - see `help(create_participantgroup_widedata)`." />
 
 
 
@@ -125,64 +132,37 @@ then creates a Grapheme instance that holds the passed information and returns i
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a grapheme instance</h1>
+    <h1>Raw consistency test data example, long format (small)</h1>
     
-    <div class="hidden name"><code>create_grapheme.Rd</code></div>
+    <div class="hidden name"><code>synr_exampledf_long_small.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes in a symbol/grapheme and sets of response times/colors,
-then creates a Grapheme instance that holds the passed information and returns it.</p>
+    <p>A data frame with an example of raw consistency test data that are
+compatible with the synr package's `create_participantgroup_widedata` function,
+with data for three participants from a test that included three
+graphemes ("A", "D", 7) and two responses
+per grapheme. More graphemes and/or
+responses per grapheme can be handled by the package (though participant
+plots do not function correctly if there are more than three responses
+per grapheme). Note that response times are optional. If you don't have
+them, you can still use synr - see `help(create_participantgroup_widedata)`.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_grapheme</span><span class='op'>(</span>
-  <span class='va'>symbol</span>,
-  response_times <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>response_colors</span>,
-  color_space_spec <span class='op'>=</span> <span class='st'>"Luv"</span>
-<span class='op'>)</span></pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>symbol</th>
-      <td><p>A one-element character vector holding a symbol/grapheme.</p></td>
-    </tr>
-    <tr>
-      <th>response_times</th>
-      <td><p>(optional) A numeric vector. Times from presentation to
-response, in order.</p></td>
-    </tr>
-    <tr>
-      <th>response_colors</th>
-      <td><p>A character vector. Response colors, as hex color
-codes.</p></td>
-    </tr>
-    <tr>
-      <th>color_space_spec</th>
-      <td><p>A one-element character vector. What color space
-is to be used? The following color spaces are supported:
-"XYZ", "sRGB", "Apple RGB", "Lab", and "Luv"</p></td>
-    </tr>
-    </table>
+    <pre class="usage"><span class='va'>synr_exampledf_long_small</span></pre>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>create_grapheme</span><span class='op'>(</span>symbol<span class='op'>=</span><span class='st'>"a"</span>, response_times<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2.3</span>, <span class='fl'>6.7</span>, <span class='fl'>0.4</span><span class='op'>)</span>,
-response_colors<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"84AE99"</span>, <span class='st'>"9E3300"</span>, <span class='st'>"000000"</span><span class='op'>)</span>, color_space_spec<span class='op'>=</span><span class='st'>"Luv"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Reference class object of class "Grapheme"
-#&gt; Field "symbol":
-#&gt; [1] "a"
-#&gt; Field "response_colors":
-#&gt;          [,1]      [,2]     [,3]
-#&gt; [1,] 67.60265 -21.34313 11.89985
-#&gt; [2,] 37.31578  86.01643 30.79221
-#&gt; [3,]  0.00000   0.00000  0.00000
-#&gt; Field "response_times":
-#&gt; [1] 2.3 6.7 0.4
-#&gt; Field "color_space":
-#&gt; [1] "Luv"</div></pre>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A data frame with 18 rows and 4 columns:</p><dl>
+  <dt>participant_id</dt><dd><p>Participant ID</p></dd>
+  <dt>trial_symbol</dt><dd><p>Column of trial symbols/graphemes</p></dd>
+  <dt>response_color</dt><dd><p>Column of trial response colors</p></dd>
+  <dt>response_time</dt><dd><p>Column of trial response times</p></dd>
+
+</dl>
+
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

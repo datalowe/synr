@@ -1,7 +1,7 @@
 Package: synr
 Type: Package
 Title: Explore and Process Synesthesia Consistency Test Data
-Version: 0.2.0
+Version: 0.3.0
 Author: Lowe Wilsson
 Maintainer: Lowe Wilsson <datalowe@posteo.de>
 Description: synr helps you explore synesthesia

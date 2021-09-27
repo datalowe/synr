@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a ParticipantGroup instance using long-format data — create_participantgroup • synr</title>
+<title>Create a ParticipantGroup instance — create_participantgroup_widedata • synr</title>
 
 
 <!-- jquery -->
@@ -39,14 +39,25 @@
 
 
 
-<meta property="og:title" content="Create a ParticipantGroup instance using long-format data — create_participantgroup" />
-<meta property="og:description" content="Takes in a data frame of raw
-'long format'
-consistency test data and returns a
+<meta property="og:title" content="Create a ParticipantGroup instance — create_participantgroup_widedata" />
+<meta property="og:description" content="Takes in a data frame of raw consistency test data and returns a
 ParticipantGroup instance, to which all the relevant data are linked. See the
-example data frame `synr_exampledf_long_small` and its documentation
-(`help(synr_exampledf_long_small)`) for more information on the format
-that this function expects data to be in." />
+example data frame synr_exampledf_wide_small and its documentation (help(synr_exampledf_wide_small))
+for information on the format that this function expects data to be in.
+Participant id and (optional) test date column names are specified with the
+exact column names used in the data frame passed to the function. Symbol
+(i. e. grapheme), response color and response time (optional) columns are
+specified using regular expressions. You can
+read about regular expressions using R here
+if you want to, but basically what you want to do is this:
+say your columns with response colors are named
+&quot;chosen_color_001&quot;, &quot;chosen_color_002&quot; and so on. You then simply set
+color_col_regex=&quot;chosen_color&quot; when calling this function. The important thing
+is that you specify a part of the column names that is unique for the type of
+column you want to indicate. So if your symbol/grapheme columns are named
+&quot;grapheme_1&quot;, &quot;grapheme_2&quot; ... and your participant id column is named
+&quot;graphparticipant_1&quot; ..., then symbol_col_regex=&quot;graph&quot; wouldn't work,
+but symbol_col_regex=&quot;grapheme_&quot; or even symbol_col_regex=&quot;graphe&quot; would." />
 
 
 
@@ -130,28 +141,40 @@ that this function expects data to be in." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a ParticipantGroup instance using long-format data</h1>
+    <h1>Create a ParticipantGroup instance</h1>
     
-    <div class="hidden name"><code>create_participantgroup.Rd</code></div>
+    <div class="hidden name"><code>create_participantgroup_widedata.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes in a data frame of raw
-<a href='https://stefvanbuuren.name/fimd/sec-longandwide.html'>'long format'</a>
-consistency test data and returns a
+    <p>Takes in a data frame of raw consistency test data and returns a
 ParticipantGroup instance, to which all the relevant data are linked. See the
-example data frame `synr_exampledf_long_small` and its documentation
-(`help(synr_exampledf_long_small)`) for more information on the format
-that this function expects data to be in.</p>
+example data frame synr_exampledf_wide_small and its documentation (help(synr_exampledf_wide_small))
+for information on the format that this function expects data to be in.</p>
+<p>Participant id and (optional) test date column names are specified with the
+exact column names used in the data frame passed to the function. Symbol
+(i. e. grapheme), response color and response time (optional) columns are
+specified using regular expressions. You can
+<a href='https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions'>read about regular expressions using R here</a>
+if you want to, but basically what you want to do is this:
+say your columns with response colors are named
+"chosen_color_001", "chosen_color_002" and so on. You then simply set
+color_col_regex="chosen_color" when calling this function. The important thing
+is that you specify a part of the column names that is unique for the type of
+column you want to indicate. So if your symbol/grapheme columns are named
+"grapheme_1", "grapheme_2" ... and your participant id column is named
+"graphparticipant_1" ..., then symbol_col_regex="graph" wouldn't work,
+but symbol_col_regex="grapheme_" or even symbol_col_regex="graphe" would.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_participantgroup</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>create_participantgroup_widedata</span><span class='op'>(</span>
   <span class='va'>raw_df</span>,
   n_trials_per_grapheme <span class='op'>=</span> <span class='fl'>3</span>,
-  <span class='va'>id_col_name</span>,
-  <span class='va'>symbol_col_name</span>,
-  <span class='va'>color_col_name</span>,
-  time_col_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>participant_col_name</span>,
+  <span class='va'>symbol_col_regex</span>,
+  color_col_regex <span class='op'>=</span> <span class='st'>"colou*r"</span>,
+  time_col_regex <span class='op'>=</span> <span class='cn'>NULL</span>,
+  testdate_col_name <span class='op'>=</span> <span class='cn'>NULL</span>,
   color_space_spec <span class='op'>=</span> <span class='st'>"Luv"</span>
 <span class='op'>)</span></pre>
 
@@ -160,7 +183,7 @@ that this function expects data to be in.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>raw_df</th>
-      <td><p>A data frame of 'long format' raw consistency test data.</p></td>
+      <td><p>A data frame of raw consistency test data.</p></td>
     </tr>
     <tr>
       <th>n_trials_per_grapheme</th>
@@ -168,48 +191,54 @@ that this function expects data to be in.</p>
 of trials per grapheme that was used in the consistency test the data are from.</p></td>
     </tr>
     <tr>
-      <th>id_col_name</th>
+      <th>participant_col_name</th>
       <td><p>A one-element character vector that holds the
-name of the participant id column in raw_df.</p></td>
+column name used for the column in raw_df that holds participant id's.
+(e. g. "participant_id" for the synr::synr_exampledf_wide_small)</p></td>
     </tr>
     <tr>
-      <th>symbol_col_name</th>
-      <td><p>A one-element character vector that holds the
-name of the grapheme/symbol column in raw_df.</p></td>
+      <th>symbol_col_regex</th>
+      <td><p>A one-element character vector with a regular expression
+(see above) unique to columns in the passed data frame that hold trial graphemes/symbols.</p></td>
     </tr>
     <tr>
-      <th>color_col_name</th>
-      <td><p>A one-element character vector that holds the
-name of the response color (hex codes) column in raw_df.</p></td>
+      <th>color_col_regex</th>
+      <td><p>A one-element character vector with a regular expression
+(see above) unique to columns in the passed data frame that hold response color hex codes.</p></td>
     </tr>
     <tr>
-      <th>time_col_name</th>
+      <th>time_col_regex</th>
+      <td><p>(optional) A one-element character vector with a regular expression
+(see above) unique to columns in the passed data frame that hold response times (times
+from stimulus presentation to response).</p></td>
+    </tr>
+    <tr>
+      <th>testdate_col_name</th>
       <td><p>(optional) A one-element character vector that holds the
-name of the response time (time from stimulus presentation to response) column
-in raw_df.</p></td>
+column name used for the column in raw_df that holds test dates (dates when participants
+finished the consistency test).</p></td>
     </tr>
     <tr>
       <th>color_space_spec</th>
-      <td><p>A one-element character vector specifying which color
-space to use for calculations with participant data. One of
-"XYZ", "sRGB", "Apple RGB", "Lab", and "Luv".</p></td>
+      <td><p>A one-element character vector. What color
+space is to be used for analyses of the data? The following color spaces are supported:
+"XYZ", "sRGB", "Apple RGB", "Lab", and "Luv"</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>pg</span> <span class='op'>&lt;-</span> <span class='fu'>create_participantgroup</span><span class='op'>(</span>
-  raw_df<span class='op'>=</span><span class='va'>synr_exampledf_long_small</span>,
-  n_trials_per_grapheme<span class='op'>=</span><span class='fl'>2</span>,
-  id_col_name<span class='op'>=</span><span class='st'>"participant_id"</span>,
-  symbol_col_name<span class='op'>=</span><span class='st'>"trial_symbol"</span>,
-  color_col_name<span class='op'>=</span><span class='st'>"response_color"</span>,
-  time_col_name<span class='op'>=</span><span class='st'>"response_time"</span>,
-  color_space_spec<span class='op'>=</span><span class='st'>"Luv"</span>
+    <pre class="examples"><div class='input'><span class='va'>pg</span> <span class='op'>&lt;-</span> <span class='fu'>create_participantgroup_widedata</span><span class='op'>(</span>raw_df<span class='op'>=</span><span class='va'>synr_exampledf_wide_small</span>,
+                              n_trials_per_grapheme<span class='op'>=</span><span class='fl'>2</span>,
+                              participant_col_name<span class='op'>=</span><span class='st'>"participant_id"</span>,
+                              symbol_col_regex<span class='op'>=</span><span class='st'>"symbol"</span>,
+                              color_col_regex<span class='op'>=</span><span class='st'>"colou*r"</span>,
+                              time_col_regex<span class='op'>=</span><span class='st'>"response_time"</span>,
+                              color_space_spec<span class='op'>=</span><span class='st'>"Luv"</span>
 <span class='op'>)</span>
 <span class='va'>cons_means</span> <span class='op'>&lt;-</span> <span class='va'>pg</span><span class='op'>$</span><span class='fu'>get_mean_consistency_scores</span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>cons_means</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 131.2060 101.3738 151.9597</div></pre>
+</div><div class='output co'>#&gt; [1] 105.9028 135.8346 124.1099</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

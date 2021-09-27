@@ -59,6 +59,7 @@ cvow_long <- dingemanse_voweldata %>%
 print(head(cvow_long))
 ```
 ## Roll up data into a ParticipantGroup object
+Note that this might take a couple of minutes, since the data set is quite large.
 ```{r roll_up_data}
 pg <- create_participantgroup(
   raw_df=cvow_long,
@@ -80,11 +81,13 @@ Let's produce a plot for the participant with ID "0086e9c0-418c-404c-8f3c-219de9
 ```{r example_plot}
 example_plot <- pg$participants[["0086e9c0-418c-404c-8f3c-219de93cc3dc"]]$get_plot(
   mean_line=TRUE,
-  cutoff_line=TRUE
+  cutoff_line=TRUE,
+  grapheme_size=4
 )
 # inspect the plot
 example_plot
 ```
+
 Remember that the 'grapheme' axis here is really a 'recording/vowel sounds' axis.
 
 The participant appears to have provided valid responses with a fair bit of variation. Their mean consistency score (green line) was slightly above 200, far higher than the cutoff (blue line) of 135.30 that was suggested in Rothen, Seth, Witzel & Ward (2013) for the L\*u\*v color space.
@@ -155,6 +158,6 @@ It appears that about 30% of all participants scored below the suggested cut-off
 Almost all of the 'results' included here can already be found in the article by Cuskley et al. However, this vignette has hopefully given you an idea of how synr can be used with different types of data, and what role it fulfills.
 
 ## References
-Cuskley, C.1, Dingemanse, M.1, van Leeuwen, T. & Kirby, S. 2019. Cross-modal associations and synaesthesia: Categorical perception and structure in vowel-colour mappings in a large online sample. Behaviour Research Methods, doi: 10.3758/s13428-019-01203-7
+Cuskley, C.1, Dingemanse, M.1, van Leeuwen, T. & Kirby, S. 2019. Cross-modal associations and synaesthesia: Categorical perception and structure in vowel-colour mappings in a large online sample. _Behaviour Research Methods_, doi: 10.3758/s13428-019-01203-7
 
-Rothen, N., Seth, A. K., Witzel, C., & Ward, J. (2013). Diagnosing synaesthesia with online colour pickers: maximising sensitivity and specificity. Journal of neuroscience methods, 215(1), 156-160.
+Rothen, N., Seth, A. K., Witzel, C., & Ward, J. (2013). Diagnosing synaesthesia with online colour pickers: maximising sensitivity and specificity. _Journal of neuroscience methods_, 215(1), 156-160.

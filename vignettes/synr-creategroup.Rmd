@@ -4,7 +4,7 @@ author: "Lowe Wilsson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Create a ParticipantGroup using 'long format' data.}
+  %\VignetteIndexEntry{Creating ParticipantGroup objects}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

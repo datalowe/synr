@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -94,6 +94,15 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/dingemanse-data-example.html">Using synr with real data: Coloured vowels</a>
+    </li>
+    <li>
+      <a href="../articles/quick-start.html">synr: Quick start</a>
+    </li>
+    <li>
+      <a href="../articles/synr-creategroup.html">Creating ParticipantGroup objects</a>
+    </li>
     <li>
       <a href="../articles/synr-tutorial.html">synr: Package, summarize and visualize synesthesia consistency test data</a>
     </li>
@@ -190,9 +199,8 @@ calculating each participant's mean response time.</p></dd>
 
 <dt><code>get_numbers_all_colored_graphemes(symbol_filter = NULL)</code></dt><dd><p>Returns a vector with numbers representing how many
 graphemes with all-valid (non-na) response colors that each
-participant has.  If a character vector is passed to symbol_filter,
-only data from graphemes with symbols in the passed vector are
-used when calculating the mean response time.</p></dd>
+participant has.  If a character vector is passed to symbol_filter, 
+only data connected to graphemes with symbols in the passed vector are used.</p></dd>
 
 <dt><code>get_prop_color_values(
   color_label = NULL,
