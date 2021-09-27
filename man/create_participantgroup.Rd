@@ -2,76 +2,59 @@
 % Please edit documentation in R/create_participantgroup.R
 \name{create_participantgroup}
 \alias{create_participantgroup}
-\title{Create a ParticipantGroup instance}
+\title{Create a ParticipantGroup instance using long-format data}
 \usage{
 create_participantgroup(
   raw_df,
   n_trials_per_grapheme = 3,
-  participant_col_name,
-  symbol_col_regex,
-  color_col_regex = "colou*r",
-  time_col_regex = NULL,
-  testdate_col_name = NULL,
+  id_col_name,
+  symbol_col_name,
+  color_col_name,
+  time_col_name = NULL,
   color_space_spec = "Luv"
 )
 }
 \arguments{
-\item{raw_df}{A data frame of raw consistency test data.}
+\item{raw_df}{A data frame of 'long format' raw consistency test data.}
 
 \item{n_trials_per_grapheme}{A one-element numeric vector holding the number
 of trials per grapheme that was used in the consistency test the data are from.}
 
-\item{participant_col_name}{A one-element character vector that holds the
-column name used for the column in raw_df that holds participant id's.
-(e. g. "participant_id" for the synr::synr_example_small)}
+\item{id_col_name}{A one-element character vector that holds the
+name of the participant id column in raw_df.}
 
-\item{symbol_col_regex}{A one-element character vector with a regular expression
-(see above) unique to columns in the passed data frame that hold trial graphemes/symbols.}
+\item{symbol_col_name}{A one-element character vector that holds the
+name of the grapheme/symbol column in raw_df.}
 
-\item{color_col_regex}{A one-element character vector with a regular expression
-(see above) unique to columns in the passed data frame that hold response color hex codes.}
+\item{color_col_name}{A one-element character vector that holds the
+name of the response color (hex codes) column in raw_df.}
 
-\item{time_col_regex}{(optional) A one-element character vector with a regular expression
-(see above) unique to columns in the passed data frame that hold response times (times
-from stimulus presentation to response).}
+\item{time_col_name}{(optional) A one-element character vector that holds the
+name of the response time (time from stimulus presentation to response) column
+in raw_df.}
 
-\item{testdate_col_name}{(optional) A one-element character vector that holds the
-column name used for the column in raw_df that holds test dates (dates when participants
-finished the consistency test).}
-
-\item{color_space_spec}{A one-element character vector. What color
-space is to be used for analyses of the data? The following color spaces are supported:
-"XYZ", "sRGB", "Apple RGB", "Lab", and "Luv"}
+\item{color_space_spec}{A one-element character vector specifying which color
+space to use for calculations with participant data. One of
+"XYZ", "sRGB", "Apple RGB", "Lab", and "Luv".}
 }
 \description{
-Takes in a data frame of raw consistency test data and returns a
+Takes in a data frame of raw
+\href{https://stefvanbuuren.name/fimd/sec-longandwide.html}{'long format'}
+consistency test data and returns a
 ParticipantGroup instance, to which all the relevant data are linked. See the
-example data frame synr_example_small and its documentation (help(synr_example_small))
-for information on the format that this function expects data to be in.
-
-Participant id and (optional) test date column names are specified with the
-exact column names used in the data frame passed to the function. Symbol
-(i. e. grapheme), response color and response time (optional) columns are
-specified using regular expressions. You can
-\href{https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions}{read about regular expressions using R here}
-if you want to, but basically what you want to do is this:
-say your columns with response colors are named
-"chosen_color_001", "chosen_color_002" and so on. You then simply set
-color_col_regex="chosen_color" when calling this function. The important thing
-is that you specify a part of the column names that is unique for the type of
-column you want to indicate. So if your symbol/grapheme columns are named
-"grapheme_1", "grapheme_2" ... and your participant id column is named
-"graphparticipant_1" ..., then symbol_col_regex="graph" wouldn't work,
-but symbol_col_regex="grapheme_" or even symbol_col_regex="graphe" would.
+example data frame `synr_exampledf_long_small` and its documentation
+(`help(synr_exampledf_long_small)`) for more information on the format
+that this function expects data to be in.
 }
 \examples{
-pg <- create_participantgroup(raw_df=synr_example_small,
-                              n_trials_per_grapheme=2,
-                              participant_col_name="participant_id",
-                              symbol_col_regex="symbol",
-                              color_col_regex="colou*r",
-                              time_col_regex="response_time",
-                              color_space_spec="Luv"
+pg <- create_participantgroup(
+  raw_df=synr_exampledf_long_small,
+  n_trials_per_grapheme=2,
+  id_col_name="participant_id",
+  symbol_col_name="trial_symbol",
+  color_col_name="response_color",
+  time_col_name="response_time",
+  color_space_spec="Luv"
 )
 cons_means <- pg$get_mean_consistency_scores()
 print(cons_means)

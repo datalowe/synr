@@ -40,8 +40,3 @@ test_that("get_ids() returns correct ids for two participants", {
             expect_equal(out_ids[1], '1')
             expect_equal(out_ids[2], '2')
           })
-
-
-
-
-

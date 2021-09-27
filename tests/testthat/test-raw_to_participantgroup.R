@@ -47,10 +47,10 @@ test_that("a single row of data (split into symbol/color/time vectors)
             expect_equal(p$get_symbols()[1], "A")
           })
 
-test_that("the synr_example_small is correctly converted into a participantgroup when using
-          create_participantgroup() and the resulting group produces correct mean consistency
+test_that("synr_exampledf_wide_small is correctly converted into a participantgroup when using
+          create_participantgroup_widedata() and the resulting group produces correct mean consistency
           scores", {
-            pg <- create_participantgroup(raw_df=synr_example_small,
+            pg <- create_participantgroup_widedata(raw_df=synr_exampledf_wide_small,
                                           n_trials_per_grapheme=2,
                                           participant_col_name="participant_id",
                                           symbol_col_regex="symbol",
@@ -62,3 +62,20 @@ test_that("the synr_example_small is correctly converted into a participantgroup
             expect_equal(length(cons_means), 3)
             expect_gt(cons_means[1], 100)
           })
+
+test_that("synr_exampledf_long_small is converted into a participantgroup by
+          create_participantgroup() and the resulting group
+          can produce mean consistency scores", {
+  pg <- create_participantgroup(
+    raw_df=synr_exampledf_long_small,
+    n_trials_per_grapheme=2,
+    id_col_name="participant_id",
+    symbol_col_name="trial_symbol",
+    color_col_name="response_color",
+    time_col_name="response_time",
+    color_space_spec="Luv"
+  )
+  cons_means <- pg$get_mean_consistency_scores()
+  expect_equal(length(cons_means), 3)
+  expect_gt(cons_means[1], 100)
+})

@@ -23,96 +23,67 @@ knitr::opts_chunk$set(
 library(synr)
 ```
 
-# Introduction
-## Synesthesia and consistency testing
+## Introduction
+### Synesthesia and consistency testing
 Within [synesthesia](https://en.wikipedia.org/wiki/Synesthesia) research, specifically research about [grapheme-color synesthesia](https://en.wikipedia.org/wiki/Grapheme%E2%80%93color_synesthesia), **[consistency tests](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4118597/#S4title)** are often used. Basically, a participant is shown a set of **graphemes** (e. g. letters, digits, months, or other words) and has to respond by indicating what color, if any, they associate with the grapheme. Each grapheme is repeated a certain number of times, usually three times, throughout the test. If the participant is unusually consistent in the colors they respond with, e. g. choosing a red color every time an 'A' is shown and always choosing a green color for 'H', this indicates that the participant might have synesthetic grapheme-color associations. In reality of course, there might be other reasons for consistent response patterns, such as if the participant employed mnemonic strategies. It may therefore be appropriate to combine consistency testing with other measures for synesthesia classification. Still, consistency testing is widely considered to be an important tool for synesthesia research.
 
 In consistency testing, participants' levels of consistency are estimated by using a score based on response colors' color space distances. This has been called by different names, such as ['color variation score'](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4118597/#S4title). Within the synr package, the term **'consistency score'** is used to refer to this score.
 
-## synr's purpose
+### synr's purpose
 The aim of this package is to facilitate analysis of consistency test data by providing functionality for rolling all the consistency test data up into one specialized R object. This object, with its linked methods, constitutes an effective interface for:
 
 * Quick access/lookup of individual participants' data.
 * Calculation of consistency scores.
   + Since different researchers have used different [color spaces](https://en.wikipedia.org/wiki/Color_space) to calculate consistency scores, methods include options for specifying some (but not all) different color spaces. 
   + Similarly, different algorithms (e. g. [manhattan distance](https://en.wikipedia.org/wiki/Taxicab_geometry) or [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance) have been utilized to calculate color space distances. synr allows for choosing between some options here also, through specifications in method calls.
-  + Scores can be calculated for individual participants, or a data frame with all participants' scores can be produced.
 * Summation of data on what proportion of participant responses fall within a certain color range and for how many graphemes the participant has given valid responses.
   + This helps identify participants who might have too few responses or have used too few colors, e. g. only black and white, for their data to be reliable for estimating the degree of synesthetic associations.
 * Filtering the data in order to calculate the above statistics only for a subset of graphemes.
   + This helps when trying to identify e. g. participants who only have synesthesia for digits, but not other graphemes.
-* Visualization of individual participants' data with a type of [ggplot2](https://ggplot2.tidyverse.org/) plots, tailored for this purpose.
-  + These plots are useful for quick visual inspection of participants' responses. This might aid in identifying unusual response patterns that need to be inspected further, or that indicate that a participant has erroneously been classified as (not) having synesthetic associations.
+* Simple plotting of individual participants' data.
+  + This is useful for quick visual inspection of participant responses. This might aid in double checking procedures for identifying synesthetes or classifying participant data as valid/invalid.
 
-# Preparations
-## Formatting the raw data
-In order for synr to work, your consistency test data need to be in a data frame that has a specific format, where:
+## Getting started
+### Rolling up the data
+When using synr, your main interface to the data is the ParticipantGroup class. For information on how to convert raw consistency test data into a ParticipantGroup object, please see the separate tutorial [Creating ParticipantGroup objects](synr-creategroup-with-long-format.html). Here, it's assumed that the raw data are in 'long format' and are thus loaded like this:
 
-* **Each row** has data pertaining to **one participant**.
-* One column has **participant ID's**.
-  + The ID's can consist of any kind of symbols that R can handle.
-* For **each experiment trial**, there is
-  + one column that holds the [**RGB color hex code**](https://en.wikipedia.org/wiki/Web_colors#Hex_triplet) for the response that the participant gave.
-    - The hex codes must be in the format "#012345" or "012345".
-  + one column that holds the **symbol/grapheme** used in the trial.
-
-A simple example helps:
-`r knitr::kable(synr::synr_example_small[, 1:7])`
-Each row in this data frame represents one participant. The first column holds participant ID's. The second to fourth columns hold data, for each participant, on the first trial. So for instance, the consistency test for the participant with ID 1 started with a trial where they were shown the grapheme 'A', and they responded with a grapheme that has the hex code "23F0BE" (a green-bluish color - this could also be represented by "#23F0BE"). Additionally, there are data on participants' response times (time from presentation of grapheme until response) and synr *can* use these data as well, but that's optional.
-
-Note that if you have any **missing data**, e. g. if the response color hex codes for some participants are missing, those must be coded in the data frame as R **NA values**. If you have used other values to represent missingness, you must first replace those values with NA, e. g. by using the  [naniar](https://cran.r-project.org/web/packages/naniar/vignettes/replace-with-na.html) package.
-
-# Getting started
-## Rolling up the data
-When using synr, your main interface to the data will be the ParticipantGroup class. So once your data are in the correct format, you want to form a ParticipantGroup instance. When doing this, you must specify:
-
-* The participant column's name
-* The number of trials used per grapheme (defaults to 3)
-* [Regular expression](https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions) patterns that are unique for names of
-  + trial columns that hold symbols/graphemes displayed to the participants.
-  + trial columns that hold participants' response color hex codes.
-* What color space you want to convert colors to use later, when calculating consistency scores.
-
-Again, an example (with only 2 trials/grapheme) helps:
-``` {r form_participantgroup}
-library(synr)
-pg <- create_participantgroup(synr_example_small,
-                              n_trials_per_grapheme = 2,
-                              participant_col_name = 'participant_id',
-                              symbol_col_regex='symb',
-                              color_col_regex = 'col',
-                              color_space_spec = "Luv")
+```{r roll_up_data}
+pg <- create_participantgroup(
+  raw_df=synr_exampledf_long_small,
+  n_trials_per_grapheme=2,
+  id_col_name="participant_id",
+  symbol_col_name="trial_symbol",
+  color_col_name="response_color",
+  time_col_name="response_time",
+  color_space_spec="Luv"
+)
 ```
-Note that
 
-* the participant column name must be specified exactly and in full, whether your column be called 'ID', 'PARTICIPANT', "pid" or something else. 
-* the regular expression patterns, like 'symb' and 'col' must **only** occur in the corresponding columns. In the example data frame, only names of trial columns with color data have the pattern 'col' in them. 
-  + If for instance your participant ID column was called 'p_id_column", that column name would also fit the 'col' pattern, and hence `color_col_regex = 'col'` wouldn't work.
-  + You can use as long or short regular expressions as you need. For instance, in this example we could just as well have used `color_col_regex = 'response_color_'`. If your color column names instead followed the pattern 'grapheme_<number>', you could use the regular expression 'graph', 'grapheme' or 'grapheme_', as long as it's unique to the color columns.
+Once you have a ParticipantGroup object (simply called 'participantgroup' from here on), you can start using methods with it and accessing its attributes. synr implements this with [reference classes](http://adv-r.had.co.nz/OO-essentials.html#rc), which is an advanced topic. The idea however is that you can learn through this vignette and synr's help documentation how to use the tools without having to worry about how they work under the hood. 
 
-Once you have your ParticipantGroup instance (simply called 'participantgroup' from here on), you can start using methods with it and accessing its attributes. synr implements all this using [reference classes](http://adv-r.had.co.nz/OO-essentials.html#rc), which is an advanced topic. The idea however is that you can learn through this vignette and synr's help documentation how to use the tools without having to worry about how they work under the hood. 
-
-## Accessing participantgroup data
-You can think of the participantgroup as having a nested structure, where the **participantgroup** has a list of **participants**, and each participant has a list of **graphemes**. By using **$** as a separator, you can specify a participant and/or a grapheme to drill down into this nested structure and access data or methods you need.
+### Accessing participantgroup data
+The participantgroup has a nested structure, where the **participantgroup** has a list of **participants**, and each participant has a list of **graphemes**. By using `$` as a separator, you can specify a participant and/or a grapheme to drill down into this nested structure and access data or methods you need.
 
 Let's start by accessing participants' data. Say you want to find what colors the participant with ID '3' used for the symbol 'A'. You can do this by using the syntax `<participantgroup>$participants[['<ID>']]$graphemes[[<symbol>]]`.
 ``` {r access_participant_data}
 fetched_grapheme_data <- pg$participants[['3']]$graphemes[['A']]
 print(fetched_grapheme_data)
 ```
-The response colors are represented by a nx3 matrix, where n is the number of trials/grapheme (2 in this example). Each row corresponds to one response. The three columns correspond to the dimensions of the used color space, in this case 'L', 'u' and 'v' (because of the specification `color_space_spec = "Luv"` when creating the participantgroup).
+The response colors are represented by an nx3 matrix, where n is the number of trials per grapheme (2 in this example). Each row corresponds to one response. The three columns correspond to the dimensions of the used color space, in this case 'L', 'u' and 'v' (because of the specification `color_space_spec = "Luv"` when creating the participantgroup).
 
-It's useful to know that you can access participants by either their row number in the raw data frame, or by their participant ID. In the example, these happen to be the same except that one is of type numeric and the other of type character (the participant on row number 3 of the raw data frame has the ID '3'), so both `pg$participants[['3']]$graphemes[['A']]` and `pg$participants[[3]]$graphemes[['A']]` work. If instead the third participant was called 'jane', you could use either `pg$participants[['jane']]$graphemes[['A']]` or `pg$participants[[3]]$graphemes[['A']]`.
+You can access participants by either their row number in the raw data frame, or by their participant ID. In the example, these happen to be the same except that one is of type numeric and the other of type character (the participant on row number 3 of the raw data frame has the ID '3'), so both `pg$participants[['3']]$graphemes[['A']]` and `pg$participants[[3]]$graphemes[['A']]` work. If instead the third participant was called 'jane', you could use either `pg$participants[['jane']]$graphemes[['A']]` or `pg$participants[[3]]$graphemes[['A']]`.
 
-# Summarizing data
-To use methods with synr objects, like the participantgroup or an individual participant, you use the syntax `<object>$<method_name>()`. The examples below illustrate this. If you are confused by how individual participants or graphemes are accessed here, please take a look at the section 'Accessing participantgroup data' under 'Getting started'.
+## Summarizing data
+To use methods with synr objects, like the participantgroup or an individual participant, you use the syntax `<object>$<method_name>()`. The examples below illustrate this.
 
-## Consistency scores
-### grapheme level: `get_consistency_score`
+### Consistency scores
+#### grapheme level: `get_consistency_score`
 You can calculate the consistency score of a single grapheme by:
+
 1. Specifying what participant you want from the participantgroup.
 2. Specifying what grapheme you want from the participant's list of graphemes.
 3. Using the grapheme's method `get_consistency_score`.
+
 ``` {r individual_grapheme_cscore}
 # fetching the consistency score of the second participant's grapheme 'A'
 cscore_p2_A <- pg$participants[[2]]$graphemes[['A']]$get_consistency_score()
@@ -120,10 +91,12 @@ print(cscore_p2_A)
 ```
 <br>
 
-### participant level: `get_mean_consistency_score`
+#### participant level: `get_mean_consistency_score`
 You can calculate an individual participant's mean consistency score by:
+
 1. Specifying what participant you want from the participantgroup.
 2. Calling the participant's method `get_mean_consistency_score`:
+
 ``` {r individual_participant_mean_cscore}
 mean_cscore_p2 <- pg$participants[[2]]$get_mean_consistency_score()
 print(mean_cscore_p2)
@@ -132,7 +105,7 @@ print(mean_cscore_p1)
 ```
 <br>
 
-### participant level: `get_consistency_scores`
+#### participant level: `get_consistency_scores`
 Instead of doing it for just one grapheme, you can calculate the grapheme-level consistency score for all graphemes of a participant using the method `get_consistency_scores`, which produces a list:
 ``` {r individual_participant_cscores}
 cscores_p3 <- pg$participants[[3]]$get_consistency_scores()
@@ -145,7 +118,7 @@ print(cscores_p3_df)
 ```
 <br>
 
-### participantgroup level: `get_mean_consistency_scores`
+#### participantgroup level: `get_mean_consistency_scores`
 What many will want to do is simply calculate the mean consistency scores for all participants. The participantgroup method `get_mean_consistency_scores` does just that, producing a numeric vector with the consistency scores:
 ``` {r mean_cscores}
 mean_cscores <- pg$get_mean_consistency_scores()
@@ -161,33 +134,37 @@ mean_scores_df <- data.frame(participant_id=p_ids, mean_consistency_score=mean_c
 print(mean_scores_df)
 ```
 
-## Number of valid responses
-It's often helpful to examine how many valid color responses participants have provided during the experiment. It's common for consistency tests to provide some kind 'no color' response. This is usually provided mainly as a tool for people who **do** have synesthetic associations to use for non-inducing stimuli, but might be 'abused' by people with no synesthetic associations. A mean consistency score is virtually meaningless if a participant has only picked a color for say two graphemes, as it would be very easy for that person to memorize what color to use for each grapheme. For these reasons, synr provides functionality for examining how many of a participant's graphemes have only valid color responses. 
+### Number of valid responses
+It's often helpful to examine how many valid color responses participants have provided during the experiment. It's common for consistency tests to provide some kind of 'no color' response. This is usually provided mainly as a tool for people who **do** have synesthetic associations to use for non-inducing stimuli, but might be 'abused' by people with no synesthetic associations. A mean consistency score is virtually meaningless if a participant has only picked a color for say two graphemes, as it would be very easy for that person to memorize what color to use for each grapheme. For these reasons, synr provides functionality for examining how many of a participant's graphemes have only valid color responses. 
 
-Note that for synr to work, 'no color' responses must be coded as NA values. Please see the section "Formatting the data" under "Preparations" for more information about this.
+Note that for synr to work, 'no color' responses must be coded as `NA` values. For more information about this, please see the vignette [Creating ParticipantGroup objects](synr-creategroup-with-long-format.html).
 
-### grapheme level: `get_num_non_na_colors`
+#### grapheme level: `get_num_non_na_colors`
 You can calculate the number of non-missing response color values for a single grapheme by:
+
 1. Specifying what participant you want from the participantgroup.
 2. Specifying what grapheme you want from the participant's list of graphemes.
 3. Using the grapheme's method `get_num_non_na_colors`.
+
 ``` {r grapheme_numvalid}
 p1_A_numvalid <- pg$participants[[1]]$graphemes[['7']]$get_num_non_na_colors()
 print(p1_A_numvalid)
 ```
-So the first participant gave two valid (non-NA) color responses for the grapheme '7', and they were registered correctly.
+So, the first participant gave two valid (non-NA) color responses for the grapheme '7', and they were registered correctly.
 
-### participant level: `get_number_all_colored_graphemes`
+#### participant level: `get_number_all_colored_graphemes`
 For a participant, you can get the number of graphemes that **only** have non-NA color responses. This would mean the number of graphemes with 3 non-NA color responses, if there are 3 trials/grapheme. You calculate the number of graphemes with only non-NA responses by:
+
 1. Specifying what participant you want from the participantgroup.
 2. Calling the participant's method `get_number_all_colored_graphemes`:
+
 ``` {r participant_numvalid}
 num_onlynonna_p2 <- pg$participants[[2]]$get_number_all_colored_graphemes()
 print(num_onlynonna_p2)
 ```
-So the second participant gave only valid (non-NA) color responses for 3 graphemes.
+So, the second participant gave only valid (non-NA) color responses for 3 graphemes.
 
-### participantgroup level: `get_numbers_all_colored_graphemess`
+#### participantgroup level: `get_numbers_all_colored_graphemess`
 The participantgroup method `get_numbers_all_colored_graphemes` produces a numeric vector that holds each participant's number of valid color responses:
 ``` {r pgroup_numvalid}
 num_onlynonna <- pg$get_numbers_all_colored_graphemes()
@@ -206,10 +183,10 @@ ctest_summary_df <- data.frame(participant_id=p_ids,
 print(ctest_summary_df)
 ```
 
-## Number of responses in specified color range
+### Number of responses in specified color range
 Even if a participant responds with a color on each consistency test trial and the data are correctly saved, they might have used only one or two limited color ranges for all their responses. It's a lot easier to give consistent responses if all you use is one red color and one green color. For this reason, it's helpful to be able to check what proportion of participant responses fall within a certain color range. This doesn't solve the problem altogether, but at least you can find obviously suspect data. synr provides functionality for this.
 
-### grapheme level: `get_prop_color`
+#### grapheme level: `get_prop_color`
 First you need to decide what color range you are interested in knowing how many response colors fall into. For this grapheme-level method, and for the participant/participantgroup-level methods below, you have two choices for specifying the color range. The first is to use `color_label=<label>`, with supported labels being <span style='color: blue;'>'blue'</span>, <span style='color: red;'>'red'</span>, <span style='color: green;'>'green'</span>, <span style='color: white; background-color:black;'>'white'</span>, <span style='color: black;'>'black'</span> and <span style='color: lightgrey;'>'hazy'</span> ('greyish' colors). The other option is to specify value ranges by using two-element numeric vectors, with rgb (red, green, blue) values on a 0-1 scale:  ` r = <vector1>, g = <vector2>, b = <vector3>`. For example, ` r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3)` would code for a dark color range.
 
 Let's look at a couple of examples:
@@ -229,7 +206,7 @@ print(propturquoise_p1_A)
 The proportion of participant 1's response colors for the grapheme 'A' that are low on red, but high on green and blue color dimensions, is 0.5 (50%).
 
 
-### participant level: `get_prop_color`
+#### participant level: `get_prop_color`
 This works essentially the same as the grapheme-level method:
 ``` {r participant_propcol_label}
 propgreen_p1 <- pg$participants[[1]]$get_prop_color(color_label = 'black')
@@ -245,7 +222,7 @@ print(propblue_p2)
 ```
 The proportion of participant 2's response colors that are high in blue, but low in red and green, is ~=0.167 (16.7%).
 
-### participant level: `get_prop_color_values`
+#### participant level: `get_prop_color_values`
 This also works essentially the same as the participant/grapheme-level method. The difference is that it returns a numeric vector with the values you would get if you called the participant-level `get_prop_color` for each participant:
 ``` {r pgroup_propcol_label}
 propred_vals <- pg$get_prop_color_values(color_label = 'red')
@@ -281,14 +258,14 @@ ctest_summary_df <- data.frame(participant_id=p_ids,
 print(ctest_summary_df)
 ```
 
-# Filtering data
+## Filtering data
 Participants who have synesthetic associations might only have those for some of the graphemes used in a test. For instance, a participant might only have synesthetic associations for weekdays, but not digits or letters, even though all are included in the test. synr helps you apply filters to calculate summary statistics for only a subset of graphemes. Filters are applied by passing a character vector of symbols/graphemes to the `symbol_filter=` argument, when using participant-level or participantgroup-level methods for summary statistics.
 
 For purposes of illustrating filtering, the larger example data frame `synr_example_full` is used (if you want, you can view it by using `View(synr_example_full)` once you've run `library(synr)`).
 
-## participant level filtering
+### participant level filtering
 ``` {r participant_filter_weekdays}
-pg_full <- create_participantgroup(synr_example_full,
+pg_full <- create_participantgroup_widedata(synr_example_full,
                               n_trials_per_grapheme = 3,
                               participant_col_name = 'participant_id',
                               symbol_col_regex='symbol',
@@ -302,7 +279,7 @@ print(propred_digits_pH)
 ```
 Looking at response colors for the participant with ID 'H' (remember, we can specify participants using their row number in the raw data frame, or their participant ID), ~=6.7% of the response colors for trials with digits as graphemes were red.
 
-## participantgroup level filtering
+### participantgroup level filtering
 ``` {r pgroup_filter_weekdays}
 cscores_weekdays <- pg_full$get_mean_consistency_scores(symbol_filter=c('Monday', 
                                                                         'Tuesday',
@@ -315,7 +292,7 @@ print(cscores_weekdays)
 ```
 The produced vector holds each participant's (there are 10 participants in this case) mean consistency score, only taking trials that had a weekday grapheme into account.
 
-## Building filter vectors
+### Building filter vectors
 As you can see above, specifying the symbol_filter character vector might take some typing. To simplify things, synr includes the function `build_grapheme_vector`, with support for digits/letters/weekdays in English and Swedish. Say you want to filter by uppercase digits and letters (ignoring e. g. weekdays if those were also in your consistency test):
 ``` {r build_grapheme_vector_demo_digits_letters}
 AZ_09_filter <- build_grapheme_vector(language='english',
@@ -334,13 +311,13 @@ print(weekdays_filter)
 ```
 
 
-# Handling summary statistics efficiently
-## Joining data frames with dplyr
+## Handling summary statistics efficiently
+### Joining data frames with dplyr
 As you use synr to calculate more statistics you might find that simply cramming them all into  one huge data frame becomes unwieldy. It is recommended that you instead separate different kinds of summary statistics into different data frames. You can then, when you need to combine data from the different data frames for analysis, intuitively join the data frames by making use of the [dplyr](https://www.rdocumentation.org/packages/dplyr/versions/0.7.8) package, specifically its function [inner_join](https://dplyr.tidyverse.org/reference/join.html). Here's a simple example of how you can use inner_join:
 ```
 install.packages('dplyr') # if you haven't installed dplyr yet
 library(dplyr)
-pg <- create_participantgroup(synr_example_small,
+pg <- create_participantgroup_widedata(synr_exampledf_wide_small,
                               n_trials_per_grapheme = 2,
                               participant_col_name = 'participant_id',
                               symbol_col_regex='symb',
@@ -366,14 +343,14 @@ cons_propcol_df <- inner_join(cons_df, propcol_df, by='participant_id')
 ```
 The code above would join the two separate data frames into one. They key is to make sure each separate data frame includes the participant ID's, and then set the `by=` argument to `'participant_id'` (or whatever you call your data frames' participant ID columns). This example is a bit contrived, but you will probably want to adopt this strategy as you calculate more statistics, using different filters. Note that you can also use `inner_join` to combine the summary statistics with other data you might have about your participants. Just make sure that the other data frames have a participant ID column with the same name as the column name used in your summary statistics data frames.
 
-# Visualizing participant data
+## Visualizing participant data
 It can often be helpful to get an overview of participants' response colors and each grapheme's consistency score. synr uses [ggplot2](https://ggplot2.tidyverse.org/) to achieve this:
 
-## Producing plots for display in RStudio
-### participant level plotting: `get_plot`
+### Producing plots for display in RStudio
+#### participant level plotting: `get_plot`
 For details on how the `get_plot` method works, please have a look at the documentation for the Participant class, by using `help(Participant)`. There, you can scroll down to the description of `get_plot`, under "Methods".
 ``` {r get_plot_demo}
-pg_full <- create_participantgroup(synr_example_full,
+pg_full <- create_participantgroup_widedata(synr_example_full,
                               n_trials_per_grapheme = 3,
                               participant_col_name = 'participant_id',
                               symbol_col_regex='symbol',
@@ -385,8 +362,8 @@ p6_plot
 ```
 At the bottom of the plot, you see the graphemes used in the test, colored in the participant's response colors. The bars represent the consistency score for each grapheme. (note that if you produce a plot for a participant who has no valid response colors at all, or only used black/white colors, the resulting plot will unfortunately look odd. this is a known bug.)
 
-## Producing plots and saving them on your computer
-### participant level plot saving: `save_plot`
+### Producing plots and saving them on your computer
+#### participant level plot saving: `save_plot`
 For details on how the `save_plot` method works, have a look again at `help(Participant)`. Scroll down to the description of `save_plot`, under "Methods". What is most essential is that you specify the `path=` argument, which is where you want the plot to be saved (including filename at the end), and the `file_format=` argument:
 ```
 pg_full$participants[[6]]$save_plot(path='path/to/save/folder/filename.png',
@@ -394,8 +371,8 @@ pg_full$participants[[6]]$save_plot(path='path/to/save/folder/filename.png',
                                     grapheme_size=2.2, 
                                     grapheme_angle=30)
 ```
-### participantgroup level plot saving: `save_plots`
-For details on how the `save_plots` method works, have go to `help(ParticipantGroup)`. Scroll down to the description of `save_plots`, under "Methods". What is most essential is again that you specify the `path=` argument, which is the directory you want the plots to be saved to, and the `file_format=` argument:
+#### participantgroup level plot saving: `save_plots`
+For details on how the `save_plots` method works, run `help(ParticipantGroup)`. Scroll down to the description of `save_plots`, under "Methods". What is most essential is again that you specify the `path=` argument, which is the directory you want the plots to be saved to, and the `file_format=` argument:
 ```
 pg_full$save_plots(path='path/to/save/folder',
                    file_format='png',
@@ -403,5 +380,5 @@ pg_full$save_plots(path='path/to/save/folder',
                    grapheme_angle=30)
 ```
 
-# Feedback
+## Feedback
 If you have any suggestions on improvements you can contact me as the author and maintainer of the package at datalowe@posteo.de, or you can directly commit code improvements to the github repo at https://github.com/datalowe/synr.

@@ -1,9 +1,10 @@
-#' Raw consistency test data example (small)
+#' Raw consistency test data example, wide format (small)
 #'
 #' A data frame with an example of raw consistency test data that are
-#' compatible with the synr package, with data for three participants
-#' from a test that only used three graphemes ("A", "D", 7) and two responses
-#' per grapheme, to show the expected data frame format. More graphemes and/or
+#' compatible with the synr package's `create_participantgroup_widedata_widedata` function,
+#' with data for three participants from a test that included three
+#' graphemes ("A", "D", 7) and two responses
+#' per grapheme. More graphemes and/or
 #' responses per grapheme can be handled by the package (though participant
 #' plots do not function correctly if there are more than three responses
 #' per grapheme)
@@ -36,9 +37,28 @@
 #'   \item{response_time_6}{(optional) Column with time from
 #'   presentation to response, for sixth response}
 #' }
-"synr_example_small"
+"synr_exampledf_wide_small"
 
-
+#' Raw consistency test data example, long format (small)
+#'
+#' A data frame with an example of raw consistency test data that are
+#' compatible with the synr package's `create_participantgroup_widedata` function,
+#' with data for three participants from a test that included three
+#' graphemes ("A", "D", 7) and two responses
+#' per grapheme. More graphemes and/or
+#' responses per grapheme can be handled by the package (though participant
+#' plots do not function correctly if there are more than three responses
+#' per grapheme). Note that response times are optional. If you don't have
+#' them, you can still use synr - see `help(create_participantgroup_widedata)`.
+#'
+#' @format A data frame with 18 rows and 4 columns:
+#' \describe{
+#'   \item{participant_id}{Participant ID}
+#'   \item{trial_symbol}{Column of trial symbols/graphemes}
+#'   \item{response_color}{Column of trial response colors}
+#'   \item{response_time}{Column of trial response times}
+#' }
+"synr_exampledf_long_small"
 
 #' Raw consistency test data example (full)
 #'
