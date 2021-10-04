@@ -11,7 +11,8 @@ Depends: R (>= 3.6.0)
 Imports: 
   methods (>= 3.6),
   data.table (>= 1.12),
-  ggplot2 (>= 3.3.0)
+  ggplot2 (>= 3.3.0),
+  dbscan (>= 1.1)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

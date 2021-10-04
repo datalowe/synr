@@ -41,53 +41,53 @@ and add each one using the add_grapheme() method.}
   symbol_filter = NULL,
   method = "euclidean"
 )}}{Returns a list of grapheme symbols with associated consistency scores.
-                           If na.rm=TRUE, for each grapheme a consistency score calculation is
-                           forced (except if ALL response colors associated with the grapheme
-                           are NA). That probably isn't what you want, because it leads to things
-                           like a perfect consistency score if all except one response color are
-                           NA. Defaults to na.rm=FALSE.
+      If na.rm = TRUE, for each grapheme a consistency score calculation is
+      forced (except if ALL response colors associated with the grapheme
+      are NA). That probably isn't what you want, because it leads to things
+      like a perfect consistency score if all except one response color are
+      NA. Defaults to na.rm = FALSE.
 
-                           If a character vector is passed to
-                           symbol_filter, only consistency scores for graphemes with symbols
-                           in the passed vector are returned.
+      If a character vector is passed to
+      symbol_filter, only consistency scores for graphemes with symbols
+      in the passed vector are returned.
 
-                           Use the method argument to specify what kind of color space
-                           distances should be used when calculating consistency score
-                           (usually 'manhattan' or 'euclidean' - see documentation for
-                           the base R dist function for all options)}
+      Use the method argument to specify what kind of color space
+      distances should be used when calculating consistency score
+      (usually 'manhattan' or 'euclidean' - see documentation for
+      the base R dist function for all options)}
 
 \item{\code{get_mean_consistency_score(
   na.rm = FALSE,
   symbol_filter = NULL,
   method = "euclidean"
 )}}{Returns the mean consistency score with respect to
-                           Grapheme instances associated with the participant.
+      Grapheme instances associated with the participant.
 
-                           If na.rm=FALSE, calculates the mean consistency score if
-                           all of the participants' graphemes only have response
-                           colors that are non-NA, otherwise returns NA.
-                           If na.rm=TRUE, returns the mean consistency score for
-                           all of the participant's graphemes that only have
-                           non-NA response colors, while ignoring graphemes
-                           that have at least one NA response color value. Note that
-                           NA is returned in either case, if ALL of the participants'
-                           graphemes have at least one NA response color value.
+      If na.rm = FALSE, calculates the mean consistency score if
+      all of the participants' graphemes only have response
+      colors that are non-NA, otherwise returns NA.
+      If na.rm = TRUE, returns the mean consistency score for
+      all of the participant's graphemes that only have
+      non-NA response colors, while ignoring graphemes
+      that have at least one NA response color value. Note that
+      NA is returned in either case, if ALL of the participants'
+      graphemes have at least one NA response color value.
 
-                           If a character vector is passed to
-                           symbol_filter, only data from graphemes with symbols
-                           in the passed vector are used when calculating the
-                           mean score.
+      If a character vector is passed to
+      symbol_filter, only data from graphemes with symbols
+      in the passed vector are used when calculating the
+      mean score.
 
-                           Use the method argument to specify what kind of color space
-                           distances should be used when calculating consistency score
-                           (usually 'manhattan' or 'euclidean' - see documentation for
-                           the base R dist function for all options)}
+      Use the method argument to specify what kind of color space
+      distances should be used when calculating consistency score
+      (usually 'manhattan' or 'euclidean' - see documentation for
+      the base R dist function for all options)}
 
 \item{\code{get_mean_response_time(na.rm = FALSE, symbol_filter = NULL)}}{Returns the mean response time, with respect to all
 Grapheme instances associated with the participant.
 Weights response times based on number of valid responses
-that each grapheme has. If na.rm=TRUE, returns mean response
-time even if there are missing response times. If na.rm=FALSE,
+that each grapheme has. If na.rm = TRUE, returns mean response
+time even if there are missing response times. If na.rm = FALSE,
 returns mean response time if there is at least one response time
 value for at least one of the participants' graphemes. If a
 character vector is passed to symbol_filter, only data from
@@ -108,46 +108,49 @@ calculating the mean response time.}
   grapheme_spacing = 0.25,
   symbol_filter = NULL
 )}}{Returns a ggplot2 plot that describes this participant's
-                           grapheme color responses and per-grapheme consistency scores.
+      grapheme color responses and per-grapheme consistency scores.
 
-                           If cutoff_line=TRUE, the plot will include a blue line that
-                           indicates the value 135.30, which is the synesthesia cut-off score recommended
-                           by Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
-                           If mean_line=TRUE, the plot will include a green line that indicates
-                           the participant's mean consistency score for graphemes with all-valid
-                           response colors (if the participant has any such graphemes). If a vector
-                           is passed to symbol_filter, this green line represents the mean score
-                           for ONLY the symbols included in the filter.
+      If cutoff_line = TRUE, the plot will include a blue line that
+      indicates the value 135.30, which is the synesthesia
+      cut-off score recommended by Rothen, Seth, Witzel & Ward (2013)
+      for the L*u*v color space. If mean_line = TRUE, the plot will
+      include a green line that indicates the participant's mean
+      consistency score for graphemes with all-valid
+      response colors (if the participant has any such graphemes). If a vector
+      is passed to symbol_filter, this green line represents the mean score
+      for ONLY the symbols included in the filter.
 
-                           Pass a value to grapheme_size to adjust the size of graphemes
-                           shown at the bottom of the plot, e. g. increasing the size if
-                           there's a lot of empty space otherwise, or decreasing the size if the
-                           graphemes don't fit. The grapheme_angle
-                           argument allows rotating graphemes. grapheme_spacing is for adjusting
-                           how far grapheme symbols are spaced from each other.
+      Pass a value to grapheme_size to adjust the size of graphemes
+      shown at the bottom of the plot, e. g. increasing the size if
+      there's a lot of empty space otherwise, or decreasing the size if the
+      graphemes don't fit. The grapheme_angle
+      argument allows rotating graphemes. grapheme_spacing is for adjusting
+      how far grapheme symbols are spaced from each other.
 
-                           If a character vector is passed to symbol_filter, only data for graphemes
-                           with symbols in the passed vector are used.
+      If a character vector is passed to symbol_filter, only data for graphemes
+      with symbols in the passed vector are used.
 
-                           Graphemes are sorted left-to-right by 1. length and
-                           2. unicode value (this means among other things that digits
-                           come before letters).}
+      Graphemes are sorted left-to-right by 1. length and
+      2. unicode value (this means among other things that digits
+      come before letters).}
 
 \item{\code{get_plot_data(symbol_filter = NULL)}}{Returns a data frame with the following columns:
 
-                           1. grapheme (grapheme names - of type character)
+      1. grapheme (grapheme names - of type character)
 
-                           2. consistency_score (of type numeric)
+      2. consistency_score (of type numeric)
 
-                           3... color_resp<x>, where x is a digit: hold response hex color codes (number of columns depends on number of response colors associated with each grapheme).
+      3... color_resp<x>, where x is a digit: hold response hex color codes
+      (number of columns depends on number of response colors
+      associated with each grapheme).
 
-                           The data frame is intended to be used for plotting participant data,
-                           using .get_plot(). The call will end with an error
-                           if not all of the participant's graphemes have the same number
-                           of color responses. This is intended.
+      The data frame is intended to be used for plotting participant data,
+      using .get_plot(). The call will end with an error
+      if not all of the participant's graphemes have the same number
+      of color responses. This is intended.
 
-                           If a character vector is passed to symbol_filter, only data for graphemes
-                           with symbols in the passed vector are used.}
+      If a character vector is passed to symbol_filter, only data for graphemes
+      with symbols in the passed vector are used.}
 
 \item{\code{get_prop_color(
   color_label = NULL,
@@ -161,9 +164,10 @@ color_label or the r/g/b arguments. Possible color_label
 specifications are: "blue", "red", "green", "white",
 "black" or "hazy". For r/g/b arguments, value ranges are specified
 using two-element numeric vectors, with rgb values on a 0-1 scale.
-E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range.
-If a character vector is passed to symbol_filter, only data for graphemes
-with symbols in the passed vector are used.}
+E. g. r = c(0, 0.3), g = c(0, 0.3), b = c(0, 0.3) would code
+for a dark color range. If a character vector is passed to
+symbol_filter, only data for graphemes with symbols in the
+passed vector are used.}
 
 \item{\code{get_symbols()}}{Returns a character vector with all symbols for
 graphemes associated with the participant.}
@@ -183,37 +187,38 @@ otherwise returns FALSE}
   symbol_filter = NULL,
   ...
 )}}{Saves a ggplot2 plot that describes this participant's
-                           grapheme color responses and per-grapheme consistency scores,
-                           using the ggsave function.
+      grapheme color responses and per-grapheme consistency scores,
+      using the ggsave function.
 
-                           If a character vector is passed to symbol_filter, only data for graphemes
-                           with symbols in the passed vector are used.
+      If a character vector is passed to symbol_filter, only data for graphemes
+      with symbols in the passed vector are used.
 
-                           If save_dir is not specified, the plot is saved to the current
-                           working directory. Otherwise, the plot is saved to the specified
-                           directory. The file is saved using the specified file_format,
-                           e. g. JPG (see ggplot2::ggsave documentation for list of
-                           supported formats), and the resolution specified with
-                           the dpi argument.
+      If save_dir is not specified, the plot is saved to the current
+      working directory. Otherwise, the plot is saved to the specified
+      directory. The file is saved using the specified file_format,
+      e. g. JPG (see ggplot2::ggsave documentation for list of
+      supported formats), and the resolution specified with
+      the dpi argument.
 
-                           If cutoff_line=TRUE, the plot will include a blue line that
-                           indicates the value 135.30, which is the synesthesia cut-off score recommended
-                           by Rothen, Seth, Witzel & Ward (2013) for the L*u*v color space.
-                           If mean_line=TRUE, the plot will include a green line that indicates
-                           the participant's mean consistency score for graphemes with all-valid
-                           response colors (if the participant has any such graphemes). If a vector
-                           is passed to symbol_filter, this green line represents the mean score
-                           for ONLY the symbols included in the filter.
+      If cutoff_line = TRUE, the plot will include a blue line that
+      indicates the value 135.30, which is the synesthesia
+      cut-off score recommended by Rothen, Seth, Witzel & Ward (2013)
+      for the L*u*v color space. If mean_line = TRUE, the plot will
+      include a green line that indicates the participant's mean
+      consistency score for graphemes with all-valid response colors
+      (if the participant has any such graphemes). If a vector
+      is passed to symbol_filter, this green line represents the mean score
+      for ONLY the symbols included in the filter.
 
-                           Pass a value to grapheme_size to adjust the size of graphemes
-                           shown at the bottom of the plot, e. g. increasing the size if
-                           there's empty space otherwise, or decreasing the size if the
-                           graphemes don't fit. Similarly, you can use the grapheme_angle
-                           argument to rotate the graphemes, which might help them fit better.
+      Pass a value to grapheme_size to adjust the size of graphemes
+      shown at the bottom of the plot, e. g. increasing the size if
+      there's empty space otherwise, or decreasing the size if the
+      graphemes don't fit. Similarly, you can use the grapheme_angle
+      argument to rotate the graphemes, which might help them fit better.
 
-                           Apart from these, all other arguments
-                           that ggsave accepts (e. g. 'scale') also work with this function, since
-                           all arguments are passed on to ggsave.}
+      Apart from these, all other arguments
+      that ggsave accepts (e. g. 'scale') also work with this function, since
+      all arguments are passed on to ggsave.}
 
 \item{\code{set_date(in_date)}}{Takes in a one-element character vector with a date
 in the format 'YYYY-MM-DD' and sets the participant's

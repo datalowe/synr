@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check if specified color falls within specified color range — is_in_color_range • synr</title>
+<title>Filter graphemes of a single participant — filter_graphemes • synr</title>
 
 
 <!-- jquery -->
@@ -39,17 +39,10 @@
 
 
 
-<meta property="og:title" content="Check if specified color falls within specified color range — is_in_color_range" />
-<meta property="og:description" content="Checks if specified color coordinates represent a color
-within a specified color range. Color range is specified
-using _either_ color_label _or_ r/g/b arguments. Possible
-color_label specifications are: &quot;blue&quot;, &quot;red&quot;, &quot;green&quot;,
-&quot;white&quot;, &quot;black&quot; or &quot;hazy&quot;. r/g/b each take a two-value
-numeric vector providing specifications of minimum/maximum
-red/green/blue values within the range 0-1 (e.g. c(0.2, 0.8) ).
-Supported color spaces are: &quot;XYZ&quot;, &quot;sRGB&quot;, &quot;Apple RGB&quot;, &quot;Lab&quot;,
-and &quot;Luv&quot;. Note that RGB values must be specified using the
-range 0-1, not 0-255." />
+<meta property="og:title" content="Filter graphemes of a single participant — filter_graphemes" />
+<meta property="og:description" content="Takes in a list of Grapheme objects and a character vector.
+Returns a list of Grapheme objects, consisting of the participant's
+graphemes which had a symbol included in the character vector to filter by." />
 
 
 
@@ -133,64 +126,37 @@ range 0-1, not 0-255." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check if specified color falls within specified color range</h1>
+    <h1>Filter graphemes of a single participant</h1>
     
-    <div class="hidden name"><code>is_in_color_range.Rd</code></div>
+    <div class="hidden name"><code>filter_graphemes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Checks if specified color coordinates represent a color
-within a specified color range. Color range is specified
-using _either_ color_label _or_ r/g/b arguments. Possible
-color_label specifications are: "blue", "red", "green",
-"white", "black" or "hazy". r/g/b each take a two-value
-numeric vector providing specifications of minimum/maximum
-red/green/blue values within the range 0-1 (e.g. c(0.2, 0.8) ).</p>
-<p>Supported color spaces are: "XYZ", "sRGB", "Apple RGB", "Lab",
-and "Luv". Note that RGB values must be specified using the
-range 0-1, not 0-255.</p>
+    <p>Takes in a list of Grapheme objects and a character vector.
+Returns a list of Grapheme objects, consisting of the participant's
+graphemes which had a symbol included in the character vector to filter by.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_in_color_range</span><span class='op'>(</span>
-  <span class='va'>color_to_check</span>,
-  color_label <span class='op'>=</span> <span class='cn'>NULL</span>,
-  r <span class='op'>=</span> <span class='cn'>NULL</span>,
-  g <span class='op'>=</span> <span class='cn'>NULL</span>,
-  b <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>color_space</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>filter_graphemes</span><span class='op'>(</span><span class='va'>graphemes</span>, symbol_vector <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>color_to_check</th>
-      <td><p>A three-element numeric vector of color coordinates</p></td>
+      <th>graphemes</th>
+      <td><p>A list of Grapheme objects.</p></td>
     </tr>
     <tr>
-      <th>color_label</th>
-      <td><p>color specification (possible choices are: "blue", "red",
-"green", "white", "black", "hazy")</p></td>
-    </tr>
-    <tr>
-      <th>r</th>
-      <td><p>a two-value vector</p></td>
-    </tr>
-    <tr>
-      <th>g</th>
-      <td><p>a two-value vector</p></td>
-    </tr>
-    <tr>
-      <th>b</th>
-      <td><p>a two-value vector</p></td>
-    </tr>
-    <tr>
-      <th>color_space</th>
-      <td><p>A one-element character vector describing the color space
-that the passed color coordinates are in.</p></td>
+      <th>symbol_vector</th>
+      <td><p>A character vector of symbols to filter the
+participant's graphemes by. Alternatively NULL (default), in which case
+no filtering will be done and the full grapheme list is returned.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A list of Grapheme objects.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/grDevices/convertColor.html'>convertColor</a></code></p></div>

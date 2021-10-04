@@ -30,14 +30,16 @@ that the passed color coordinates are in.}
 }
 \description{
 Checks if specified color coordinates represent a color
-within a specified color range. Color range is specified using EITHER color_label OR
-r/g/b arguments. Possible color_label specifications are: "blue", "red", "green",
-"white", "black" or "hazy". r/g/b each take a two-value numeric vector providing
-specifications of minimum/maximum red/green/blue values within the
-range 0-1 (e.g. c(0.2, 0.8) ).
+within a specified color range. Color range is specified
+using _either_ color_label _or_ r/g/b arguments. Possible
+color_label specifications are: "blue", "red", "green",
+"white", "black" or "hazy". r/g/b each take a two-value
+numeric vector providing specifications of minimum/maximum
+red/green/blue values within the range 0-1 (e.g. c(0.2, 0.8) ).
 
-Supported color spaces are: "XYZ", "sRGB", "Apple RGB", "Lab", and "Luv". Note
-that RGB values must be specified using the range 0-1, not 0-255.
+Supported color spaces are: "XYZ", "sRGB", "Apple RGB", "Lab",
+and "Luv". Note that RGB values must be specified using the
+range 0-1, not 0-255.
 }
 \seealso{
 \code{\link[grDevices]{convertColor}}
