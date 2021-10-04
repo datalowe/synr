@@ -124,7 +124,7 @@
 <a href="#produce-a-plot-of-a-single-participants-responses" class="anchor"></a>Produce a plot of a single participant’s responses</h2>
 <p>Plot of single participant’s per-grapheme consistency scores, looking only at trials involving the graphemes ‘A’ and ‘7’.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">'1'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_plot</span><span class="op">(</span>symbol_filter<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'A'</span>, <span class="st">'7'</span><span class="op">)</span>, cutoff_line <span class="op">=</span> <span class="cn">TRUE</span>, mean_line <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">'1'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_plot</span><span class="op">(</span>symbol_filter<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'A'</span>, <span class="st">'7'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="quick-start_files/figure-html/get_single_plot-1.png" width="576"></p>
 </div>
 <div id="export-relevant-participant-data-to-a-data-frame" class="section level2">

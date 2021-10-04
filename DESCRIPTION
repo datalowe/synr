@@ -21,4 +21,5 @@ Suggests:
     dplyr (>= 1.0.0),
     knitr,
     rmarkdown,
+    tidyr
 VignetteBuilder: knitr

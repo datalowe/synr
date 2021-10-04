@@ -97,13 +97,13 @@
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>This is an example of how to use synr with actual data. For an in-depth tutorial which explains how synr works, including the functionality that comes up here, please see the <a href="synr-tutorial.html">main tutorial</a>.</p>
-<p>The data used here are from a study by Cuskley et al. (2019) and are available through <a href="https://github.com/mdingemanse/colouredvowels">this GitHub repository</a>. Note that the user (mdingemanse) who has the repository is not involved in synr development, so please don’t send questions about synr to him or other co-authors of the article.</p>
+<p>The data used here are from a study by Cuskley et al. (2019) and are available through <a href="https://github.com/mdingemanse/colouredvowels">this GitHub repository</a>. Note that the user (mdingemanse) who owns the repository is not involved in synr development, so please don’t send questions about synr to him or other co-authors of the article.</p>
 <p>The data are from an experiment where participants listened to 16 different recordings of spoken vowel sounds and responded with colors they experienced/associated with the vowels. You can find much more detail in the article and repository. In this tutorial, we’ll assume that each of the recordings can be thought of as a single object, analogous to a grapheme. <strong>Note</strong> that even though synr always refers to trial stimuli as ‘graphemes’ or ‘symbols’ (in order to make the documentation less abstract), you can apply synr to other types of consistency test data. Just remember that ‘grapheme’ then really means e. g. ‘vowel sound’ or whatever other type of stimuli are presented to participants.</p>
 </div>
 <div id="load-required-libraries" class="section level2">
 <h2 class="hasAnchor">
 <a href="#load-required-libraries" class="anchor"></a>Load required libraries</h2>
-<p>We’ll use <code>tidyr</code> to reformat the raw data, explained below, and <code>ggplot2</code> for producing custom plots.</p>
+<p>We’ll use <code>tidyr</code> to reformat the raw data, explained below, and <code>ggplot2</code> for producing custom plots. You should already have <code>ggplot2</code> installed since <code>synr</code> depends on it, but may you need to run <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("tidyr")</a></code> to get <code>tidyr</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">synr</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>

@@ -22,12 +22,12 @@ library(synr)
 ## Introduction
 This is an example of how to use synr with actual data. For an in-depth tutorial which explains how synr works, including the functionality that comes up here, please see the [main tutorial](synr-tutorial.html).
 
-The data used here are from a study by Cuskley et al. (2019) and are available through [this GitHub repository](https://github.com/mdingemanse/colouredvowels). Note that the user (mdingemanse) who has the repository is not involved in synr development, so please don't send questions about synr to him or other co-authors of the article.
+The data used here are from a study by Cuskley et al. (2019) and are available through [this GitHub repository](https://github.com/mdingemanse/colouredvowels). Note that the user (mdingemanse) who owns the repository is not involved in synr development, so please don't send questions about synr to him or other co-authors of the article.
 
 The data are from an experiment where participants listened to 16 different recordings of spoken vowel sounds and responded with colors they experienced/associated with the vowels. You can find much more detail in the article and repository. In this tutorial, we'll assume that each of the recordings can be thought of as a single object, analogous to a grapheme. __Note__ that even though synr always refers to trial stimuli as 'graphemes' or 'symbols' (in order to make the documentation less abstract), you can apply synr to other types of consistency test data. Just remember that 'grapheme' then really means e. g. 'vowel sound' or whatever other type of stimuli are presented to participants.
 
 ## Load required libraries
-We'll use `tidyr` to reformat the raw data, explained below, and `ggplot2` for producing custom plots. 
+We'll use `tidyr` to reformat the raw data, explained below, and `ggplot2` for producing custom plots. You should already have `ggplot2` installed since `synr` depends on it, but may you need to run `install.packages("tidyr")` to get `tidyr`.
 
 ```{r extra_libraries}
 library(synr)
