@@ -6,5 +6,8 @@ articles:
   quick-start: quick-start.html
   synr-creategroup: synr-creategroup.html
   synr-tutorial: synr-tutorial.html
-last_built: 2021-10-04T15:17Z
+last_built: 2021-10-18T08:55Z
+urls:
+  reference: https://datalowe.github.io/synr//reference
+  article: https://datalowe.github.io/synr//articles
 

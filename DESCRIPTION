@@ -2,9 +2,9 @@ Package: synr
 Type: Package
 Title: Explore and Process Synesthesia Consistency Test Data
 Version: 0.3.0
-Author: Lowe Wilsson
-Maintainer: Lowe Wilsson <datalowe@posteo.de>
-Description: synr helps you explore synesthesia
+Authors@R: person("Lowe", "Wilsson", email = "datalowe@posteo.de",
+                  role = c("aut", "cre"))
+Description: Explore synesthesia
   consistency test data, calculate consistency scores, 
   and classify participant data as valid or invalid.
 Depends: R (>= 3.6.0)
@@ -13,14 +13,15 @@ Imports:
   data.table (>= 1.12),
   ggplot2 (>= 3.3.0),
   dbscan (>= 1.1)
-License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 2.1.0),
     dplyr (>= 1.0.0),
     knitr,
     rmarkdown,
     tidyr
+License: MIT + file LICENSE
+URL: https://datalowe.github.io/synr/, https://github.com/datalowe/synr
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr

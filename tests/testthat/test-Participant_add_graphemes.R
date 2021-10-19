@@ -81,3 +81,20 @@ test_that("get_number_all_colored_graphemes returns 0 for participant with only 
   p$add_graphemes(g_list)
   expect_equal(p$get_number_all_colored_graphemes(), 0)
 })
+
+test_that(paste0(
+  "get_matrix_all_color_responses produces expected matrix ",
+  "for participant with 12 valid responses"
+), {
+  p <- Participant$new()
+  g1 <- Grapheme$new(symbol='a')
+  g1$set_colors(c("#0000FF", "#0000FF", "#00FF00", "#00FF00"), "Luv")
+  g2 <- Grapheme$new(symbol='b')
+  g2$set_colors(c("#AA0000", "#000000", "#AA0000", "#BB0000"), "Luv")
+  g3 <- Grapheme$new(symbol='monday')
+  g3$set_colors(c("#00FF00", "#00EE00", "#00BB00", "#110000"), "Luv")
+  g_list <- list(g1, g2, g3)
+  p$add_graphemes(g_list)
+  col_mat <- p$get_matrix_all_color_responses()
+  expect_equal(nrow(col_mat), 12)
+})

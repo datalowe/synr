@@ -9,8 +9,6 @@
 #' participant's graphemes by. Alternatively NULL (default), in which case
 #' no filtering will be done and the full grapheme list is returned.
 #' @return A list of Grapheme objects.
-#'
-#' @seealso \code{\link[grDevices]{convertColor}}
 
 filter_graphemes <- function(
   graphemes,

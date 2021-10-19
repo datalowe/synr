@@ -11,3 +11,15 @@
 To learn more about `synr`, start with the vignettes:
 \verb{browseVignettes(package = "synr")}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://datalowe.github.io/synr/}
+  \item \url{https://github.com/datalowe/synr}
+}
+
+}
+\author{
+\strong{Maintainer}: Lowe Wilsson \email{datalowe@posteo.de}
+
+}

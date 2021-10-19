@@ -61,16 +61,16 @@ Participant <- setRefClass(
       return(length(graphemes) > 0)
     },
 
-  get_symbols = function() {
-      "Returns a character vector with all symbols for
-      graphemes associated with the participant."
-      return(names(graphemes))
-    },
+    get_symbols = function() {
+        "Returns a character vector with all symbols for
+        graphemes associated with the participant."
+        return(names(graphemes))
+      },
 
-  get_mean_response_time = function(
-      na.rm = FALSE,
-      symbol_filter = NULL
-  ) {
+    get_mean_response_time = function(
+        na.rm = FALSE,
+        symbol_filter = NULL
+    ) {
       "Returns the mean response time, with respect to all
       Grapheme instances associated with the participant.
       Weights response times based on number of valid responses
@@ -102,6 +102,26 @@ Participant <- setRefClass(
         )
       }
       return(mean(grapheme_level_response_times, na.rm = na.rm))
+    },
+
+    get_matrix_all_color_responses = function(symbol_filter = NULL) {
+      "Returns an n-by-3 matrix of all color responses data, where
+      each column represents a color axis and each row a response
+      color. If a character vector is passed to symbol_filter,
+      only data from responses associated with graphemes with symbols
+      are included."
+      if (!has_graphemes()) {
+        return(matrix(nrow = 0, ncol = 3))
+      }
+      filtered_graphemes <- filter_graphemes(
+        graphemes,
+        symbol_filter
+      )
+      color_matrix <- matrix(nrow = 0, ncol = 3)
+      for (grapheme in filtered_graphemes) {
+        color_matrix <- rbind(color_matrix, grapheme$response_colors)
+      }
+      return(color_matrix)
     },
 
     get_number_all_colored_graphemes = function(symbol_filter = NULL) {
@@ -298,10 +318,14 @@ Participant <- setRefClass(
       return(plot_df)
     },
 
-    get_plot = function(cutoff_line = FALSE, mean_line = FALSE,
-                        grapheme_size = 2, grapheme_angle = 0,
-                        grapheme_spacing = 0.25,
-                        symbol_filter = NULL) {
+    get_plot = function(
+      cutoff_line = FALSE,
+      mean_line = FALSE,
+      grapheme_size = 2,
+      grapheme_angle = 0,
+      grapheme_spacing = 0.25,
+      symbol_filter = NULL
+    ) {
       # TO DO change the plotting functionality so that it can handle
       # all-black graphemes (this leads to clustering of symbols at
       # one position atm)
@@ -392,10 +416,17 @@ Participant <- setRefClass(
       return(consistency_plot)
     },
 
-    save_plot = function(path = NULL, file_format="png", dpi = 300,
-                        cutoff_line = FALSE, mean_line = FALSE,
-                        grapheme_size = 2, grapheme_angle = 0,
-                        symbol_filter = NULL, ...) {
+    save_plot = function(
+      path = NULL,
+      file_format="png",
+      dpi = 300,
+      cutoff_line = FALSE,
+      mean_line = FALSE,
+      grapheme_size = 2,
+      grapheme_angle = 0,
+      symbol_filter = NULL,
+      ...
+    ) {
       "Saves a ggplot2 plot that describes this participant's
       grapheme color responses and per-grapheme consistency scores,
       using the ggsave function.
@@ -441,6 +472,32 @@ Participant <- setRefClass(
                       path = path,
                       dpi = dpi,
                       ... = ...)
+      )
+    },
+
+    check_valid_get_twcv = function(
+      min_resp_per_grapheme = 3,
+      min_complete_graphemes = 7,
+      eps = 30,
+      min_pts = 4,
+      max_var_tight_cluster = 10,
+      max_prop_single_tight_cluster = 0.6,
+      safe_num_clusters = 4,
+      safe_twcv = 10,
+      exclude_noise_cluster=FALSE,
+      symbol_filter = NULL
+    ) {
+      if (!has_graphemes()) {
+        return(list(
+          valid = FALSE,
+          reason_invalid = "no_color_responses",
+          twcv = NA
+        ))
+      }
+      grapheme_level_response_times <- numeric()
+      filtered_graphemes <- filter_graphemes(
+        graphemes,
+        symbol_filter
       )
     }
   )

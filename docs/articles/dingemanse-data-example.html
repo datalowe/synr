@@ -68,7 +68,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/datalowe/synr/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -84,7 +91,7 @@
       <h1 data-toc-skip>Using synr with real data: Coloured vowels</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/datalowe/synr/blob/master/vignettes/dingemanse-data-example.Rmd"><code>vignettes/dingemanse-data-example.Rmd</code></a></small>
       <div class="hidden name"><code>dingemanse-data-example.Rmd</code></div>
 
     </div>
@@ -92,7 +99,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">synr</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://datalowe.github.io/synr/">synr</a></span><span class="op">)</span></code></pre></div>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -105,7 +112,7 @@
 <a href="#load-required-libraries" class="anchor"></a>Load required libraries</h2>
 <p>We’ll use <code>tidyr</code> to reformat the raw data, explained below, and <code>ggplot2</code> for producing custom plots. You should already have <code>ggplot2</code> installed since <code>synr</code> depends on it, but may you need to run <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("tidyr")</a></code> to get <code>tidyr</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">synr</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://datalowe.github.io/synr/">synr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></code></pre></div>
 </div>

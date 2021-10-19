@@ -1,14 +1,20 @@
-#' @title Calculate average distance from centroid
+#' @title Calculate sum of squared 3D point distances from centroid
 #'
-#' @description Calculates average distance from centroid
-#' of passed 3D points.
-#'
-#' @param point_matrix An n-by-3 numeric matrix where each
-#' row corresponds to a single point in 3D space.
-#'
-#' @seealso \code{\link[grDevices]{convertColor}}
+#' @description Calculates sum of squared point distances in
+#' 3D space betweeen points and their centroid.
+#' \deqn{
+#' \frac{\sum_{i=1}^n (x_i-x_m)^2 + (y_i-y_m)^2 + (z-z_m)^2}
+#' }{
+#' sum_(i=1)^n ((x - x_m) + (y - y_m) + (z - z_m))
+#' }
+#' Where \eqn{X/Y/Z} represent one axis each, \eqn{a_m} represents the mean
+#' of all points' coordinates on an axis, and \eqn{n} represents the total
+#' number of points.
 
-avg_distance_from_centroid <- function(
+#' @param point_matrix An n-by-3 numerical matrix where each
+#' row corresponds to a single point in 3D space.
+
+centroid_3d_sq_dist <- function(
   point_matrix
 ) {
   # if there is only one row in the matrix of points,
@@ -21,18 +27,17 @@ avg_distance_from_centroid <- function(
   # (a row vector with 3 entries), corresponding to the
   # centroid ('mean point')
   mean_point <- apply(point_matrix, 2, mean)
-  # (using vector operation `apply` function)
   # for each row of actual coordinate points:
   # 1. subtract the `mean_point` row vector
   # 2. square each of the resulting vector elements
   # 3. sum the resulting vector elements
-  point_distances <- apply(
+  point_sq_distances <- apply(
     point_matrix,
     1,
     function(row_point) {
       sum((row_point - mean_point) ** 2)
     }
   )
-  avg_distance <- sum(point_distances) / nrow(point_matrix)
-  return(avg_distance)
+  sum_sq_distances <- sum(point_sq_distances)
+  return(sum_sq_distances)
 }
