@@ -50,6 +50,7 @@
 #'
 #' @seealso \code{\link{point_3d_variance}} for single-cluster variance,
 #' \code{\link{total_within_cluster_variance}} for TWCV.
+#' @keywords internal
 
 validate_get_twcv <- function(
   color_matrix,

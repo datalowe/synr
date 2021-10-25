@@ -22,6 +22,7 @@
 #' that the passed color coordinates are in.
 #'
 #' @seealso \code{\link[grDevices]{convertColor}}
+#' @keywords internal
 
 is_in_color_range <- function(color_to_check, color_label = NULL,
                               r = NULL, g = NULL, b = NULL,

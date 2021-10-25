@@ -13,6 +13,7 @@
 
 #' @param point_matrix An n-by-3 numerical matrix where each
 #' row corresponds to a single point in 3D space.
+#' @keywords internal
 
 centroid_3d_sq_dist <- function(
   point_matrix

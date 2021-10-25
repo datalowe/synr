@@ -21,6 +21,7 @@
 #' row corresponds to a single point in 3D space.
 #' @param cluster_vector A numerical vector of cluster assignments, of
 #' length n (ie one assignment per point).
+#' @keywords internal
 
 total_within_cluster_variance <- function(
   point_matrix,
