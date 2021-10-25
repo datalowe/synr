@@ -21,6 +21,4 @@ Takes in a list of Grapheme objects and a character vector.
 Returns a list of Grapheme objects, consisting of the participant's
 graphemes which had a symbol included in the character vector to filter by.
 }
-\seealso{
-\code{\link[grDevices]{convertColor}}
-}
+\keyword{internal}

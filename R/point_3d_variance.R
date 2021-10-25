@@ -9,7 +9,7 @@
 #' sum_(i=1)^n ((x - x_m) + (y - y_m) + (z - z_m)) / (n - 1)
 #' }
 #' Where \eqn{X/Y/Z} represent one axis each, \eqn{a_m}{a_m} represents the mean
-#' of all points' coordinates on an axis, and \eqn{n} represents the total 
+#' of all points' coordinates on an axis, and \eqn{n} represents the total
 #' number of points.
 
 #' @param point_matrix An n-by-3 numerical matrix where each

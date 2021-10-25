@@ -22,6 +22,4 @@ Where \eqn{X/Y/Z} represent one axis each, \eqn{a_m} represents the mean
 of all points' coordinates on an axis, and \eqn{n} represents the total
 number of points.
 }
-\seealso{
-\code{\link[grDevices]{convertColor}}
-}
+\keyword{internal}

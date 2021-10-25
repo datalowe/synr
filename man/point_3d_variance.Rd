@@ -10,6 +10,9 @@ point_3d_variance(point_matrix)
 \item{point_matrix}{An n-by-3 numerical matrix where each
 row corresponds to a single point in 3D space.}
 }
+\value{
+A one-element numeric vector holding
+}
 \description{
 Calculates sample variance of points' distances in
 3D space from their centroid. The variance here is taken to mean
@@ -20,9 +23,7 @@ the sum of variances for each dimension/axis:
 sum_(i=1)^n ((x - x_m) + (y - y_m) + (z - z_m)) / (n - 1)
 }
 Where \eqn{X/Y/Z} represent one axis each, \eqn{a_m}{a_m} represents the mean
-of all points' coordinates on an axis, and \eqn{n} represents the total 
+of all points' coordinates on an axis, and \eqn{n} represents the total
 number of points.
 }
-\seealso{
-\code{\link[grDevices]{convertColor}}
-}
+\keyword{internal}

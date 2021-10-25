@@ -44,3 +44,4 @@ range 0-1, not 0-255.
 \seealso{
 \code{\link[grDevices]{convertColor}}
 }
+\keyword{internal}

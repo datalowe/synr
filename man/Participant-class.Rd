@@ -56,6 +56,12 @@ and add each one using the add_grapheme() method.}
       (usually 'manhattan' or 'euclidean' - see documentation for
       the base R dist function for all options)}
 
+\item{\code{get_matrix_all_color_responses(symbol_filter = NULL)}}{Returns an n-by-3 matrix of all color responses data, where
+each column represents a color axis and each row a response
+color. If a character vector is passed to symbol_filter,
+only data from responses associated with graphemes with symbols
+are included.}
+
 \item{\code{get_mean_consistency_score(
   na.rm = FALSE,
   symbol_filter = NULL,

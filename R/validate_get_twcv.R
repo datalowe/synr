@@ -1,7 +1,9 @@
 #' @title Check if color data are valid and get TWCV
 #'
 #' @description Checks if passed color data are valid, i. e. are bountiful
-#' and varied enough according to passed validation criteria.
+#' and varied enough according to passed validation criteria. This function
+#' is normally only used indirectly through
+#' Participant$check_valid_get_twcv() or ParticipantGroup$get_valid_twcv().
 #' @section Details:
 #' This function relies heavily on the DBSCAN algorithm and its implementation
 #' in the R package `dbscan`, for clustering color points. For further
@@ -50,7 +52,6 @@
 #'
 #' @seealso \code{\link{point_3d_variance}} for single-cluster variance,
 #' \code{\link{total_within_cluster_variance}} for TWCV.
-#' @keywords internal
 
 validate_get_twcv <- function(
   color_matrix,

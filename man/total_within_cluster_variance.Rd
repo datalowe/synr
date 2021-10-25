@@ -34,6 +34,4 @@ degrees of freedom).
 }
 }
 
-\seealso{
-\code{\link[grDevices]{convertColor}}
-}
+\keyword{internal}
