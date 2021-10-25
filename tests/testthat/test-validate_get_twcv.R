@@ -11,8 +11,7 @@ test_that("fewer than min_pts points data leads to categorization as invalid", {
     max_var_tight_cluster = 10,
     max_prop_single_tight_cluster = 0.6,
     safe_num_clusters = 4,
-    safe_twcv = 10,
-    exclude_noise_cluster=FALSE
+    safe_twcv = 10
   )
   expect_false(
     res$valid
@@ -48,8 +47,7 @@ test_that("Data in single tight-knut cluster are classified as invalid", {
     max_var_tight_cluster = 10,
     max_prop_single_tight_cluster = 0.6,
     safe_num_clusters = 4,
-    safe_twcv = 10,
-    exclude_noise_cluster=FALSE
+    safe_twcv = 10
   )
   expect_false(
     res$valid
@@ -86,8 +84,7 @@ test_that("Data in two low-variance clusters are classified as invalid", {
     max_var_tight_cluster = 10,
     max_prop_single_tight_cluster = 0.6,
     safe_num_clusters = 4,
-    safe_twcv = 10,
-    exclude_noise_cluster=FALSE
+    safe_twcv = 10
   )
   expect_false(
     res$valid
@@ -124,8 +121,7 @@ test_that("Data in single high-variance cluster are classified as valid", {
     max_var_tight_cluster = 10,
     max_prop_single_tight_cluster = 0.6,
     safe_num_clusters = 4,
-    safe_twcv = 10,
-    exclude_noise_cluster=FALSE
+    safe_twcv = 10
   )
   expect_true(
     res$valid

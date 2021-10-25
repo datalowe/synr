@@ -11,8 +11,7 @@ validate_get_twcv(
   max_var_tight_cluster = 10,
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 4,
-  safe_twcv = 10,
-  exclude_noise_cluster = FALSE
+  safe_twcv = 10
 )
 }
 \arguments{
@@ -75,7 +74,7 @@ a larger number of clusters, \emph{or} by having points included
 by a smaller number of clusters but spaced relatively far apart
 \emph{within} these clusters. Also note that the DBSCAN 'noise'
 cluster and its associated points are considered as valid and
-included in all relevant points.
+included in all relevant calculations.
 }
 
 \seealso{
