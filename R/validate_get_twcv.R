@@ -3,7 +3,7 @@
 #' @description Checks if passed color data are valid, i. e. are bountiful
 #' and varied enough according to passed validation criteria. This function
 #' is normally only used indirectly through
-#' Participant$check_valid_get_twcv() or ParticipantGroup$get_valid_twcv().
+#' `Participant$check_valid_get_twcv()` or `ParticipantGroup$get_valid_twcv()`.
 #' @section Details:
 #' This function relies heavily on the DBSCAN algorithm and its implementation
 #' in the R package `dbscan`, for clustering color points. For further
@@ -34,16 +34,17 @@
 #' @param eps One-element numerical vector: radius of
 #' ‘epsilon neighborhood’ when applying DBSCAN clustering.
 #' @param min_pts One-element numerical vector:
-#' Number of minimum points required in the epsilon neighborhood
-#' for core points (including the point itself).
+#' Minimum number of points required in the epsilon neighborhood
+#' for core points (including the core point itself).
 #' @param max_var_tight_cluster One-element numerical vector:
-#' maximum variance for a cluster to be considered to be 'tight-knit'.
+#' maximum variance for a cluster to be considered 'tight-knit'.
 #' @param max_prop_single_tight_cluster One-element numerical vector:
 #' maximum proportion of points allowed to be within a 'tight-knit' cluster.
 #' @param safe_num_clusters One-element numerical vector: minimum number of
-#' clusters that guarantees validity if non-tight.
+#' clusters that guarantees validity if points are 'non-tight-knit'.
 #' @param safe_twcv One-element numerical vector: minimum total
-#' within-cluster variance (TWCV) score that guarantees validity if non-tight.
+#' within-cluster variance (TWCV) score that guarantees validity if
+#' points are 'non-tight-knit'.
 #' @return A list with components
 #'  \item{valid}{One-element logical vector}
 #'  \item{reason_invalid}{One-element character vector, empty if valid is TRUE}

@@ -1,7 +1,8 @@
 #' @title Calculate Total Within Cluster Variance of 3D points
 #'
 #' @description Calculates \emph{Total Within Cluster Variance(TWCV)} of
-#' 3D points.
+#' 3D points. This function is normally only used
+#' indirectly through `validate_get_twcv`.
 #' @section TWCV:
 #' TWCV is a synr-specific term for a measure that aims to describe spread
 #' of points in 3D space while taking into account that points belong
@@ -21,7 +22,6 @@
 #' row corresponds to a single point in 3D space.
 #' @param cluster_vector A numerical vector of cluster assignments, of
 #' length n (ie one assignment per point).
-#' @keywords internal
 
 total_within_cluster_variance <- function(
   point_matrix,

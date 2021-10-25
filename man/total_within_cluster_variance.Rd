@@ -15,7 +15,8 @@ length n (ie one assignment per point).}
 }
 \description{
 Calculates \emph{Total Within Cluster Variance(TWCV)} of
-3D points.
+3D points. This function is normally only used
+indirectly through `validate_get_twcv`.
 }
 \section{TWCV}{
 
@@ -34,4 +35,3 @@ degrees of freedom).
 }
 }
 
-\keyword{internal}

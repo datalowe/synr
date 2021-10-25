@@ -1,7 +1,10 @@
 #' @title Calculate sample variance of 3D point distance from centroid
 #'
 #' @description Calculates sample variance of points' distances in
-#' 3D space from their centroid. The variance here is taken to mean
+#' 3D space from their centroid. This function is normally only used
+#' indirectly through `validate_get_twcv`.
+#' @section Details:
+#' The variance here is taken to mean
 #' the sum of variances for each dimension/axis:
 #' \deqn{
 #' \frac{\sum_{i=1}^n (x_i-x_m)^2 + (y_i-y_m)^2 + (z-z_m)^2}{n-1}
@@ -15,7 +18,6 @@
 #' @param point_matrix An n-by-3 numerical matrix where each
 #' row corresponds to a single point in 3D space.
 #' @return A one-element numeric vector holding
-#' @keywords internal
 
 point_3d_variance <- function(
   point_matrix

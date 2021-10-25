@@ -36,6 +36,78 @@ is overwritten.}
 \item{\code{add_graphemes(grapheme_list)}}{Go through a passed list of Grapheme instances
 and add each one using the add_grapheme() method.}
 
+\item{\code{check_valid_get_twcv(
+  min_complete_graphemes = 7,
+  eps = 30,
+  min_pts = 4,
+  max_var_tight_cluster = 10,
+  max_prop_single_tight_cluster = 0.6,
+  safe_num_clusters = 4,
+  safe_twcv = 10,
+  symbol_filter = NULL
+)}}{    Checks if this participant's data are valid based on passed arguments.
+    This method aims to identify participants who had too few responses or
+    varied their response colors too little, by marking them as invalid.
+    Note that there are no absolutely correct values, as what is 'too little
+    variation' is highly subjective. You might need to tweak parameters to be
+    in line with your project's criteria. If you use the categorization in a
+    study, make sure to reference synr and specify what parameter values you
+    passed to the function.
+
+    This method relies heavily on the DBSCAN algorithm and the package
+    'dbscan' and involves calculating a synr-specific 'Total Within-Cluster
+    Variance' (TWCV) score. You can find more information, and
+    what the parameters here mean, in
+    the documentation for the function \code{validate_get_twcv}.
+    \subsection{Parameters}{
+      \itemize{
+        \item{\code{min_complete_graphemes} The minimum number of graphemes
+          with complete responses that the participant data must have for them
+          to not be categorized as invalid based on this criterion. Defaults
+          to 7.
+        }
+        \item{\code{eps} Radius of 'epsilon neighborhood' when applying
+          DBSCAN clustering. Defaults to 30.
+        }
+        \item{\code{min_pts} Minimum number of points required in the
+          epsilon neighborhood for core points (including the core point
+          itself). Defaults to 4.
+        }
+        \item{\code{max_var_tight_cluster} Maximum variance for an identified
+          DBSCAN cluster to be considered 'tight-knit'. Defaults to 10.
+        }
+        \item{\code{max_prop_single_tight_cluster} Maximum proportion of
+          points allowed to be within a 'tight-knit' cluster. Defaults to 0.6.
+        }
+        \item{\code{safe_num_clusters} Minimum number of identified DBSCAN
+          clusters (including 'noise' cluster) that guarantees validity if
+          points are 'non-tight-knit'. Defaults to 4.
+        }
+        \item{\code{safe_twcv} Minimum total within-cluster variance (TWCV)
+          score that guarantees validity if points are 'non-tight-knit'.
+          Defaults to 10.
+        }
+        \item{\code{safe_twcv} A character vector (or NULL) that specifies
+          which graphemes' data to use. Defaults to NULL, meaning data from
+          all of the participant's graphemes will be used.
+        }
+      }
+    }
+
+    \subsection{Returns}{
+      A list with components
+      \itemize{
+        \item{\code{valid} TRUE if categorized as valid, otherwise FALSE.}
+        \item{\code{reason_invalid} One-element character vector describing
+          why participant's data were deemed invalid, or empty string if
+          valid is TRUE.
+        }
+        \item{\code{twcv} One-element numeric (or NA if there are no/too few
+          complete graphemes) vector indicating participant's calculated TWCV.}
+      }
+    }
+    }
+
 \item{\code{get_consistency_scores(
   na.rm = FALSE,
   symbol_filter = NULL,

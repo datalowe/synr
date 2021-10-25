@@ -15,7 +15,12 @@ A one-element numeric vector holding
 }
 \description{
 Calculates sample variance of points' distances in
-3D space from their centroid. The variance here is taken to mean
+3D space from their centroid. This function is normally only used
+indirectly through `validate_get_twcv`.
+}
+\section{Details}{
+
+The variance here is taken to mean
 the sum of variances for each dimension/axis:
 \deqn{
 \frac{\sum_{i=1}^n (x_i-x_m)^2 + (y_i-y_m)^2 + (z-z_m)^2}{n-1}
@@ -26,4 +31,4 @@ Where \eqn{X/Y/Z} represent one axis each, \eqn{a_m}{a_m} represents the mean
 of all points' coordinates on an axis, and \eqn{n} represents the total
 number of points.
 }
-\keyword{internal}
+

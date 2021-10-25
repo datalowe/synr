@@ -476,7 +476,6 @@ Participant <- setRefClass(
     },
 
     check_valid_get_twcv = function(
-      min_resp_per_grapheme = 3,
       min_complete_graphemes = 7,
       eps = 30,
       min_pts = 4,
@@ -484,9 +483,71 @@ Participant <- setRefClass(
       max_prop_single_tight_cluster = 0.6,
       safe_num_clusters = 4,
       safe_twcv = 10,
-      exclude_noise_cluster=FALSE,
       symbol_filter = NULL
     ) {
+    "
+    Checks if this participant's data are valid based on passed arguments.
+    This method aims to identify participants who had too few responses or
+    varied their response colors too little, by marking them as invalid.
+    Note that there are no absolutely correct values, as what is 'too little
+    variation' is highly subjective. You might need to tweak parameters to be
+    in line with your project's criteria. If you use the categorization in a
+    study, make sure to reference synr and specify what parameter values you
+    passed to the function.
+
+    This method relies heavily on the DBSCAN algorithm and the package
+    'dbscan' and involves calculating a synr-specific 'Total Within-Cluster
+    Variance' (TWCV) score. You can find more information, and
+    what the parameters here mean, in
+    the documentation for the function \\code{validate_get_twcv}.
+    \\subsection{Parameters}{
+      \\itemize{
+        \\item{\\code{min_complete_graphemes} The minimum number of graphemes
+          with complete responses that the participant data must have for them
+          to not be categorized as invalid based on this criterion. Defaults
+          to 7.
+        }
+        \\item{\\code{eps} Radius of 'epsilon neighborhood' when applying
+          DBSCAN clustering. Defaults to 30.
+        }
+        \\item{\\code{min_pts} Minimum number of points required in the
+          epsilon neighborhood for core points (including the core point
+          itself). Defaults to 4.
+        }
+        \\item{\\code{max_var_tight_cluster} Maximum variance for an identified
+          DBSCAN cluster to be considered 'tight-knit'. Defaults to 10.
+        }
+        \\item{\\code{max_prop_single_tight_cluster} Maximum proportion of
+          points allowed to be within a 'tight-knit' cluster. Defaults to 0.6.
+        }
+        \\item{\\code{safe_num_clusters} Minimum number of identified DBSCAN
+          clusters (including 'noise' cluster) that guarantees validity if
+          points are 'non-tight-knit'. Defaults to 4.
+        }
+        \\item{\\code{safe_twcv} Minimum total within-cluster variance (TWCV)
+          score that guarantees validity if points are 'non-tight-knit'.
+          Defaults to 10.
+        }
+        \\item{\\code{safe_twcv} A character vector (or NULL) that specifies
+          which graphemes' data to use. Defaults to NULL, meaning data from
+          all of the participant's graphemes will be used.
+        }
+      }
+    }
+
+    \\subsection{Returns}{
+      A list with components
+      \\itemize{
+        \\item{\\code{valid} TRUE if categorized as valid, otherwise FALSE.}
+        \\item{\\code{reason_invalid} One-element character vector describing
+          why participant's data were deemed invalid, or empty string if
+          valid is TRUE.
+        }
+        \\item{\\code{twcv} One-element numeric (or NA if there are no/too few
+          complete graphemes) vector indicating participant's calculated TWCV.}
+      }
+    }
+    "
       if (!has_graphemes()) {
         return(list(
           valid = FALSE,
@@ -494,11 +555,31 @@ Participant <- setRefClass(
           twcv = NA
         ))
       }
-      grapheme_level_response_times <- numeric()
-      filtered_graphemes <- filter_graphemes(
-        graphemes,
-        symbol_filter
+
+      num_allcolored <- get_number_all_colored_graphemes(
+        symbol_filter = symbol_filter
       )
+      if (num_allcolored < min_complete_graphemes) {
+        return(list(
+          valid = FALSE,
+          reason_invalid = "too_few_graphemes_with_complete_responses",
+          twcv = NA
+        ))
+      }
+
+      color_matrix <- get_matrix_all_color_responses(
+        symbol_filter = symbol_filter
+      )
+      res_val_list <- validate_get_twcv(
+        color_matrix = color_matrix,
+        eps = eps,
+        min_pts = min_pts,
+        max_var_tight_cluster = max_var_tight_cluster,
+        max_prop_single_tight_cluster = max_prop_single_tight_cluster,
+        safe_num_clusters = safe_num_clusters,
+        safe_twcv = safe_twcv
+      )
+      return(res_val_list)
     }
   )
 )
