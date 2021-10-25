@@ -48,7 +48,7 @@ total_within_cluster_variance <- function(
   cluster_sums <- numeric()
   for (cluster_n in min(cluster_vector):max(cluster_vector)) {
     one_cluster <- point_matrix[cluster_vector == cluster_n, , drop = FALSE]
-    sum_distances <- synr:::centroid_3d_sq_dist(one_cluster)
+    sum_distances <- centroid_3d_sq_dist(one_cluster)
     cluster_sums <- c(cluster_sums, sum_distances)
   }
   tot_within_cluster_variance <- sum(cluster_sums) / (num_points - num_clusters)

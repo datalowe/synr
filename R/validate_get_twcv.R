@@ -73,7 +73,7 @@ validate_get_twcv <- function(
 
   dbscan_res <- dbscan::dbscan(color_matrix, eps = eps, minPts = min_pts)
   cluster_numbers <- unique(dbscan_res$cluster)
-  twcv <- synr:::total_within_cluster_variance(color_matrix, dbscan_res$cluster)
+  twcv <- total_within_cluster_variance(color_matrix, dbscan_res$cluster)
 
   for (clu_n in cluster_numbers) {
     cluster_mask <- dbscan_res$cluster == clu_n
@@ -82,7 +82,7 @@ validate_get_twcv <- function(
     if (prop_in_cluster > max_prop_single_tight_cluster) {
       # calculate within-cluster variance by passing in only
       # color response data associated with the current cluster
-      cluster_var <- synr:::point_3d_variance(color_matrix[cluster_mask, ])
+      cluster_var <- point_3d_variance(color_matrix[cluster_mask, ])
       if (cluster_var <= max_var_tight_cluster) {
         return(list(
           valid = FALSE,
@@ -95,7 +95,7 @@ validate_get_twcv <- function(
   # check if TWCV score is low and
   # there are few clusters
   num_clusters <- length(cluster_numbers)
-  twcv_score <- synr:::total_within_cluster_variance(
+  twcv_score <- total_within_cluster_variance(
     color_matrix,
     dbscan_res$cluster
   )
