@@ -27,7 +27,7 @@
 #' by a smaller number of clusters but spaced relatively far apart
 #' \emph{within} these clusters. Also note that the DBSCAN 'noise'
 #' cluster and its associated points are considered as valid and
-#' included in all relevant points.
+#' included in all relevant calculations.
 #'
 #' @param color_matrix An n-by-3 numerical matrix where each
 #' row corresponds to a single point in 3D color space.
@@ -60,8 +60,7 @@ validate_get_twcv <- function(
   max_var_tight_cluster = 10,
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 4,
-  safe_twcv = 10,
-  exclude_noise_cluster=FALSE
+  safe_twcv = 10
 ) {
   # if there are less than min_pts points, it doesn't make sense to run
   # DBSCAN
