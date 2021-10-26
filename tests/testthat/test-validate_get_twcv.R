@@ -1,4 +1,4 @@
-test_that("fewer than min_pts points data leads to categorization as invalid", {
+test_that("fewer than dbscan_min_pts points data leads to categorization as invalid", {
   point_matrix <- matrix(
     c(1, 0, 0, -1, 0, 0),
     ncol=3,
@@ -6,8 +6,8 @@ test_that("fewer than min_pts points data leads to categorization as invalid", {
   )
   res <- validate_get_twcv(
     point_matrix,
-    eps = 30,
-    min_pts = 4,
+    dbscan_eps = 30,
+    dbscan_min_pts = 4,
     max_var_tight_cluster = 10,
     max_prop_single_tight_cluster = 0.6,
     safe_num_clusters = 4,
@@ -42,8 +42,8 @@ test_that("Data in single tight-knut cluster are classified as invalid", {
   )
   res <- validate_get_twcv(
     point_matrix,
-    eps = 30,
-    min_pts = 4,
+    dbscan_eps = 30,
+    dbscan_min_pts = 4,
     max_var_tight_cluster = 10,
     max_prop_single_tight_cluster = 0.6,
     safe_num_clusters = 4,
@@ -79,8 +79,8 @@ test_that("Data in two low-variance clusters are classified as invalid", {
   )
   res <- validate_get_twcv(
     point_matrix,
-    eps = 30,
-    min_pts = 4,
+    dbscan_eps = 30,
+    dbscan_min_pts = 4,
     max_var_tight_cluster = 10,
     max_prop_single_tight_cluster = 0.6,
     safe_num_clusters = 4,
@@ -116,8 +116,8 @@ test_that("Data in single high-variance cluster are classified as valid", {
   )
   res <- validate_get_twcv(
     point_matrix,
-    eps = 30,
-    min_pts = 4,
+    dbscan_eps = 30,
+    dbscan_min_pts = 4,
     max_var_tight_cluster = 10,
     max_prop_single_tight_cluster = 0.6,
     safe_num_clusters = 4,

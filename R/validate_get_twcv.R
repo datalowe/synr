@@ -8,7 +8,7 @@
 #' This function relies heavily on the DBSCAN algorithm and its implementation
 #' in the R package `dbscan`, for clustering color points. For further
 #' information regarding the 'eps' and
-#' 'min_pts' parameters as well as DBSCAN itself, please see
+#' 'dbscan_min_pts' parameters as well as DBSCAN itself, please see
 #' the `dbscan` documentation. Once clustering is done, passed validation
 #' criteria are applied:
 #' \itemize{
@@ -31,9 +31,9 @@
 #'
 #' @param color_matrix An n-by-3 numerical matrix where each
 #' row corresponds to a single point in 3D color space.
-#' @param eps One-element numerical vector: radius of
+#' @param dbscan_eps One-element numerical vector: radius of
 #' ‘epsilon neighborhood’ when applying DBSCAN clustering.
-#' @param min_pts One-element numerical vector:
+#' @param dbscan_min_pts One-element numerical vector:
 #' Minimum number of points required in the epsilon neighborhood
 #' for core points (including the core point itself).
 #' @param max_var_tight_cluster One-element numerical vector:
@@ -57,16 +57,16 @@
 
 validate_get_twcv <- function(
   color_matrix,
-  eps = 30,
-  min_pts = 4,
+  dbscan_eps = 30,
+  dbscan_min_pts = 4,
   max_var_tight_cluster = 10,
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 4,
   safe_twcv = 10
 ) {
-  # if there are less than min_pts points, it doesn't make sense to run
+  # if there are less than dbscan_min_pts points, it doesn't make sense to run
   # DBSCAN
-  if (nrow(color_matrix) < min_pts) {
+  if (nrow(color_matrix) < dbscan_min_pts) {
     return(list(
       valid = FALSE,
       reason_invalid = "too_few_color_responses",
@@ -74,7 +74,11 @@ validate_get_twcv <- function(
     ))
   }
 
-  dbscan_res <- dbscan::dbscan(color_matrix, eps = eps, minPts = min_pts)
+  dbscan_res <- dbscan::dbscan(
+    color_matrix,
+    eps = dbscan_eps,
+    minPts = dbscan_min_pts
+  )
   cluster_numbers <- unique(dbscan_res$cluster)
   twcv <- total_within_cluster_variance(color_matrix, dbscan_res$cluster)
 

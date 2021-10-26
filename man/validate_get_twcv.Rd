@@ -6,8 +6,8 @@
 \usage{
 validate_get_twcv(
   color_matrix,
-  eps = 30,
-  min_pts = 4,
+  dbscan_eps = 30,
+  dbscan_min_pts = 4,
   max_var_tight_cluster = 10,
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 4,
@@ -18,10 +18,10 @@ validate_get_twcv(
 \item{color_matrix}{An n-by-3 numerical matrix where each
 row corresponds to a single point in 3D color space.}
 
-\item{eps}{One-element numerical vector: radius of
+\item{dbscan_eps}{One-element numerical vector: radius of
 ‘epsilon neighborhood’ when applying DBSCAN clustering.}
 
-\item{min_pts}{One-element numerical vector:
+\item{dbscan_min_pts}{One-element numerical vector:
 Minimum number of points required in the epsilon neighborhood
 for core points (including the core point itself).}
 
@@ -57,7 +57,7 @@ is normally only used indirectly through
 This function relies heavily on the DBSCAN algorithm and its implementation
 in the R package `dbscan`, for clustering color points. For further
 information regarding the 'eps' and
-'min_pts' parameters as well as DBSCAN itself, please see
+'dbscan_min_pts' parameters as well as DBSCAN itself, please see
 the `dbscan` documentation. Once clustering is done, passed validation
 criteria are applied:
 \itemize{

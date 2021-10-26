@@ -479,8 +479,8 @@ Participant <- setRefClass(
 
     check_valid_get_twcv = function(
       min_complete_graphemes = 7,
-      eps = 30,
-      min_pts = 4,
+      dbscan_eps = 30,
+      dbscan_min_pts = 4,
       max_var_tight_cluster = 10,
       max_prop_single_tight_cluster = 0.6,
       safe_num_clusters = 4,
@@ -509,10 +509,10 @@ Participant <- setRefClass(
           must have for them to not be categorized as invalid based on this
           criterion. Defaults to 7.
         }
-        \\item{\\code{eps} Radius of 'epsilon neighborhood' when applying
+        \\item{\\code{dbscan_eps} Radius of 'epsilon neighborhood' when applying
           DBSCAN clustering. Defaults to 30.
         }
-        \\item{\\code{min_pts} Minimum number of points required in the
+        \\item{\\code{dbscan_min_pts} Minimum number of points required in the
           epsilon neighborhood for core points (including the core point
           itself). Defaults to 4.
         }
@@ -576,8 +576,8 @@ Participant <- setRefClass(
       )
       res_val_list <- validate_get_twcv(
         color_matrix = color_matrix,
-        eps = eps,
-        min_pts = min_pts,
+        dbscan_eps = dbscan_eps,
+        dbscan_min_pts = dbscan_min_pts,
         max_var_tight_cluster = max_var_tight_cluster,
         max_prop_single_tight_cluster = max_prop_single_tight_cluster,
         safe_num_clusters = safe_num_clusters,

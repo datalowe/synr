@@ -33,8 +33,8 @@ and add each one using the add_participant() method.}
 
 \item{\code{check_valid_get_twcv_scores(
   min_complete_graphemes = 7,
-  eps = 30,
-  min_pts = 4,
+  dbscan_eps = 30,
+  dbscan_min_pts = 4,
   max_var_tight_cluster = 10,
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 4,
@@ -64,10 +64,10 @@ and add each one using the add_participant() method.}
           must have for them to not be categorized as invalid based on
           this criterion. Defaults to 7.
         }
-        \item{\code{eps} Radius of 'epsilon neighborhood' when applying
+        \item{\code{dbscan_eps} Radius of 'epsilon neighborhood' when applying
           (on a per-participant basis) DBSCAN clustering. Defaults to 30.
         }
-        \item{\code{min_pts} Minimum number of points required in the
+        \item{\code{dbscan_min_pts} Minimum number of points required in the
           epsilon neighborhood for core points (including the core point
           itself). Defaults to 4.
         }
