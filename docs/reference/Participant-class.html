@@ -174,19 +174,21 @@ and add each one using the add_grapheme() method.</p></dd>
 
 <dt><code>check_valid_get_twcv(
   min_complete_graphemes = 7,
-  eps = 30,
-  min_pts = 4,
-  max_var_tight_cluster = 10,
+  dbscan_eps = 30,
+  dbscan_min_pts = 4,
+  max_var_tight_cluster = 100,
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 4,
-  safe_twcv = 10,
+  safe_twcv = 250,
   symbol_filter = NULL
 )</code></dt><dd><p>Checks if this participant's data are valid based on passed arguments.
     This method aims to identify participants who had too few responses or
     varied their response colors too little, by marking them as invalid.
     Note that there are no absolutely correct values, as what is 'too little
     variation' is highly subjective. You might need to tweak parameters to be
-    in line with your project's criteria. If you use the results in a
+    in line with your project's criteria, especially if you use another color
+    space than CIELUV, since the default values are based on what seems
+    to make sense in a CIELUV context. If you use the results in a
     research article, make sure to reference synr and specify what parameter
     values you passed to the function.    This method relies heavily on the DBSCAN algorithm and the package
     'dbscan', and involves calculating a synr-specific 'Total Within-Cluster
@@ -199,13 +201,13 @@ and add each one using the add_grapheme() method.</p></dd>
           with complete (all non-NA color) responses that the participant data
           must have for them to not be categorized as invalid based on this
           criterion. Defaults to 7.</p></li>
-<li><p><code>eps</code> Radius of 'epsilon neighborhood' when applying
+<li><p><code>dbscan_eps</code> Radius of 'epsilon neighborhood' when applying
           DBSCAN clustering. Defaults to 30.</p></li>
-<li><p><code>min_pts</code> Minimum number of points required in the
+<li><p><code>dbscan_min_pts</code> Minimum number of points required in the
           epsilon neighborhood for core points (including the core point
           itself). Defaults to 4.</p></li>
 <li><p><code>max_var_tight_cluster</code> Maximum variance for an identified
-          DBSCAN cluster to be considered 'tight-knit'. Defaults to 10.</p></li>
+          DBSCAN cluster to be considered 'tight-knit'. Defaults to 100.</p></li>
 <li><p><code>max_prop_single_tight_cluster</code> Maximum proportion of
           points allowed to be within a single 'tight-knit' cluster (exceeding
           this leads to classification as invalid). Defaults to 0.6.</p></li>
@@ -214,8 +216,8 @@ and add each one using the add_grapheme() method.</p></dd>
           points are 'non-tight-knit'. Defaults to 4.</p></li>
 <li><p><code>safe_twcv</code> Minimum total within-cluster variance (TWCV)
           score that guarantees validity if points are 'non-tight-knit'.
-          Defaults to 10.</p></li>
-<li><p><code>safe_twcv</code> A character vector (or NULL) that specifies
+          Defaults to 250.</p></li>
+<li><p><code>symbol_filter</code> A character vector (or NULL) that specifies
           which graphemes' data to use. Defaults to NULL, meaning data from
           all of the participant's graphemes will be used.</p></li>
 </ul><p></p>    <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h3>

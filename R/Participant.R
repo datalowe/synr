@@ -481,10 +481,10 @@ Participant <- setRefClass(
       min_complete_graphemes = 7,
       dbscan_eps = 30,
       dbscan_min_pts = 4,
-      max_var_tight_cluster = 10,
+      max_var_tight_cluster = 100,
       max_prop_single_tight_cluster = 0.6,
       safe_num_clusters = 4,
-      safe_twcv = 10,
+      safe_twcv = 250,
       symbol_filter = NULL
     ) {
     "
@@ -493,7 +493,9 @@ Participant <- setRefClass(
     varied their response colors too little, by marking them as invalid.
     Note that there are no absolutely correct values, as what is 'too little
     variation' is highly subjective. You might need to tweak parameters to be
-    in line with your project's criteria. If you use the results in a
+    in line with your project's criteria, especially if you use another color
+    space than CIELUV, since the default values are based on what seems
+    to make sense in a CIELUV context. If you use the results in a
     research article, make sure to reference synr and specify what parameter
     values you passed to the function.
 
@@ -517,7 +519,7 @@ Participant <- setRefClass(
           itself). Defaults to 4.
         }
         \\item{\\code{max_var_tight_cluster} Maximum variance for an identified
-          DBSCAN cluster to be considered 'tight-knit'. Defaults to 10.
+          DBSCAN cluster to be considered 'tight-knit'. Defaults to 100.
         }
         \\item{\\code{max_prop_single_tight_cluster} Maximum proportion of
           points allowed to be within a single 'tight-knit' cluster (exceeding
@@ -529,9 +531,9 @@ Participant <- setRefClass(
         }
         \\item{\\code{safe_twcv} Minimum total within-cluster variance (TWCV)
           score that guarantees validity if points are 'non-tight-knit'.
-          Defaults to 10.
+          Defaults to 250.
         }
-        \\item{\\code{safe_twcv} A character vector (or NULL) that specifies
+        \\item{\\code{symbol_filter} A character vector (or NULL) that specifies
           which graphemes' data to use. Defaults to NULL, meaning data from
           all of the participant's graphemes will be used.
         }

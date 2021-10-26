@@ -8,10 +8,10 @@ validate_get_twcv(
   color_matrix,
   dbscan_eps = 30,
   dbscan_min_pts = 4,
-  max_var_tight_cluster = 10,
+  max_var_tight_cluster = 100,
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 4,
-  safe_twcv = 10
+  safe_twcv = 250
 )
 }
 \arguments{
