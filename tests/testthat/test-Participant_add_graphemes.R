@@ -83,7 +83,7 @@ test_that("get_number_all_colored_graphemes returns 0 for participant with only 
 })
 
 test_that(paste0(
-  "get_matrix_all_color_responses produces expected matrix ",
+  "get_nonna_color_resp_mat produces expected matrix ",
   "for participant with 12 valid responses"
 ), {
   p <- Participant$new()
@@ -95,6 +95,6 @@ test_that(paste0(
   g3$set_colors(c("#00FF00", "#00EE00", "#00BB00", "#110000"), "Luv")
   g_list <- list(g1, g2, g3)
   p$add_graphemes(g_list)
-  col_mat <- p$get_matrix_all_color_responses()
+  col_mat <- p$get_nonna_color_resp_mat()
   expect_equal(nrow(col_mat), 12)
 })

@@ -29,7 +29,8 @@ for core points (including the core point itself).}
 maximum variance for a cluster to be considered 'tight-knit'.}
 
 \item{max_prop_single_tight_cluster}{One-element numerical vector:
-maximum proportion of points allowed to be within a 'tight-knit' cluster.}
+maximum proportion of points allowed to be within a 'tight-knit' cluster
+(if this threshold is exceeded, the data are categorized as invalid).}
 
 \item{safe_num_clusters}{One-element numerical vector: minimum number of
 clusters that guarantees validity if points are 'non-tight-knit'.}

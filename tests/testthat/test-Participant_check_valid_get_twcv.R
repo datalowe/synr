@@ -8,7 +8,9 @@ get_random_color <- function() {
   return(hex_val)
 }
 
-test_that("A participant with no graphemes is counted as invalid.", {
+test_that(
+  "A participant with no graphemes is classified as invalid by check_valid_get_twcv.",
+  {
   p <- Participant$new()
   res <- p$check_valid_get_twcv()
   expect_false(res$valid)
@@ -17,12 +19,14 @@ test_that("A participant with no graphemes is counted as invalid.", {
 })
 
 
-test_that("A participant with just one grapheme is counted as invalid.", {
+test_that(
+  "A participant with just one grapheme is classified as invalid
+  by check_valid_get_twcv.",
+  {
   p <- Participant$new()
   g1 <- Grapheme$new(symbol='a')
   g1$set_colors(c("#0000FF", "#0000FF", "#00FF00", "#00FF00"), "Luv")
-  g_list <- list(g1)
-  p$add_graphemes(g_list)
+  p$add_grapheme(g1)
   res <- p$check_valid_get_twcv()
   expect_false(res$valid)
   expect_equal(res$reason_invalid, "too_few_graphemes_with_complete_responses")
@@ -30,8 +34,26 @@ test_that("A participant with just one grapheme is counted as invalid.", {
 })
 
 test_that(
-  "A participant with 20 graphemes of same color is counted as invalid."
-  , {
+  "A participant with two graphemes, of which one includes an NA
+  response color, is classified as invalid by check_valid_get_twcv
+  even when min_complete_graphemes is set to 1.",
+  {
+    p <- Participant$new()
+    g1 <- Grapheme$new(symbol='a')
+    g1$set_colors(c("#0000FF", "#0000FF", NA), "Luv")
+    g2 <- Grapheme$new(symbol='b')
+    g2$set_colors(c("#0000FF", "#0000FF", "#00FF00"), "Luv")
+    p$add_graphemes(list(g1, g2))
+    res <- p$check_valid_get_twcv(min_complete_graphemes=1)
+    expect_false(res$valid)
+    expect_equal(res$reason_invalid, "hi_prop_tight_cluster")
+    expect_equal(res$twcv, 0)
+  })
+
+test_that(
+  "A participant with 20 graphemes of same color is classified as invalid
+  by check_valid_get_twcv.",
+  {
   p <- Participant$new()
   for (l in LETTERS[1:20]) {
     g <- Grapheme$new(symbol=l)
@@ -49,7 +71,7 @@ test_that(
 
 test_that(
   "A participant with 20 graphemes, with 3 responses each,
-  of wildly varying (randomly generated) colors is counted as valid."
+  of wildly varying (randomly generated) colors is classified as valid."
   , {
     p <- Participant$new()
     for (l in LETTERS[1:20]) {

@@ -104,9 +104,9 @@ Participant <- setRefClass(
       return(mean(grapheme_level_response_times, na.rm = na.rm))
     },
 
-    get_matrix_all_color_responses = function(symbol_filter = NULL) {
-      "Returns an n-by-3 matrix of all color responses data, where
-      each column represents a color axis and each row a response
+    get_nonna_color_resp_mat = function(symbol_filter = NULL) {
+      "Returns an n-by-3 matrix of all non-NA color responses' data,
+      where each column represents a color axis and each row a response
       color. If a character vector is passed to symbol_filter,
       only data from responses associated with graphemes with symbols
       are included."
@@ -121,6 +121,8 @@ Participant <- setRefClass(
       for (grapheme in filtered_graphemes) {
         color_matrix <- rbind(color_matrix, grapheme$response_colors)
       }
+      # remove NA color responses
+      color_matrix <- na.omit(color_matrix)
       return(color_matrix)
     },
 
@@ -491,21 +493,21 @@ Participant <- setRefClass(
     varied their response colors too little, by marking them as invalid.
     Note that there are no absolutely correct values, as what is 'too little
     variation' is highly subjective. You might need to tweak parameters to be
-    in line with your project's criteria. If you use the categorization in a
-    study, make sure to reference synr and specify what parameter values you
-    passed to the function.
+    in line with your project's criteria. If you use the results in a
+    research article, make sure to reference synr and specify what parameter
+    values you passed to the function.
 
     This method relies heavily on the DBSCAN algorithm and the package
-    'dbscan' and involves calculating a synr-specific 'Total Within-Cluster
+    'dbscan', and involves calculating a synr-specific 'Total Within-Cluster
     Variance' (TWCV) score. You can find more information, and
     what the parameters here mean, in
     the documentation for the function \\code{validate_get_twcv}.
     \\subsection{Parameters}{
       \\itemize{
         \\item{\\code{min_complete_graphemes} The minimum number of graphemes
-          with complete responses that the participant data must have for them
-          to not be categorized as invalid based on this criterion. Defaults
-          to 7.
+          with complete (all non-NA color) responses that the participant data
+          must have for them to not be categorized as invalid based on this
+          criterion. Defaults to 7.
         }
         \\item{\\code{eps} Radius of 'epsilon neighborhood' when applying
           DBSCAN clustering. Defaults to 30.
@@ -518,7 +520,8 @@ Participant <- setRefClass(
           DBSCAN cluster to be considered 'tight-knit'. Defaults to 10.
         }
         \\item{\\code{max_prop_single_tight_cluster} Maximum proportion of
-          points allowed to be within a 'tight-knit' cluster. Defaults to 0.6.
+          points allowed to be within a single 'tight-knit' cluster (exceeding
+          this leads to classification as invalid). Defaults to 0.6.
         }
         \\item{\\code{safe_num_clusters} Minimum number of identified DBSCAN
           clusters (including 'noise' cluster) that guarantees validity if
@@ -544,7 +547,8 @@ Participant <- setRefClass(
           valid is TRUE.
         }
         \\item{\\code{twcv} One-element numeric (or NA if there are no/too few
-          complete graphemes) vector indicating participant's calculated TWCV.}
+          graphemes with complete responses) vector indicating participant's
+          calculated TWCV.}
       }
     }
     "
@@ -567,7 +571,7 @@ Participant <- setRefClass(
         ))
       }
 
-      color_matrix <- get_matrix_all_color_responses(
+      color_matrix <- get_nonna_color_resp_mat(
         symbol_filter = symbol_filter
       )
       res_val_list <- validate_get_twcv(

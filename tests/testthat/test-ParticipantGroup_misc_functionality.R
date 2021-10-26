@@ -1,4 +1,4 @@
-context("Grapheme misc. functionality")
+context("ParticipantGroup misc. functionality")
 library(synr)
 
 test_that("has_participants() returns TRUE if there is one participant with an id, added with add_participant", {
