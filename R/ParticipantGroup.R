@@ -52,6 +52,53 @@ ParticipantGroup <- setRefClass(
         return(names(participants))
       },
 
+      get_mean_consistency_scores = function(
+        na.rm = FALSE,
+        symbol_filter = NULL,
+        method="euclidean"
+      ) {
+        "Returns a vector of mean consistency scores for
+        participants in the group. If na.rm=FALSE, for each
+        participant calculates the mean consistency score if
+        all of the participants' graphemes only have response
+        colors that are non-NA, otherwise puts an NA value
+        for that participant in returned vector. If na.rm=TRUE,
+        for each participant calculates the mean consistency score for
+        all of the participant's graphemes that only have
+        non-NA response colors, while ignoring graphemes
+        that have at least one NA response color value. Note that
+        for participants whose graphemes ALL have at least one NA
+        response color value, an NA is put in the returned vector for
+        that participant, regardless of what na.rm is set to.
+
+        If a character vector is passed to symbol_filter, only
+        data from graphemes with symbols in the passed vector
+        are used when calculating each participant's mean score.
+
+        Use the method argument to specify what kind of color space
+        distances should be used when calculating consistency scores
+        (usually 'manhattan' or 'euclidean' - see documentation for
+        the base R dist function for all options)"
+        if (!has_participants()) {
+          stop(paste0("Tried to fetch mean numbers of all colored graphemes ",
+            "for participantgroup without participants. Please add ",
+            "participants before calling get_numbers_all_colored_graphemes()."
+          ))
+        }
+        participant_level_mean_cons <- numeric(length(participants))
+        loop_index <- 1
+        for (p in participants) {
+          p_mean_c_score <- p$get_mean_consistency_score(
+            na.rm = na.rm,
+            symbol_filter = symbol_filter,
+            method = method
+          )
+          participant_level_mean_cons[loop_index] <- p_mean_c_score
+          loop_index <- loop_index + 1
+        }
+        return(participant_level_mean_cons)
+      },
+
       get_mean_response_times = function(
         na.rm = FALSE,
         symbol_filter = NULL
@@ -151,53 +198,6 @@ ParticipantGroup <- setRefClass(
         return(participant_level_num_allcol)
       },
 
-      get_mean_consistency_scores = function(
-        na.rm = FALSE,
-        symbol_filter = NULL,
-        method="euclidean"
-      ) {
-        "Returns a vector of mean consistency scores for
-        participants in the group. If na.rm=FALSE, for each
-        participant calculates the mean consistency score if
-        all of the participants' graphemes only have response
-        colors that are non-NA, otherwise puts an NA value
-        for that participant in returned vector. If na.rm=TRUE,
-        for each participant calculates the mean consistency score for
-        all of the participant's graphemes that only have
-        non-NA response colors, while ignoring graphemes
-        that have at least one NA response color value. Note that
-        for participants whose graphemes ALL have at least one NA
-        response color value, an NA is put in the returned vector for
-        that participant, regardless of what na.rm is set to.
-
-        If a character vector is passed to symbol_filter, only
-        data from graphemes with symbols in the passed vector
-        are used when calculating each participant's mean score.
-
-        Use the method argument to specify what kind of color space
-        distances should be used when calculating consistency scores
-        (usually 'manhattan' or 'euclidean' - see documentation for
-        the base R dist function for all options)"
-        if (!has_participants()) {
-          stop(paste0("Tried to fetch mean numbers of all colored graphemes ",
-            "for participantgroup without participants. Please add ",
-            "participants before calling get_numbers_all_colored_graphemes()."
-          ))
-        }
-        participant_level_mean_cons <- numeric(length(participants))
-        loop_index <- 1
-        for (p in participants) {
-          p_mean_c_score <- p$get_mean_consistency_score(
-            na.rm = na.rm,
-            symbol_filter = symbol_filter,
-            method = method
-          )
-          participant_level_mean_cons[loop_index] <- p_mean_c_score
-          loop_index <- loop_index + 1
-        }
-        return(participant_level_mean_cons)
-      },
-
       save_plots = function(
         path = NULL, file_format='png', dpi = 300,
         cutoff_line = FALSE, mean_line = FALSE,
@@ -225,8 +225,8 @@ ParticipantGroup <- setRefClass(
       recommended by Rothen, Seth, Witzel & Ward (2013) for the L*u*v
       color space. If mean_line=TRUE, the plot will include a green line
       that indicates the participant's mean consistency score for
-      graphemes with all-valid response colors (if the participant 
-      has any such graphemes). If a vector is passed to symbol_filter, 
+      graphemes with all-valid response colors (if the participant
+      has any such graphemes). If a vector is passed to symbol_filter,
       this green line represents the mean score
       for ONLY the symbols included in the filter.
 

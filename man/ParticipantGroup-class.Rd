@@ -135,8 +135,8 @@ otherwise returns FALSE}
       recommended by Rothen, Seth, Witzel & Ward (2013) for the L*u*v
       color space. If mean_line=TRUE, the plot will include a green line
       that indicates the participant's mean consistency score for
-      graphemes with all-valid response colors (if the participant 
-      has any such graphemes). If a vector is passed to symbol_filter, 
+      graphemes with all-valid response colors (if the participant
+      has any such graphemes). If a vector is passed to symbol_filter,
       this green line represents the mean score
       for ONLY the symbols included in the filter.
 
