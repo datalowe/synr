@@ -419,7 +419,7 @@ Participant <- setRefClass(
     },
 
     save_plot = function(
-      path = NULL,
+      save_dir = NULL,
       file_format="png",
       dpi = 300,
       cutoff_line = FALSE,
@@ -471,7 +471,7 @@ Participant <- setRefClass(
       suppressWarnings(
         ggplot2::ggsave(filename = plot_file_name,
                       plot = consistency_plot,
-                      path = path,
+                      save_dir = save_dir,
                       dpi = dpi,
                       ... = ...)
       )
