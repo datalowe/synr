@@ -9,7 +9,7 @@
 #' \deqn{
 #' \frac{\sum_{i=1}^n (x_i-x_m)^2 + (y_i-y_m)^2 + (z-z_m)^2}{n-1}
 #' }{
-#' sum_(i=1)^n ((x - x_m) + (y - y_m) + (z - z_m)) / (n - 1)
+#' sum_(i=1)^n ((x - x_m)^2 + (y - y_m)^2 + (z - z_m)^2) / (n - 1)
 #' }
 #' Where \eqn{X/Y/Z} represent one axis each, \eqn{a_m}{a_m} represents the mean
 #' of all points' coordinates on an axis, and \eqn{n} represents the total

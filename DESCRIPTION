@@ -14,11 +14,12 @@ Imports:
   ggplot2 (>= 3.3.0),
   dbscan (>= 1.1)
 Suggests: 
-    testthat (>= 2.1.0),
-    dplyr (>= 1.0.0),
-    knitr,
-    rmarkdown,
-    tidyr
+  testthat (>= 2.1.0),
+  dplyr (>= 1.0.0),
+  knitr,
+  rmarkdown,
+  tidyr,
+  plotly
 License: MIT + file LICENSE
 URL: https://datalowe.github.io/synr/, https://github.com/datalowe/synr
 Encoding: UTF-8

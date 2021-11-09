@@ -1,0 +1,335 @@
+---
+title: "Validating participant color response data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Validating participant color response data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=6,
+  fig.height=5
+)
+```
+
+```{r setup}
+library(synr)
+library(plotly)
+```
+
+```{r plotly_convenience_functions, include = FALSE}
+plot_color_clusters <- function(
+  color_matrix, 
+  cluster_vector,
+  grapheme_vector=NULL,
+  ax_min = 0, ax_max = 1
+) {
+  if (!is.null(grapheme_vector)) {
+    fig <- plot_ly(
+      x=color_matrix[, 1], # first color axis values
+      y=color_matrix[, 2], # second color axis values
+      z=color_matrix[, 3], # third color axis values
+      type="scatter3d", # use a 3D scatter plot
+      mode="markers", # plot just points by themselves (rather than eg lines)
+      color=cluster_vector, # color points according to which cluster they were assigned to
+      customdata = grapheme_vector, # include graphemes data
+      hovertemplate = 'Axis 1: %{x}<br>Axis 2: %{y}<br>Axis 3: %{z}<br>Grapheme: %{customdata}' # define a template for mouse hover info
+    )
+  } else {
+    fig <- plot_ly(
+      x=color_matrix[, 1], # first color axis values
+      y=color_matrix[, 2], # second color axis values
+      z=color_matrix[, 3], # third color axis values
+      type="scatter3d", # use a 3D scatter plot
+      mode="markers", # plot just points by themselves (rather than eg lines)
+      color=cluster_vector, # color points according to which cluster they were assigned to
+      hovertemplate = 'Axis 1: %{x}<br>Axis 2: %{y}<br>Axis 3: %{z}<br>' # define a template for mouse hover info
+    ) 
+  }
+  
+
+  # make axis titles more descriptive
+  axis_title_font <- list(
+    family = "Courier New, monospace",
+    size = 18,
+    color = "#4f4f4f"
+  )
+  x_axis_layout <- list(
+    title = list(
+      text = "Axis 1",
+      font = axis_title_font
+    ),
+    range = c(ax_min, ax_max)
+  )
+  y_axis_layout <- list(
+    title = list(
+      text = "Axis 2",
+      font = axis_title_font
+    ),
+    range = c(ax_min, ax_max)
+  )
+  z_axis_layout <- list(
+    title = list(
+      text = "Axis 3",
+      font = axis_title_font
+    ),
+    range = c(ax_min, ax_max)
+  )
+  fig <- fig %>% layout(
+    scene = list(
+      xaxis = x_axis_layout, 
+      yaxis = y_axis_layout,
+      zaxis = z_axis_layout
+    )
+  ) %>% 
+    partial_bundle()
+  return(fig)
+}
+
+
+
+plot_actual_colors <- function(
+  color_matrix,
+  hex_codes,
+  grapheme_vector = NULL,
+  ax_min = 0,
+  ax_max = 1
+) {
+  if (!is.null(grapheme_vector)) {
+    fig <- plot_ly(
+      x=color_matrix[, 1], # first color axis values
+      y=color_matrix[, 2], # second color axis values
+      z=color_matrix[, 3], # third color axis values
+      type="scatter3d", # use a 3D scatter plot
+      mode="markers", # plot just points by themselves (rather than eg lines)
+    customdata = grapheme_vector, # include graphemes data
+    marker = list(color = hex_codes),
+    hovertemplate = 'Axis 1: %{x}<br>Axis 2: %{y}<br>Axis 3: %{z}<br>Grapheme: %{customdata}' # define a template for mouse hover info
+    )
+  } else {
+    fig <- plot_ly(
+      x=color_matrix[, 1], # first color axis values
+      y=color_matrix[, 2], # second color axis values
+      z=color_matrix[, 3], # third color axis values
+      type="scatter3d", # use a 3D scatter plot
+      mode="markers", # plot just points by themselves (rather than eg lines)
+      marker = list(color = hex_codes),
+      hovertemplate = 'Axis 1: %{x}<br>Axis 2: %{y}<br>Axis 3: %{z}<br>' # define a template for mouse hover info
+    )
+  }
+
+  # make axis titles more descriptive
+  axis_title_font <- list(
+    family = "Courier New, monospace",
+    size = 18,
+    color = "#4f4f4f"
+  )
+  x_axis_layout <- list(
+    title = list(
+      text = "Axis 1",
+      font = axis_title_font
+    ),
+    range = c(ax_min, ax_max)
+  )
+  y_axis_layout <- list(
+    title = list(
+      text = "Axis 2",
+      font = axis_title_font
+    ),
+    range = c(ax_min, ax_max)
+  )
+  z_axis_layout <- list(
+    title = list(
+      text = "Axis 3",
+      font = axis_title_font
+    ),
+    range = c(ax_min, ax_max)
+  )
+  fig <- fig %>% layout(
+    scene = list(
+      xaxis = x_axis_layout, 
+      yaxis = y_axis_layout,
+      zaxis = z_axis_layout
+    )
+  ) %>% 
+    partial_bundle()
+  return(fig)
+}
+```
+
+## Why validate?
+### Clearly invalid data
+When conducting consistency tests with participants, there might be issues with their response patterns. A clear example of this is if a participant responds with a red color in all but two trials of a consistency test, like this:
+
+```{r echo=FALSE}
+p <- Participant$new()
+g <- Grapheme$new(symbol='A')
+g$set_colors(c("#FF0000", "#000000", "#000000"), "Luv")
+p$add_grapheme(g)
+for (l in LETTERS[2:length(LETTERS)]) {
+  g <- Grapheme$new(symbol=l)
+  g$set_colors(c("#FF0000", "#FF0000", "#FF0000"), "Luv")
+  p$add_grapheme(g)
+}
+p$get_plot()
+```
+
+This would lead to a very low (i. e. very consistent) consistency score. Should this score, and the data, be considered valid? Most synesthesia researchers would say no, and everyone would definitely say no if the participant themselves don't report that they associate the color red with the stimuli used in the test.
+
+Another instance of invalid data would be a participant who has provided 'no color' (if a 'no color'/'null'/'blank' response alternative is provided in the test) color responses for all but three graphemes. Even if the participant would have used one color for each grapheme and thus be very consistent, there's a high risk that the participant simply memorized their previous responses throughout the test since they would have only had three graphemes to keep track of.
+
+### Clearly valid data
+A clear example of valid response data is if a participant has used very different colors, like this:
+
+```{r echo=FALSE}
+# helper function for generating random colors
+get_random_color <- function() {
+  r_val <- runif(1, 0, 1)
+  g_val <- runif(1, 0, 1)
+  b_val <- runif(1, 0, 1)
+  alpha_val <- runif(1, 0, 1)
+  hex_val <- rgb(r_val, g_val, b_val, alpha_val)
+  return(hex_val)
+}
+
+p <- Participant$new(id="1")
+for (l in LETTERS) {
+  g <- Grapheme$new(symbol=l)
+  g$set_colors(c(get_random_color(), get_random_color(), get_random_color()), "Luv")
+  p$add_grapheme(g)
+}
+p$get_plot()
+````
+
+### Possibly invalid data
+Many participants have responses patterns that are harder to judge as valid or invalid, such as participants who have:
+
+* Used a red color for just 50% of all trials. 
+* Used different shades of red and yellow for 90% of all trials.
+* Used black, white and blue for all trials.
+
+Should some or all of these be considered to be examples of invalid data? Opinions are bound to differ.
+
+### Why validate: summary
+The basic issue is that participants might give responses that vary too little in color for the consistency scores to mean anything. It is of course at least theoretically possible that someone would truly only have synesthetic associations with a single color. The consistency test, however, cannot determine whether this is the case, or if the participant for instance just likes the color red and keeps responding with it since that's the color that comes to mind if they don't have a stimulus-specific association. 
+
+## Previously used validation procedures
+Different research studies have handled possibly invalid data differently. Some (e. g. Cuskley et al., 2019) have opted for excluding participants which respond with 'no color' for more than a certain proportion of all trials. Others (TO DO: add reference here) have opted for (also) excluding participants who respond with 'the same color' in too high a proportion of trials. Yet others (TO DO: add reference) have excluded participants based on human judgments of whether data are inconsistent or not.
+
+### Data validation challenges
+Excluding participants based on the proportion or number of missing and/or 'no color' responses is relatively straight-forward, though there is currently no widely agreed upon threshold.
+
+Excluding participants based on responses that do have an actual color, but where there is too little 'color variation', raises difficult questions which are briefly discussed below.
+
+If using a criterion of allowing say only 60% of all responses to be of the 'same color', how does one define boundaries of what a color is? For instance, do teal, turquoise and cyan count as different colors? In the image below, where would you say that the 'blue' graphemes end, and the 'blue-green' graphemes start?
+
+```{r echo=FALSE}
+# helper function
+get_bluegreenish_color <- function(green_val) {
+  hex_val <- rgb(0, green_val, 1, 1)
+  return(hex_val)
+}
+
+p <- Participant$new(id="1")
+green_vals <- seq(0, 1, length.out = length(LETTERS) * 3)
+val_counter <- 1
+for (l in LETTERS) {
+  g <- Grapheme$new(symbol=l)
+  g$set_colors(
+    c(
+      get_bluegreenish_color(green_vals[val_counter]),
+      get_bluegreenish_color(green_vals[val_counter + 1]),
+      get_bluegreenish_color(green_vals[val_counter + 2])
+    ),
+    "Luv"
+  )
+  p$add_grapheme(g)
+  val_counter <- val_counter + 3
+}
+p$get_plot()
+````
+Even if one is able to consistently define color boundaries, what if a participant happens to respond with colors that are right at the 'border' of two color ranges? Relating back to the previous example, if you've defined where 'blue' ends and 'bluegreen' starts, a participant might give responses like this:
+
+```{r echo=FALSE}
+p <- Participant$new(id="1")
+green_vals <- seq(0.65, 0.8, length.out = length(LETTERS) * 3)
+val_counter <- 1
+for (l in LETTERS) {
+  g <- Grapheme$new(symbol=l)
+  g$set_colors(
+    c(
+      get_bluegreenish_color(green_vals[val_counter]),
+      get_bluegreenish_color(green_vals[val_counter + 1]),
+      get_bluegreenish_color(green_vals[val_counter + 2])
+    ),
+    "Luv"
+  )
+  p$add_grapheme(g)
+  val_counter <- val_counter + 3
+}
+p$get_plot()
+````
+It might be reasonable to have placed the color border between 'blue' and 'blue-green' somewhere right around the middle of the above values. If categorizing response colors based on these boundaries, then, the participant would be considered to have 50% 'blue', and 50% 'blue-green' responses. But the color differences are so small, that a human observer who doesn't know anything about the color borders would probably say that the participant has only responded with one color.
+
+## Finding a general validation procedure
+### Simple measures of spread
+In order to get away from the arbitrariness of pre-defined 'color ranges', as discussed above, one might consider using a general measurement of 'spread', similar to how we generally use variance and standard deviation in statistics. One might consider response colors as points in 3D color space, with e. g. axes 'red', 'blue' and 'green' (if using RGB color space). An example of this can be seen in the interactive graph below. Once you think of color data in this manner, it makes sense to base measures of spread on the distances between color points. A very simple approach might be to:
+
+1. Calculate where the 'middle' ('center of gravity') of all points is located. (in the interactive graph below, the 'middle' is marked with a black point)
+2. For each measured color point, calculate its distance from the 'middle'.
+3. Add up all these distances and divide by the total number of color points.
+
+This would give a measure of spread based on the 'mean distance from center of gravity (midpoint)'. To achieve something more analogous to variance as used with one-dimensional data, one can use _squared_ distances from the 'middle' in steps 2 and 3. If you're interested in the details of these calculations, see 'More information' at the end of this vignette.
+
+The problem with simple measures of spread is that they are very sensitive to outliers and don't take into account that responses might be 'grouped together'. For instance, consider a participant who has given black color responses 80% of the time, and white color responses the rest of the time. To a human observer, it would appear that the participant has used a black color far too much for the data to say anything. But simple measures of spread would indicate that the participant response colors are very varied; since black and white are extreme opposites, the 'middle' will end up quite far from both groups of responses, and hence the (squared) distances will be long. 
+
+```{r echo=FALSE}
+# helper function for generating random bright colors
+get_random_color_bright_color <- function() {
+  r_val <- runif(1, 0.3, 1)
+  g_val <- runif(1, 0.3, 1)
+  b_val <- runif(1, 0.3, 1)
+  hex_val <- rgb(r_val, g_val, b_val, 1)
+  return(hex_val)
+}
+p <- Participant$new(id="1")
+for (dig in as.character(0:9)) {
+  g <- Grapheme$new(symbol=dig)
+  g$set_colors(
+    c(
+      get_random_color_bright_color(),
+      get_random_color_bright_color(),
+      get_random_color_bright_color()
+    ),
+    "sRGB"
+  )
+  p$add_grapheme(g)
+}
+color_mat <- p$get_nonna_color_resp_mat()
+hex_vals <- apply(color_mat, 1, function(x) {rgb(x[1], x[2], x[3])})
+
+mid_point <- apply(color_mat, 2, function(x) {mean(x)})
+mid_hex <- rgb(0, 0, 0)
+
+plot_actual_colors(
+  rbind(color_mat, mid_point),
+  c(hex_vals, mid_hex),
+  c(rep(0:9, each=3), 'MIDDLE')
+)
+````
+
+### Clustering
+One way to take into account that there might be patterns to response colors is to use so-called clustering. This is a general statistical approach for identifying groups of data that belong together and includes a number of specific methods, such as 'k-means clustering' and 'Density-based spatial clustering of applications with noise' (DBSCAN). 
+
+
+## More information
+This 3-minute YouTube video gives a brief introduction to DBSCAN: [https://www.youtube.com/watch?v=_A9Tq6mGtLI](https://www.youtube.com/watch?v=_A9Tq6mGtLI).
+
+
+
+## References
+Cuskley, C.1, Dingemanse, M.1, van Leeuwen, T. & Kirby, S. 2019. Cross-modal associations and synaesthesia: Categorical perception and structure in vowel-colour mappings in a large online sample. _Behaviour Research Methods_, doi: 10.3758/s13428-019-01203-7

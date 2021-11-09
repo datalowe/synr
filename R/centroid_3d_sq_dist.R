@@ -5,7 +5,7 @@
 #' \deqn{
 #' \frac{\sum_{i=1}^n (x_i-x_m)^2 + (y_i-y_m)^2 + (z-z_m)^2}
 #' }{
-#' sum_(i=1)^n ((x - x_m) + (y - y_m) + (z - z_m))
+#' sum_(i=1)^n ((x - x_m)^2 + (y - y_m)^2 + (z - z_m)^2)
 #' }
 #' Where \eqn{X/Y/Z} represent one axis each, \eqn{a_m} represents the mean
 #' of all points' coordinates on an axis, and \eqn{n} represents the total
