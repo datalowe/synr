@@ -50,7 +50,7 @@ ParticipantGroup <- setRefClass(
       symbol_filter = NULL
     ) {
     "
-    Checks if this participants' data are valid based on passed arguments.
+    Checks if participants' data are valid based on passed arguments.
     This method aims to identify participants who had too few responses or
     varied their response colors too little, by marking them as invalid.
     Note that there are no absolutely correct values, as what is 'too little
