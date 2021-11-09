@@ -219,7 +219,7 @@ Should some or all of these be considered to be examples of invalid data? Opinio
 The basic issue is that participants might give responses that vary too little in color for the consistency scores to mean anything. It is of course at least theoretically possible that someone would truly only have synesthetic associations with a single color. The consistency test, however, cannot determine whether this is the case, or if the participant for instance just likes the color red and keeps responding with it since that's the color that comes to mind if they don't have a stimulus-specific association. 
 
 ## Previously used validation procedures
-Different research studies have handled possibly invalid data differently. Some (e. g. Cuskley et al., 2019) have opted for excluding participants which respond with 'no color' for more than a certain proportion of all trials. Others (TO DO: add reference here) have opted for (also) excluding participants who respond with 'the same color' in too high a proportion of trials. Yet others (TO DO: add reference) have excluded participants based on human judgments of whether data are invalid or not.
+Different research studies have handled possibly invalid data differently. Some (e.g. Cuskley et al., 2019) have opted for excluding participants which respond with 'no color' for more than a certain proportion of all trials. Others (TODO: add reference here) have opted for (also) excluding participants who respond with 'the same color' in too high a proportion of trials. Yet others (TODO: add reference) have excluded participants based on human judgments of whether data are invalid or not.
 
 ### Data validation challenges
 Excluding participants based on the proportion or number of missing and/or 'no color' responses is relatively straight-forward, though there is currently no widely agreed upon threshold.
@@ -280,13 +280,13 @@ It might be reasonable to have placed the color border between 'blue' and 'blue-
 
 ## Finding a general validation procedure
 ### Simple measures of spread
-In order to get away from the arbitrariness of pre-defined 'color ranges', as discussed above, one option would be to use a general measurement of 'spread', similar to how we generally use variance and standard deviation in statistics. One might consider response colors as points in 3D color space, with e. g. axes 'red', 'blue' and 'green' (if using RGB color space). An example of this can be seen in the interactive graph below. Once you think of color data in this manner, it makes sense to base measures of spread on the distances between color points. A very simple approach might be to:
+In order to get away from the arbitrariness of pre-defined 'color ranges', as discussed above, one option would be to use a general measurement of 'spread', similar to how we generally use variance and standard deviation in statistics. One might consider response colors as points in 3D color space, with e.g. axes 'red', 'blue' and 'green' (if using RGB color space). An example of this can be seen in the interactive graph below. Once you think of color data in this manner, it makes sense to base measures of spread on the distances between color points. A very simple approach might be to:
 
 1. Calculate where the 'middle' ('center of gravity') of all points is located. (in the interactive graph below, the 'middle' is marked with a black point)
 2. For each measured color point, calculate its distance from the 'middle'.
 3. Add up all these distances and divide by the total number of color points.
 
-This would give a measure of spread based on the 'mean distance from center of gravity (midpoint)'. To achieve something more analogous to variance as used with one-dimensional data, one may use _squared_ distances from the 'middle' in steps 2 and 3. If you're interested in the details of these calculations, see 'More information' at the end of this vignette.
+This would give a measure of spread based on the 'mean distance from center of gravity (midpoint)'. To achieve something more analogous to variance as used with one-dimensional data, one may use _squared_ distances from the 'middle' in steps 2 and 3. If you're interested in the details of these calculations, see 'More information' at the end of this article.
 
 ```{r echo=FALSE}
 # helper function for generating random bright colors
@@ -326,7 +326,7 @@ plot_actual_colors(
 The problem with simple measures of spread is that they are very sensitive to outliers and don't take into account that responses might be 'grouped together'. For instance, consider a participant who has given black color responses 80% of the time, and white color responses the rest of the time. To a human observer, it would appear that the participant has used a black color far too much for the data to say anything. But simple measures of spread would indicate that the participant response colors are very varied; since black and white are extreme opposites, the 'middle' will end up quite far from both groups of responses, and hence the (squared) distances will be long. 
 
 ### Clustering
-One way to take into account that there might be patterns to response colors is to use so-called clustering. This is a general statistical approach for identifying groups of data that belong together and includes a number of specific methods, such as 'k-means clustering' and 'Density-based spatial clustering of applications with noise' (DBSCAN). DBSCAN is a good fit for grouping color responses since it doesn't make any assumptions about the shape or number of clusters. See 'More information' at the end of this vignette to find out more about DBSCAN itself.
+One way to take into account that there might be patterns to response colors is to use so-called clustering (TODO: add reference). This is a general statistical approach for identifying groups of data that belong together and includes a number of specific methods, such as 'k-means clustering' and 'Density-based spatial clustering of applications with noise' (DBSCAN; TODO: add reference). DBSCAN is a good fit for grouping color responses since it doesn't make any assumptions about the shape or number of clusters. See 'More information' at the end of this article to find out more about DBSCAN itself.
 
 To understand what clustering and specifically DBSCAN does with color data, visualization helps. Let's say a participant has a set of response colors as described by this interactive graph:
 
@@ -445,7 +445,45 @@ plot_actual_colors(
 DBSCAN would consider all of the above points to form a single cluster, since every single point has at least one 'neighbor' linking it to the greater cluster. Granted, it's unlikely that a participant will respond in this particular manner, but the same phenomenon of fairly spread out points being 'chained together' does happen in real data. Thus, simply counting the number of clusters isn't enough to be able to determine the validity of color response data.
 
 ### Combining measure of spread and DBSCAN
-TO DO
+In order to take into account all relevant information, synr uses an approach for validating participant data that is based on combining DBSCAN and the 'variance-like' measure of spread described earlier.
+
+As part of the validation procedure, synr calculates _total within-cluster variance_ (TWCV). This is a modified measure of the data's total variance that takes into account clustering of data. You can find details about this by reading the help documentation for the synr `total_within_cluster_variance` function.
+
+What follows is a rough overview of an example of synr's validation procedure being applied. It is assumed that participant data are from a consistency test where each grapheme was presented for 3 trials. Many aspects of the validation are specified by you as the user, but example values (marked in bold) are used to make the example more concrete.
+
+TODO: add step where data from graphemes with non-complete color response data are disregarded, once this has been implemented.
+
+1. If a participant has less than __6__ graphemes with complete color responses (3 color responses that aren't of type 'blank'/'no color'), their data are directly classified as invalid.
+2. DBSCAN is applied to find clusters of color points.
+3. The 'variance' of each cluster is calculated.
+4. The TWCV is calculated.
+4. If a single low-variance cluster, ie a 'tight-knit' cluster, includes more than __60%__ of all color points, the participant data are classified as invalid.
+
+Once steps 1-4 are cleared: 
+
+* If DBSCAN identified __4__ or more clusters (roughly meaning that 4 or more colors were each used for multiple responses), the participant data are classified as valid.
+* If the TWCV score was __250__ or more, the participant data are classified as valid.
+
+In other words, if the participant data had few clusters, _and_ their TWCV score was below 250, they are classified as invalid.
+
+TODO: add explanation that 'noise' cluster is only counted if it includes the minimum number of cluster points, once this has been implemented in code)
+
+This approach enables invalidating data from participants who used one or just a few colors too much, while still validating different valid patterns of responding.
+
+## Applying synr's validation procedure, `check_valid_get_twcv_scores`
+You first need a participantgroup (see the quickstart/main tutorial if this is new to you)
+```{r}
+# TODO: update with long format data/function once bigger sample df has been fixed
+pg <- create_participantgroup_widedata(
+  synr_example_full,
+  n_trials_per_grapheme = 3,
+  participant_col_name = 'participant_id',
+  symbol_col_regex = 'symbol',
+  color_col_regex = 'color',
+  color_space_spec = 'Luv'
+)
+```
+Note that the color space specification (`color_space_spec`) will also affect synr's validation procedure. It is recommended that you use CIELUV ('Luv') or some other color space that aims to be in line with human perception. You might have noticed that RGB was used in the interactive graphs earlier as it's fairly intuitive, but it is _not_ suitable for validation procedures. 
 
 
 
@@ -458,7 +496,7 @@ TO DO
 Official documentation for the `dbscan` package: [https://www.rdocumentation.org/packages/dbscan/versions/1.1-8](https://www.rdocumentation.org/packages/dbscan/)
 
 ### Data validation in synr
-More details about data validation-related procedures can be found in synr's documentation for the following functions (access the documentation by running e. g. `?synr::centroid_3d_sq_dist`):
+More details about data validation-related procedures can be found in synr's documentation for the following functions (access the documentation by running e.g. `?synr::centroid_3d_sq_dist`):
 
 * `centroid_3d_sq_dist`
 * `total_within_cluster_variance`
