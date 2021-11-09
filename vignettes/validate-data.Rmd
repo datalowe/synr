@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(synr)
+library(dbscan)
 library(plotly)
 ```
 
@@ -203,10 +204,10 @@ for (l in LETTERS) {
   p$add_grapheme(g)
 }
 p$get_plot()
-````
+```
 
 ### Possibly invalid data
-Many participants have responses patterns that are harder to judge as valid or invalid, such as participants who have:
+Many participants have response patterns that are harder to judge as valid or invalid, such as participants who have:
 
 * Used a red color for just 50% of all trials. 
 * Used different shades of red and yellow for 90% of all trials.
@@ -218,7 +219,7 @@ Should some or all of these be considered to be examples of invalid data? Opinio
 The basic issue is that participants might give responses that vary too little in color for the consistency scores to mean anything. It is of course at least theoretically possible that someone would truly only have synesthetic associations with a single color. The consistency test, however, cannot determine whether this is the case, or if the participant for instance just likes the color red and keeps responding with it since that's the color that comes to mind if they don't have a stimulus-specific association. 
 
 ## Previously used validation procedures
-Different research studies have handled possibly invalid data differently. Some (e. g. Cuskley et al., 2019) have opted for excluding participants which respond with 'no color' for more than a certain proportion of all trials. Others (TO DO: add reference here) have opted for (also) excluding participants who respond with 'the same color' in too high a proportion of trials. Yet others (TO DO: add reference) have excluded participants based on human judgments of whether data are inconsistent or not.
+Different research studies have handled possibly invalid data differently. Some (e. g. Cuskley et al., 2019) have opted for excluding participants which respond with 'no color' for more than a certain proportion of all trials. Others (TO DO: add reference here) have opted for (also) excluding participants who respond with 'the same color' in too high a proportion of trials. Yet others (TO DO: add reference) have excluded participants based on human judgments of whether data are invalid or not.
 
 ### Data validation challenges
 Excluding participants based on the proportion or number of missing and/or 'no color' responses is relatively straight-forward, though there is currently no widely agreed upon threshold.
@@ -251,7 +252,8 @@ for (l in LETTERS) {
   val_counter <- val_counter + 3
 }
 p$get_plot()
-````
+```
+
 Even if one is able to consistently define color boundaries, what if a participant happens to respond with colors that are right at the 'border' of two color ranges? Relating back to the previous example, if you've defined where 'blue' ends and 'bluegreen' starts, a participant might give responses like this:
 
 ```{r echo=FALSE}
@@ -272,20 +274,19 @@ for (l in LETTERS) {
   val_counter <- val_counter + 3
 }
 p$get_plot()
-````
+```
+
 It might be reasonable to have placed the color border between 'blue' and 'blue-green' somewhere right around the middle of the above values. If categorizing response colors based on these boundaries, then, the participant would be considered to have 50% 'blue', and 50% 'blue-green' responses. But the color differences are so small, that a human observer who doesn't know anything about the color borders would probably say that the participant has only responded with one color.
 
 ## Finding a general validation procedure
 ### Simple measures of spread
-In order to get away from the arbitrariness of pre-defined 'color ranges', as discussed above, one might consider using a general measurement of 'spread', similar to how we generally use variance and standard deviation in statistics. One might consider response colors as points in 3D color space, with e. g. axes 'red', 'blue' and 'green' (if using RGB color space). An example of this can be seen in the interactive graph below. Once you think of color data in this manner, it makes sense to base measures of spread on the distances between color points. A very simple approach might be to:
+In order to get away from the arbitrariness of pre-defined 'color ranges', as discussed above, one option would be to use a general measurement of 'spread', similar to how we generally use variance and standard deviation in statistics. One might consider response colors as points in 3D color space, with e. g. axes 'red', 'blue' and 'green' (if using RGB color space). An example of this can be seen in the interactive graph below. Once you think of color data in this manner, it makes sense to base measures of spread on the distances between color points. A very simple approach might be to:
 
 1. Calculate where the 'middle' ('center of gravity') of all points is located. (in the interactive graph below, the 'middle' is marked with a black point)
 2. For each measured color point, calculate its distance from the 'middle'.
 3. Add up all these distances and divide by the total number of color points.
 
-This would give a measure of spread based on the 'mean distance from center of gravity (midpoint)'. To achieve something more analogous to variance as used with one-dimensional data, one can use _squared_ distances from the 'middle' in steps 2 and 3. If you're interested in the details of these calculations, see 'More information' at the end of this vignette.
-
-The problem with simple measures of spread is that they are very sensitive to outliers and don't take into account that responses might be 'grouped together'. For instance, consider a participant who has given black color responses 80% of the time, and white color responses the rest of the time. To a human observer, it would appear that the participant has used a black color far too much for the data to say anything. But simple measures of spread would indicate that the participant response colors are very varied; since black and white are extreme opposites, the 'middle' will end up quite far from both groups of responses, and hence the (squared) distances will be long. 
+This would give a measure of spread based on the 'mean distance from center of gravity (midpoint)'. To achieve something more analogous to variance as used with one-dimensional data, one may use _squared_ distances from the 'middle' in steps 2 and 3. If you're interested in the details of these calculations, see 'More information' at the end of this vignette.
 
 ```{r echo=FALSE}
 # helper function for generating random bright colors
@@ -320,20 +321,150 @@ plot_actual_colors(
   c(hex_vals, mid_hex),
   c(rep(0:9, each=3), 'MIDDLE')
 )
-````
+```
+
+The problem with simple measures of spread is that they are very sensitive to outliers and don't take into account that responses might be 'grouped together'. For instance, consider a participant who has given black color responses 80% of the time, and white color responses the rest of the time. To a human observer, it would appear that the participant has used a black color far too much for the data to say anything. But simple measures of spread would indicate that the participant response colors are very varied; since black and white are extreme opposites, the 'middle' will end up quite far from both groups of responses, and hence the (squared) distances will be long. 
 
 ### Clustering
-One way to take into account that there might be patterns to response colors is to use so-called clustering. This is a general statistical approach for identifying groups of data that belong together and includes a number of specific methods, such as 'k-means clustering' and 'Density-based spatial clustering of applications with noise' (DBSCAN). 
+One way to take into account that there might be patterns to response colors is to use so-called clustering. This is a general statistical approach for identifying groups of data that belong together and includes a number of specific methods, such as 'k-means clustering' and 'Density-based spatial clustering of applications with noise' (DBSCAN). DBSCAN is a good fit for grouping color responses since it doesn't make any assumptions about the shape or number of clusters. See 'More information' at the end of this vignette to find out more about DBSCAN itself.
+
+To understand what clustering and specifically DBSCAN does with color data, visualization helps. Let's say a participant has a set of response colors as described by this interactive graph:
+
+```{r echo=FALSE}
+p_dbscan_ex <- Participant$new(id="1")
+resp_colors <- c(
+  '#FFFFFF', '#050505', '#FAFAFA',
+  '#FF0000', '#151515', '#EE1100',
+  '#00DD22', '#DFDFDF', '#CCCC00',
+  '#3300EE', '#FBFBFB', '#FDFEFF',
+  '#FE0505', '#FD2233', '#333333',
+  '#EEEEEE', '#222222', '#F0F0F0',
+  '#EE5555', '#FA0055', '#FE0344'
+)
+resp_counter <- 1
+for (dig in as.character(0:6)) {
+  g <- Grapheme$new(symbol=dig)
+  g$set_colors(
+    c(
+      resp_colors[resp_counter],
+      resp_colors[resp_counter+1],
+      resp_colors[resp_counter+2]
+    ),
+    "sRGB"
+  )
+  p_dbscan_ex$add_grapheme(g)
+  resp_counter <- resp_counter + 3
+}
+color_mat_dbscan_ex <- p_dbscan_ex$get_nonna_color_resp_mat()
+hex_vals_dbscan_ex <- apply(color_mat_dbscan_ex, 1, function(x) {rgb(x[1], x[2], x[3])})
+
+plot_actual_colors(
+  color_mat_dbscan_ex,
+  hex_vals_dbscan_ex,
+  rep(0:6, each=3)
+)
+```
+To a typical human observer, it looks like there are groups of black, red and white color responses, respectively. Apart from these, there are a few color responses that don't seem to be part of a particular pattern. (the white color points are hard to make out in the graph because of the white background - it might help to touch/hover with your mouse around the 'white corner' to have them highlighted) 
+
+Applying DBSCAN and __recoloring color points according to what cluster they belong to__, the result might look something like this:
+```{r echo=FALSE}
+dbscan_res_dbscan_ex <- dbscan(color_mat_dbscan_ex, eps = 0.15, minPts = 3)
+
+plot_color_clusters(
+  color_mat_dbscan_ex,
+  dbscan_res_dbscan_ex$cluster,
+  rep(0:6, each=3)
+)
+```
+The following clusters have been identified:
+
+* Cluster 0: 'noise' cluster, which includes all points that weren't included in a specific cluster.
+* Cluster 1: white color responses (presented in dark blue).
+* Cluster 2: intensely red color responses (presented in a blue-green color).
+* Cluster 3: black color responses (presented in green).
+* Cluster 4: red, but less intense, color responses (presented in a yellow color).
+
+You might need to go back and forth a few times between the previous two graphs for them to make sense.
+
+We might agree with how DBSCAN clustered together 'white' (cluster 1) and 'black' (cluster 3) color points, respectively. Depending on how you perceive and define colors, you might agree or disagree with how the 'red' color points were grouped into two separate clusters. The point is that using DBSCAN, one can be explicit about how color points should be clustered together instead of relying on post-hoc subjective judgments or arbitrary pre-defined 'color borders' as discussed earlier. How this clustering happens is primarily determined by 'epsilon' (`eps`) and 'minimum points in cluster' (`minPts`) parameters - see the 'More information' section.
+
+DBSCAN on its own is however _not_ sufficient for validating color response data. The reason is that it doesn't take into account what happens 'within' clusters. A participant might vary their responses so much that they all end up in the 'noise' cluster. Or, they might have responses similar to what's seen below:
+
+```{r echo=FALSE}
+get_bluereddish_color <- function(red_val) {
+  hex_val <- rgb(red_val, 0, 1, 1)
+  return(hex_val)
+}
+
+p <- Participant$new(id="1")
+letts1 <- LETTERS[1:6]
+letts2 <- LETTERS[7:12]
+
+green_vals <- seq(0, 1, length.out = length(letts1) * 3)
+red_vals <- seq(0, 1, length.out = length(letts1) * 3)
+val_counter <- 1
+for (l in letts1) {
+  g <- Grapheme$new(symbol=l)
+  g$set_colors(
+    c(
+      get_bluegreenish_color(green_vals[val_counter]),
+      get_bluegreenish_color(green_vals[val_counter + 1]),
+      get_bluegreenish_color(green_vals[val_counter + 2])
+    ),
+    "sRGB"
+  )
+  p$add_grapheme(g)
+  val_counter <- val_counter + 3
+}
+
+red_vals <- seq(0, 1, length.out = length(letts1) * 3)
+val_counter <- 1
+for (l in letts2) {
+  g <- Grapheme$new(symbol=l)
+  g$set_colors(
+    c(
+      get_bluereddish_color(green_vals[val_counter]),
+      get_bluereddish_color(green_vals[val_counter + 1]),
+      get_bluereddish_color(green_vals[val_counter + 2])
+    ),
+    "sRGB"
+  )
+  p$add_grapheme(g)
+  val_counter <- val_counter + 3
+}
+
+color_mat <- p$get_nonna_color_resp_mat()
+hex_vals <- apply(color_mat, 1, function(x) {rgb(x[1], x[2], x[3])})
+
+plot_actual_colors(
+  color_mat,
+  hex_vals,
+  c(rep(letts1, each=3), rep(letts2, each=3))
+)
+```
+DBSCAN would consider all of the above points to form a single cluster, since every single point has at least one 'neighbor' linking it to the greater cluster. Granted, it's unlikely that a participant will respond in this particular manner, but the same phenomenon of fairly spread out points being 'chained together' does happen in real data. Thus, simply counting the number of clusters isn't enough to be able to determine the validity of color response data.
+
+### Combining measure of spread and DBSCAN
+TO DO
 
 
 
 
 
 ## More information
-This 3-minute YouTube video gives a brief introduction to DBSCAN: [https://www.youtube.com/watch?v=_A9Tq6mGtLI](https://www.youtube.com/watch?v=_A9Tq6mGtLI).
+### DBSCAN
+3-minute YouTube video giving a brief introduction to DBSCAN: [https://www.youtube.com/watch?v=_A9Tq6mGtLI](https://www.youtube.com/watch?v=_A9Tq6mGtLI).
 
+Official documentation for the `dbscan` package: [https://www.rdocumentation.org/packages/dbscan/versions/1.1-8](https://www.rdocumentation.org/packages/dbscan/)
 
+### Data validation in synr
+More details about data validation-related procedures can be found in synr's documentation for the following functions (access the documentation by running e. g. `?synr::centroid_3d_sq_dist`):
 
+* `centroid_3d_sq_dist`
+* `total_within_cluster_variance`
+* `validate_get_twcv`
+
+You can also find higher-level information in the documentation for the `check_valid_get_twcv_scores` method by running `?synr::ParticipantGroup`.
 
 ## References
 Cuskley, C.1, Dingemanse, M.1, van Leeuwen, T. & Kirby, S. 2019. Cross-modal associations and synaesthesia: Categorical perception and structure in vowel-colour mappings in a large online sample. _Behaviour Research Methods_, doi: 10.3758/s13428-019-01203-7
