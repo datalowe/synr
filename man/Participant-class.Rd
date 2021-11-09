@@ -17,7 +17,7 @@ Set at class new() call.}
 \item{\code{test_date}}{A one-element Date vector which specifies the date
 on which the participant did the consistency test.}
 
-\item{\code{graphemes}}{A list of \code{\link[synr]{Grapheme}} class instances.}
+\item{\code{graphemes}}{A list of \code{\link{Grapheme}} class instances.}
 }}
 
 \section{Methods}{
@@ -259,7 +259,7 @@ grapheme in the participant's graphemes list,
 otherwise returns FALSE}
 
 \item{\code{save_plot(
-  path = NULL,
+  save_dir = NULL,
   file_format = "png",
   dpi = 300,
   cutoff_line = FALSE,

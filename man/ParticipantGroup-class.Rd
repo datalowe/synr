@@ -11,7 +11,7 @@ A Reference Class for representing a group of consistency test participants
 \section{Fields}{
 
 \describe{
-\item{\code{participants}}{A list of \code{\link[synr]{Participant}}
+\item{\code{participants}}{A list of \code{\link{Participant}}
 class instances.}
 }}
 

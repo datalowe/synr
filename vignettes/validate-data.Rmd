@@ -326,8 +326,12 @@ plot_actual_colors(
 One way to take into account that there might be patterns to response colors is to use so-called clustering. This is a general statistical approach for identifying groups of data that belong together and includes a number of specific methods, such as 'k-means clustering' and 'Density-based spatial clustering of applications with noise' (DBSCAN). 
 
 
+
+
+
 ## More information
 This 3-minute YouTube video gives a brief introduction to DBSCAN: [https://www.youtube.com/watch?v=_A9Tq6mGtLI](https://www.youtube.com/watch?v=_A9Tq6mGtLI).
+
 
 
 

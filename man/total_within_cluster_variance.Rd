@@ -13,6 +13,9 @@ row corresponds to a single point in 3D space.}
 \item{cluster_vector}{A numerical vector of cluster assignments, of
 length n (ie one assignment per point).}
 }
+\value{
+A one-element numeric vector holding calculated variance
+}
 \description{
 Calculates \emph{Total Within Cluster Variance(TWCV)} of
 3D points. This function is normally only used
@@ -35,3 +38,6 @@ degrees of freedom).
 }
 }
 
+\seealso{
+\code{\link{centroid_3d_sq_dist}}
+}

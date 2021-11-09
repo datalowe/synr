@@ -17,7 +17,8 @@
 
 #' @param point_matrix An n-by-3 numerical matrix where each
 #' row corresponds to a single point in 3D space.
-#' @return A one-element numeric vector holding
+#' @return A one-element numeric vector holding calculated variance
+#' @seealso \code{\link{centroid_3d_sq_dist}}
 
 point_3d_variance <- function(
   point_matrix
