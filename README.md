@@ -32,4 +32,4 @@ Using the resulting object (`pgroup`), you can call various methods. A couple of
 <img src="man/figures/example_consistency_plot.png" width="400" alt="Example bar plot of grapheme-level consistency scores">
 
 ### Detailed usage information
-More details on required data format and how to use synr itself can be found in the [package's vignettes](https://datalowe.github.io/synr/articles), which are also included in the package itself (run `help(synr)` to find them).
+More details on required data format and how to use synr itself can be found in the [package's vignettes](https://datalowe.github.io/synr/articles/), which are also included in the package itself (run `help(synr)` to find them).

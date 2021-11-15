@@ -5,3 +5,9 @@
 #' \verb{browseVignettes(package = "synr")}
 #'
 "_PACKAGE"
+
+# Suppress R CMD check note
+#' @importFrom dbscan dbscan
+#' @importFrom ggplot2 ggplot
+#' @importFrom data.table data.table
+NULL
