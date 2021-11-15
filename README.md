@@ -1,7 +1,7 @@
 # synr <img src="man/figures/synr_logo.png" align="right" width="120" />
 [![Build Status](https://app.travis-ci.com/datalowe/synr.svg?branch=master)](https://app.travis-ci.com/datalowe/synr)
 
-This is an [R](https://www.r-project.org/) package for working with data resulting from [grapheme-color synesthesia](https://en.wikipedia.org/wiki/Grapheme%E2%80%93color_synesthesia)-related [consistency tests](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4118597/#S4title). synr provides tools for exploring test data, including visualizing single participant's data, and applying summarizing functions such as calculating [color variation/consistency scores](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4118597/#S4title) or classifying participant data as valid or invalid.
+This is an [R](https://www.r-project.org/) package for working with data resulting from [grapheme-color synesthesia](https://en.wikipedia.org/wiki/Grapheme%E2%80%93color_synesthesia)-related [consistency tests](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4118597/#S4title). synr provides tools for exploring test data, including visualizing a single participant's data, and applying summarizing functions such as calculating [color variation/consistency scores](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4118597/#S4title) or classifying participant data as valid or invalid.
 
 ## Installation
 TODO: This section will be updated once it's been decided where to make synr binaries available. 

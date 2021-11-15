@@ -451,7 +451,7 @@ As part of the validation procedure, synr calculates _total within-cluster varia
 
 What follows is a rough overview of an example of synr's validation procedure being applied. It is assumed that participant data are from a consistency test where each grapheme was presented for 3 trials. Many aspects of the validation are specified by you as the user, but example values (marked in bold) are used to make the example more concrete.
 
-TODO: add step where data from graphemes with non-complete color response data are disregarded, once this has been implemented.
+(TODO: add step where data from graphemes with non-complete color response data are disregarded, once this has been implemented.)
 
 1. If a participant has less than __6__ graphemes with complete color responses (3 color responses that aren't of type 'blank'/'no color'), their data are directly classified as invalid.
 2. DBSCAN is applied to find clusters of color points.
@@ -466,7 +466,7 @@ Once steps 1-4 are cleared:
 
 In other words, if the participant data had few clusters, _and_ their TWCV score was below 250, they are classified as invalid.
 
-TODO: add explanation that 'noise' cluster is only counted if it includes the minimum number of cluster points, once this has been implemented in code)
+(TODO: add explanation that 'noise' cluster is only counted if it includes the minimum number of cluster points, once this has been implemented in code)
 
 This approach enables invalidating data from participants who used one or just a few colors too much, while still validating different valid patterns of responding.
 
@@ -485,9 +485,64 @@ pg <- create_participantgroup_widedata(
 ```
 Note that the color space specification (`color_space_spec`) will also affect synr's validation procedure. It is recommended that you use CIELUV ('Luv') or some other color space that aims to be in line with human perception. You might have noticed that RGB was used in the interactive graphs earlier as it's fairly intuitive, but it is _not_ suitable for validation procedures. 
 
+Now that you have a participantgroup, you want to use the `check_valid_get_twcv_scores` method. This applies a validation procedure, similar to the one outlined above, on a per-participant basis for all participants in the group. The method's parameters and output are explained below.
+```{r}
+set.seed(1)
+val_df <- pg$check_valid_get_twcv_scores(
+  min_complete_graphemes = 4,
+  dbscan_eps = 20,
+  dbscan_min_pts = 4,
+  max_var_tight_cluster = 150,
+  max_prop_single_tight_cluster = 0.6,
+  safe_num_clusters = 3,
+  safe_twcv = 250,
+  symbol_filter = LETTERS
+)
 
+head(val_df)
+```
+__Parameters__
 
+* `min_complete_graphemes` The minimum number of graphemes with complete (all non-NA color) responses that a participant's data must have for them to not be categorized as invalid based on this criterion.
+* `dbscan_eps` Radius of 'epsilon neighborhood' when applying DBSCAN clustering.
+* `dbscan_min_pts` Minimum number of points required in the epsilon neighborhood for core points (including the core point itself) when applying DBSCAN clustering.
+* `max_var_tight_cluster` Maximum variance for an identified DBSCAN cluster to be considered 'tight-knit'.
+* `max_prop_single_tight_cluster` Maximum proportion of color points allowed to be within a single 'tight-knit'   cluster (if a participant's data exceed this limit, they are classified as invalid).
+* `safe_num_clusters` Minimum number of identified DBSCAN clusters (including 'noise' cluster; TODO update with info about when noise cluster is included after implementation has been changed) that guarantees validity of a participant's data if points are 'non-tight-knit'.
+* `safe_twcv` Minimum total within-cluster variance (TWCV) score that guarantees a participant's data's validity if points are 'non-tight-knit'.
+* `symbol_filter` A character vector (or NULL) that specifies which graphemes' data to use. Defaults to NULL, meaning data from all of the participants' graphemes will be used.
 
+__Output__ A data frame with columns:
+
+* `valid` Holds TRUE for participants whose data were classified as valid, FALSE for participants whose data were classified as invalid.
+* `reason_invalid` Strings which describe for each participant why their data were deemed invalid. Participants whose data were classified as valid have empty strings here.
+* `twcv` Numeric column which holds participants' calculated TWCV scores (NA for participants who had no/too few graphemes with complete responses).
+
+Note the `set.seed(1)` call. This is necessary for replication. DBSCAN uses a partially random procedure for determining clusters. In practice, when this has been tested by the main developer (see below), the results have always been the same, but for some very unusual sets of data the results might differ. Hence, `set.seed(<number>)` should always be included in any code you save/share, to be absolutely certain that `check_valid_get_twcv_scores` will produce the same output if run again.
+
+Similar to other synr methods' outputs, in order to tell which classification goes with which participant, combine the output with results from `get_ids`.
+
+```{r}
+val_id_df <- cbind(list(participant_id=pg$get_ids()), val_df)
+
+head(val_id_df)
+```
+
+### Parameter values and previous applications of synr's data validation
+This approach of using DBSCAN together with 3D 'variance' scores is, so far, unique to synr. Thus, there are no norms regarding what particular values should be used.
+
+The main developer of synr (Lowe Wilsson) has applied `check_valid_get_twcv_scores` to a sample of consistency test data from 268 participants with the exact values specified in the example above, and then compared the results to independent classifications by human raters. The data in the sample included digit and letter graphemes, where each grapheme had been used in 3 trials. Classifications were made separately for the digit and letter categories.
+
+The validity criteria used by human raters in the example sudy were chiefly that participants needed to have at least 4 graphemes with 'complete responses' (ie 3 non-'blank' color responses) in the category being considered, that they used at least three different colors (eg yellow, red, orange), and that they didn't use the same color for more than 60% of all responses.
+
+When classifications produced by synr were compared with those of human raters, there was agreement for all but a handful of participants. In most of these cases, it turned out that the human raters had missed some detail, eg participants who had used the same color for just over 60% of all responses had been erroneously classified as valid. In one case, a participant had responded with different shades of red that were somewhat close to orange, leading to a disagreement among the human raters. In the end, after discussion the consensus was that synr's classifications were the most accurate in all cases.
+
+## Summary
+synr uses a novel approach for validating participant data which shows great promise as a tool for data cleaning. It is likely to reduce time spent on monotonous work with sorting through consistency test data. Most of all however, it lets researchers clearly specify what they consider to be valid data and how they formalized these criteria. A downside is that this validation procedure involves more abstract concepts like 'total within-cluster variance', but the benefit of not having to rely on familiar but diffuse concepts like 'number of colors' hopefully weighs greater.
+
+Note that when synr classifies participant data as 'invalid', it essentially means that it's inappropriate to simply feed the data into consistency scoring algorithms. It's then up to you as a user to decide how to handle 'invalid' data sets, eg by excluding them from analyses entirely, or by considering participants with 'invalid' data as non-synesthetes.
+
+If you do use synr for data validation, when reporting the results, __please reference synr__ itself (for now, ) and include code and/or values you passed to `check_valid_get_twcv_scores`. Remember also that it's important to avoid post-hoc definitions of validation criteria, whenever possible. Thus, if it's feasible, __please make sure to decide before starting data collection, or based on a smaller initial sample, what values to use with `check_valid_get_twcv_scores`__.
 
 ## More information
 ### DBSCAN

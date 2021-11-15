@@ -116,7 +116,7 @@ ParticipantGroup <- setRefClass(
           participant why their data were deemed invalid. Participants
           whose data were classified as valid have empty strings here.
         }
-        \\item{\\code{twcv} Numeric columns which holds participants'
+        \\item{\\code{twcv} Numeric column which holds participants'
           calculated TWCV scores (NA for participants who had no/too
           few graphemes with complete responses).}
       }

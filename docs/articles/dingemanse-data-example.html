@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>This is an example of how to use synr with actual data. For an in-depth tutorial which explains how synr works, including the functionality that comes up here, please see the <a href="synr-tutorial.html">main tutorial</a>.</p>
-<p>The data used here are from a study by Cuskley et al. (2019) and are available through <a href="https://github.com/mdingemanse/colouredvowels">this GitHub repository</a>. Note that the user (mdingemanse) who owns the repository is not involved in synr development, so please don’t send questions about synr to him or other co-authors of the article.</p>
+<p>The data used here are from a study by Cuskley, Dingemanse, van Leeuwen &amp; Kirby (2019) and are available through <a href="https://github.com/mdingemanse/colouredvowels">this GitHub repository</a>. Note that the user (mdingemanse) who owns the repository is not involved in synr development, so please don’t send questions about synr to him or other co-authors of the article.</p>
 <p>The data are from an experiment where participants listened to 16 different recordings of spoken vowel sounds and responded with colors they experienced/associated with the vowels. You can find much more detail in the article and repository. In this tutorial, we’ll assume that each of the recordings can be thought of as a single object, analogous to a grapheme. <strong>Note</strong> that even though synr always refers to trial stimuli as ‘graphemes’ or ‘symbols’ (in order to make the documentation less abstract), you can apply synr to other types of consistency test data. Just remember that ‘grapheme’ then really means e. g. ‘vowel sound’ or whatever other type of stimuli are presented to participants.</p>
 </div>
 <div id="load-required-libraries" class="section level2">
@@ -127,7 +127,7 @@
 <code class="sourceCode R"><span class="co"># download the 'coloured vowels' data</span>
 <span class="va">githuburl</span> <span class="op">&lt;-</span> <span class="st">'https://raw.githubusercontent.com/mdingemanse/colouredvowels/master/BRM_colouredvowels_voweldata.csv'</span>
 <span class="va">dingemanse_voweldata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">githuburl</span>, sep<span class="op">=</span><span class="st">' '</span><span class="op">)</span></code></pre></div>
-<p>The downloaded data are in a ‘one-row-per-stimulus’ (vocal sound) format. synr needs the data to be in either ‘long’ or ‘wide’ format, as described in the vignette <a href="synr-creategroup-with-long-format.html">Creating ParticipantGroup objects</a>. Generally, ‘long’ format is preferred, so let’s reformat the data to this.</p>
+<p>The downloaded data are in a ‘one-row-per-stimulus’ (vocal sound) format. synr needs the data to be in either ‘long’ or ‘wide’ format, as described in the article <a href="synr-creategroup-with-long-format.html">Creating ParticipantGroup objects</a>. Generally, ‘long’ format is preferred, so let’s reformat the data to this.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 'pivot' the data into a long (one row per observation/trial) format,</span>
 <span class="co"># using tidyr's pivot_longer function (and the 'pipe' %&gt;% operator)</span>
@@ -189,7 +189,7 @@
 <div id="mean-consistency-scores" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mean-consistency-scores" class="anchor"></a>Mean consistency scores</h3>
-<p>Here, we force a mean consistency score to be calculated even where participants have some (but not all) items with less than 3 valid color responses by specifying na.rm=TRUE. We specify that consistency scores should be calculated by using euclidean distances (synr uses euclidean distances default, but it’s specified here for extra clarity).</p>
+<p>Here, we force a mean consistency score to be calculated even where participants have some (but not all) items with less than 3 valid color responses by specifying na.rm=TRUE. We specify that consistency scores should be calculated by using euclidean distances (synr uses euclidean distances by default, but it’s specified here for extra clarity).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mean_cons_scores</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span>
   na.rm<span class="op">=</span><span class="cn">TRUE</span>, 
@@ -227,40 +227,93 @@
 <span class="co">#&gt; 4 009f9049-bb4f-4dec-a889-2a408d9b7fc4        84.60556                  16</span>
 <span class="co">#&gt; 5 00ac0df1-ee81-4357-86c9-ce8691a6a4f1       171.22806                  16</span>
 <span class="co">#&gt; 6 0127d04d-0070-4bec-a004-2e658edac121       227.25244                  16</span></code></pre></div>
-<p>We might want to only include participants who had a minimum of 8 stimuli with all-valid responses.</p>
+<p>We might want to only include participants who had a minimum of 8 (50%) stimuli with all-valid responses, based on what the original article says:</p>
+<blockquote>
+<p>A total of 34 participants were removed from the sample because they chose “No color” for more than half of the items in the vowel association task, making it impossible to calculate a valid vowel consistency score.</p>
+</blockquote>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">'number of participants before filtering:'</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cons_score_df</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "number of participants before filtering: 1164"</span>
 
-<span class="va">cons_score_df</span> <span class="op">&lt;-</span> <span class="va">cons_score_df</span><span class="op">[</span><span class="va">cons_score_df</span><span class="op">$</span><span class="va">num_allvalid_sounds</span> <span class="op">&gt;=</span> <span class="fl">8</span>, <span class="op">]</span>
+<span class="va">enough_responses_filter</span> <span class="op">&lt;-</span> <span class="va">cons_score_df</span><span class="op">$</span><span class="va">num_allvalid_sounds</span> <span class="op">&gt;=</span> <span class="fl">8</span>
+<span class="va">cons_score_df</span> <span class="op">&lt;-</span> <span class="va">cons_score_df</span><span class="op">[</span><span class="va">enough_responses_filter</span>, <span class="op">]</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">'number of participants after filtering:'</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cons_score_df</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "number of participants after filtering: 1105"</span></code></pre></div>
+<p>It’s not clear why there are seemingly more participants which fit the exclusion criteria in the data from GitHub compared to what is reported in the original article. (if you notice an error in this article, please write about it to <a href="mailto:datalowe@posteo.de" class="email">datalowe@posteo.de</a>)</p>
+</div>
+<div id="validate-participant-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#validate-participant-data" class="anchor"></a>Validate participant data</h3>
+<p>synr includes a unique procedure for automatically classifying test data as valid or invalid, as explained in a specific <a href="validate-data.html">synr article</a>. Cuskley et al.’s article itself doesn’t mention any validation procedure apart from excluding participants with too many “No color” responses, so we might try to apply very lenient criteria in order to only catch obviously invalid data, such as participants having used very similar colors (eg slightly different shades of black) for more than 80% of all their responses. Please see the <a href="validate-data.html">validation article</a> for details about what’s happening here.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">validation_df</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">check_valid_get_twcv_scores</span><span class="op">(</span>
+  min_complete_graphemes <span class="op">=</span> <span class="fl">8</span>,
+  dbscan_eps <span class="op">=</span> <span class="fl">20</span>,
+  dbscan_min_pts <span class="op">=</span> <span class="fl">4</span>,
+  max_var_tight_cluster <span class="op">=</span> <span class="fl">150</span>,
+  max_prop_single_tight_cluster <span class="op">=</span> <span class="fl">0.8</span>,
+  safe_num_clusters <span class="op">=</span> <span class="fl">2</span>,
+  safe_twcv <span class="op">=</span> <span class="fl">300</span>
+<span class="op">)</span>
+
+<span class="co"># again, use filter to only keep data from participants with</span>
+<span class="co"># &gt;=8 all-valid responses graphemes</span>
+<span class="va">validation_df</span> <span class="op">&lt;-</span> <span class="va">validation_df</span><span class="op">[</span><span class="va">enough_responses_filter</span>, <span class="op">]</span>
+
+<span class="va">cons_score_df</span><span class="op">[[</span><span class="st">'data_valid'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">validation_df</span><span class="op">$</span><span class="va">valid</span>
+<span class="va">cons_score_df</span><span class="op">[[</span><span class="st">'reason_invalid'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">validation_df</span><span class="op">$</span><span class="va">reason_invalid</span>
+
+<span class="co"># show only participants whose data were classified as invalid,</span>
+<span class="co"># and only relevant columns</span>
+<span class="va">cons_score_df</span><span class="op">[</span><span class="op">!</span><span class="va">cons_score_df</span><span class="op">$</span><span class="va">data_valid</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"mean_cons_score"</span>, <span class="st">"reason_invalid"</span><span class="op">)</span><span class="op">]</span>
+<span class="co">#&gt;                            participant_id mean_cons_score        reason_invalid</span>
+<span class="co">#&gt; 26   06644552-815c-47ad-a1a4-d774ac61f1e8     38.09724961 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 37   0b40b649-8cd0-4252-bcad-04b607694eb9     36.04509901 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 100  1fcd6ef5-057d-4655-a314-17aee2cbac99     25.20097383 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 288  58156a1e-2633-4435-b404-750ec370bd51     36.42790210 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 408  7ae98022-d5d8-460e-a1c3-68b43487e191     16.41104298 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 554  ad9219a1-9566-4654-ba28-ac277175a347     36.19079247 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 606  bc3ed730-ceed-44f0-97ac-8bf7fe1b8615     39.27415198 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 645  ca108b61-6b84-4e1e-ab31-4c111ff885a6     27.54943999 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 674  d47c0e32-e3e2-4acf-84d0-08bf7375308b     44.21594367 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 717  de916a2b-5041-4ecf-af86-4e11feaa5d4c      0.03445631 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 931  5b84fcd8-7982-46bd-9f13-1771a4f2b6df     44.28342864 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 935  660ed2f1-7631-4c97-a46e-f9481d37bc4b     56.10827516 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 1104 43dd077f-b955-4ba0-8ebb-a442a4ad913f     34.78898926 hi_prop_tight_cluster</span></code></pre></div>
+<p>All of the identified data sets that were classified by synr as invalid appear to have 80% or more of all responses be in roughly the same color. One of the participants, ‘de916a2b-5041-4ecf-af86-4e11feaa5d4c’, very clearly has invalid data even based on just their consistency score (0.034), as it is extremely low (due to having responded with black on all trials). What might be more interesting is to take a closer look at the participant with the highest consistency score (44.2), as their case might be somewhat less clear-cut.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">"d47c0e32-e3e2-4acf-84d0-08bf7375308b"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_plot</span><span class="op">(</span>
+  grapheme_size<span class="op">=</span><span class="fl">4</span>
+<span class="op">)</span></code></pre></div>
+<p><img src="dingemanse-data-example_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
+<p>The participant has actually used what we might consider to be different colors, ie hues. Note however that their consistency score (44.2) means that they would be considered a synesthete, even though there is actually very little consistency in what hues are used for the different sounds, due to all colors being very light. For instance, the participant used a ‘greyish’, a ‘brownish’ and a ‘bluish’ color for the 12th grapheme/sound, but even the consistency score for this particular grapheme is well below the cutoff of 135.3. This means that even though one could argue that responses have fairly different hues, <em>at least in the context of consistency tests as they are currently commonly used and evaluated</em>, synr is correct in classifying the participant’s data as invalid, ie having too little color variation.</p>
+<p>It appears then that if synr were to be used in this manner, some misclassifications of participants as synesthetes could be prevented.</p>
 </div>
 <div id="use-synr-generated-data-with-other-libraries" class="section level3">
 <h3 class="hasAnchor">
 <a href="#use-synr-generated-data-with-other-libraries" class="anchor"></a>Use synr-generated data with other libraries</h3>
 <p>Once data have been exported to a data frame, they can be used with other libraries as usual.</p>
 <p>For example, we might be interested in the distribution of mean consistency scores.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">cons_score_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">mean_cons_score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html">geom_density</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">135.3</span>, color<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">'Mean consistency score'</span>, y<span class="op">=</span><span class="st">'Probability density'</span><span class="op">)</span></code></pre></div>
 <p><img src="dingemanse-data-example_files/figure-html/cons_score_pdf-1.png" width="576"></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">cons_score_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">mean_cons_score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ecdf.html">stat_ecdf</a></span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"step"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">135.3</span>, color<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">'Mean consistency score'</span>, y<span class="op">=</span><span class="st">'Cumulative proportion of participants'</span><span class="op">)</span></code></pre></div>
 <p><img src="dingemanse-data-example_files/figure-html/cons_score_ecdf-1.png" width="576"></p>
-<p>It appears that about 30% of all participants scored below the suggested cut-off of 135.</p>
+<p>It appears that about 30% of all participants scored below the suggested cut-off of 135, as already reported by Cuskley et al.</p>
 </div>
 </div>
 <div id="summary" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary</h2>
-<p>Almost all of the ‘results’ included here can already be found in the article by Cuskley et al. However, this vignette has hopefully given you an idea of how synr can be used with different types of data, and what role it fulfills.</p>
+<p>Much of the ‘results’ included here can already be found in the article by Cuskley et al. However, this article has hopefully given you an idea of how synr can be used with different types of data, and what role it fulfills.</p>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
