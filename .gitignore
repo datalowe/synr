@@ -7,3 +7,6 @@ inst/doc
 /doc/
 /Meta/
 /inst/
+.build.timestamp
+*.knit.md
+vignettes/*-files
