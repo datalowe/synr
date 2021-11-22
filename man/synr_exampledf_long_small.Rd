@@ -18,9 +18,9 @@ synr_exampledf_long_small
 }
 \description{
 A data frame with an example of raw consistency test data that are
-compatible with the synr package's `create_participantgroup_widedata` function,
-with data for three participants from a test that included three
-graphemes ("A", "D", 7) and two responses
+compatible with the synr package's `create_participantgroup` function,
+with completely made updata for three participants from a hypothetical 
+test that included three graphemes ("A", "D", 7) and two responses
 per grapheme. More graphemes and/or
 responses per grapheme can be handled by the package (though participant
 plots do not function correctly if there are more than three responses

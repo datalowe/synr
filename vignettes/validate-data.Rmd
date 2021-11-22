@@ -478,13 +478,14 @@ You first need a participantgroup (see the quickstart/main tutorial if this is n
 ```{r}
 # if you don't already have synr loaded, run 'library(synr)' first
 # TODO: update with long format data/function once bigger sample df has been fixed
-pg <- create_participantgroup_widedata(
-  synr_example_full,
-  n_trials_per_grapheme = 3,
-  participant_col_name = 'participant_id',
-  symbol_col_regex = 'symbol',
-  color_col_regex = 'color',
-  color_space_spec = 'Luv'
+pg <- create_participantgroup(
+  raw_df=synr_exampledf_large,
+  n_trials_per_grapheme=3,
+  id_col_name="participant_id",
+  symbol_col_name="trial_symbol",
+  color_col_name="response_color",
+  time_col_name="response_time", # optional, not necessary for core functionality
+  color_space_spec="Luv"
 )
 ```
 Note that the color space specification (`color_space_spec`) will also affect synr's validation procedure. It is recommended that you use CIELUV ('Luv') or some other color space that aims to be in line with human perception. You might have noticed that RGB was used in the interactive graphs earlier as it's fairly intuitive, but it is _not_ suitable for validation procedures. 

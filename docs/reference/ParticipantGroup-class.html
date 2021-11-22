@@ -104,7 +104,7 @@
       <a href="../articles/synr-creategroup.html">Creating ParticipantGroup objects</a>
     </li>
     <li>
-      <a href="../articles/synr-tutorial.html">synr: Package, summarize and visualize synesthesia consistency test data</a>
+      <a href="../articles/synr-tutorial.html">synr: Main tutorial</a>
     </li>
     <li>
       <a href="../articles/validate-data.html">Validating participant color response data</a>
@@ -300,13 +300,15 @@ participant in the participantgroup's participants list,
 otherwise returns FALSE</p></dd>
 
 <dt><code>save_plots(
-  path = NULL,
+  save_dir = NULL,
   file_format = "png",
   dpi = 300,
   cutoff_line = FALSE,
   mean_line = FALSE,
   grapheme_size = 2,
   grapheme_angle = 0,
+  foreground_color = "black",
+  background_color = "white",
   symbol_filter = NULL,
   ...
 )</code></dt><dd><p>Goes through all participants and for each one produces and saves

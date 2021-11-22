@@ -104,7 +104,7 @@
       <a href="../articles/synr-creategroup.html">Creating ParticipantGroup objects</a>
     </li>
     <li>
-      <a href="../articles/synr-tutorial.html">synr: Package, summarize and visualize synesthesia consistency test data</a>
+      <a href="../articles/synr-tutorial.html">synr: Main tutorial</a>
     </li>
     <li>
       <a href="../articles/validate-data.html">Validating participant color response data</a>
@@ -300,6 +300,8 @@ calculating the mean response time.</p></dd>
   grapheme_size = 2,
   grapheme_angle = 0,
   grapheme_spacing = 0.25,
+  foreground_color = "black",
+  background_color = "white",
   symbol_filter = NULL
 )</code></dt><dd><p>Returns a ggplot2 plot that describes this participant's
       grapheme color responses and per-grapheme consistency scores.      If cutoff_line = TRUE, the plot will include a blue line that
@@ -360,6 +362,8 @@ otherwise returns FALSE</p></dd>
   mean_line = FALSE,
   grapheme_size = 2,
   grapheme_angle = 0,
+  foreground_color = "black",
+  background_color = "white",
   symbol_filter = NULL,
   ...
 )</code></dt><dd><p>Saves a ggplot2 plot that describes this participant's
