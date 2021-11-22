@@ -360,11 +360,17 @@ Participant <- setRefClass(
       2. unicode value (this means among other things that digits
       come before letters)."
       plot_df <- get_plot_data(symbol_filter = symbol_filter)
+      # if all values are NA, set upper limit to 5, to enable proper
+      # display of graphemes
       y_upper_limit <- ifelse(
         all(is.na(plot_df$consistency_score)),
         5,
         max(plot_df$consistency_score, na.rm = TRUE)
       )
+      # if the maximum consistency score is 0 (ie perfect consistency for all
+      # graphemes), set upper limit to 5,
+      # to enable proper display of graphemes
+      y_upper_limit <- ifelse(y_upper_limit > 0, y_upper_limit, 5)
       y_breaks <- round(
         seq(0, y_upper_limit, length.out = 10),
         -floor(log10(y_upper_limit))
