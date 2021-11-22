@@ -188,13 +188,15 @@ participant in the participantgroup's participants list,
 otherwise returns FALSE}
 
 \item{\code{save_plots(
-  path = NULL,
+  save_dir = NULL,
   file_format = "png",
   dpi = 300,
   cutoff_line = FALSE,
   mean_line = FALSE,
   grapheme_size = 2,
   grapheme_angle = 0,
+  foreground_color = "black",
+  background_color = "white",
   symbol_filter = NULL,
   ...
 )}}{Goes through all participants and for each one produces and saves

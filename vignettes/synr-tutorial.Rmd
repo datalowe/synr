@@ -1,10 +1,10 @@
 ---
-title: "synr: Package, summarize and visualize synesthesia consistency test data"
+title: "synr: Main tutorial"
 author: "Lowe Wilsson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{synr: Package, summarize and visualize synesthesia consistency test data}
+  %\VignetteIndexEntry{synr: Main tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -261,17 +261,20 @@ print(ctest_summary_df)
 ## Filtering data
 Participants who have synesthetic associations might only have those for some of the graphemes used in a test. For instance, a participant might only have synesthetic associations for weekdays, but not digits or letters, even though all are included in the test. synr helps you apply filters to calculate summary statistics for only a subset of graphemes. Filters are applied by passing a character vector of symbols/graphemes to the `symbol_filter=` argument, when using participant-level or participantgroup-level methods for summary statistics.
 
-For purposes of illustrating filtering, the larger example data frame `synr_example_full` is used (if you want, you can view it by using `View(synr_example_full)` once you've run `library(synr)`).
+For purposes of illustrating filtering, the example data frame `synr_exampledf_large` is used (if you want, you can view it by running `View(synr_exampledf_large)`).
 
 ### participant level filtering
 ```{r participant_filter_weekdays}
-pg_full <- create_participantgroup_widedata(synr_example_full,
-                              n_trials_per_grapheme = 3,
-                              participant_col_name = 'participant_id',
-                              symbol_col_regex='symbol',
-                              color_col_regex = 'color',
-                              color_space_spec = "Luv")
-propred_digits_pH <- pg_full$participants[['H']]$get_prop_color(color_label = 'red',
+pg_large <- create_participantgroup(
+  raw_df=synr_exampledf_large,
+  n_trials_per_grapheme=3,
+  id_col_name="participant_id",
+  symbol_col_name="trial_symbol",
+  color_col_name="response_color",
+  time_col_name="response_time", # optional, not necessary for core functionality
+  color_space_spec="Luv"
+)
+propred_digits_pH <- pg_large$participants[['partA']]$get_prop_color(color_label = 'red',
                                                            symbol_filter=c('0', '1', '2', '3',
                                                                            '4', '5', '6', '7',
                                                                            '8', '9'))
@@ -281,7 +284,7 @@ Looking at response colors for the participant with ID 'H' (remember, we can spe
 
 ### participantgroup level filtering
 ```{r pgroup_filter_weekdays}
-cscores_weekdays <- pg_full$get_mean_consistency_scores(symbol_filter=c('Monday', 
+cscores_weekdays <- pg_large$get_mean_consistency_scores(symbol_filter=c('Monday', 
                                                                         'Tuesday',
                                                                         'Wednesday',
                                                                         'Thursday',
@@ -298,7 +301,7 @@ As you can see above, specifying the symbol_filter character vector might take s
 AZ_09_filter <- build_grapheme_vector(language='english',
                                       use_digits=TRUE,
                                       use_letters=TRUE)
-cscores_AZ_09 <- pg_full$get_mean_consistency_scores(symbol_filter=AZ_09_filter)
+cscores_AZ_09 <- pg_large$get_mean_consistency_scores(symbol_filter=AZ_09_filter)
 print(cscores_AZ_09)
 
 ```
@@ -314,15 +317,18 @@ print(weekdays_filter)
 ## Handling summary statistics efficiently
 ### Joining data frames with dplyr
 As you use synr to calculate more statistics you might find that simply cramming them all into  one huge data frame becomes unwieldy. It is recommended that you instead separate different kinds of summary statistics into different data frames. You can then, when you need to combine data from the different data frames for analysis, intuitively join the data frames by making use of the [dplyr](https://www.rdocumentation.org/packages/dplyr/versions/0.7.8) package, specifically its function [inner_join](https://dplyr.tidyverse.org/reference/mutate-joins.html). Here's a simple example of how you can use inner_join:
-```
+```r
 install.packages('dplyr') # if you haven't installed dplyr yet
 library(dplyr)
-pg <- create_participantgroup_widedata(synr_exampledf_wide_small,
-                              n_trials_per_grapheme = 2,
-                              participant_col_name = 'participant_id',
-                              symbol_col_regex='symb',
-                              color_col_regex = 'col',
-                              color_space_spec = "Luv")
+pg <- create_participantgroup(
+  raw_df=synr_exampledf_long_small,
+  n_trials_per_grapheme=2,
+  id_col_name="participant_id",
+  symbol_col_name="trial_symbol",
+  color_col_name="response_color",
+  time_col_name="response_time",
+  color_space_spec="Luv"
+)
 mean_cscores <- pg$get_mean_consistency_scores()
 num_onlynonna <- pg$get_numbers_all_colored_graphemes()
 p_ids <- pg$get_ids()
@@ -350,14 +356,18 @@ It can often be helpful to get an overview of participants' response colors and 
 #### participant level plotting: `get_plot`
 For details on how the `get_plot` method works, please have a look at the documentation for the Participant class, by using `help(Participant)`. There, you can scroll down to the description of `get_plot`, under "Methods".
 ```{r get_plot_demo}
-pg_full <- create_participantgroup_widedata(synr_example_full,
-                              n_trials_per_grapheme = 3,
-                              participant_col_name = 'participant_id',
-                              symbol_col_regex='symbol',
-                              color_col_regex = 'color',
-                              color_space_spec = "Luv")
-p6_plot <- pg_full$participants[[6]]$get_plot(grapheme_size=2.2, 
-                                              grapheme_angle=30)
+pg_large <- create_participantgroup(
+  raw_df=synr_exampledf_large,
+  n_trials_per_grapheme=3,
+  id_col_name="participant_id",
+  symbol_col_name="trial_symbol",
+  color_col_name="response_color",
+  color_space_spec="Luv"
+)
+p6_plot <- pg_large$participants[['partA']]$get_plot(
+  grapheme_size=2.2, 
+  grapheme_angle=30
+)
 p6_plot
 ```
 At the bottom of the plot, you see the graphemes used in the test, colored in the participant's response colors. The bars represent the consistency score for each grapheme. (note that if you produce a plot for a participant who has no valid response colors at all, or only used black/white colors, the resulting plot will unfortunately look odd. this is a known bug.)
@@ -366,7 +376,7 @@ At the bottom of the plot, you see the graphemes used in the test, colored in th
 #### participant level plot saving: `save_plot`
 For details on how the `save_plot` method works, have a look again at `help(Participant)`. Scroll down to the description of `save_plot`, under "Methods". What is most essential is that you specify the `save_dir=` argument, which is where you want the plot to be saved (including filename at the end), and the `file_format=` argument:
 ```r
-pg_full$participants[[6]]$save_plot(save_dir='path/to/save/folder/filename.png',
+pg_large$participants[[6]]$save_plot(save_dir='path/to/save/folder/filename.png',
                                     file_format='png',
                                     grapheme_size=2.2, 
                                     grapheme_angle=30)
@@ -374,7 +384,7 @@ pg_full$participants[[6]]$save_plot(save_dir='path/to/save/folder/filename.png',
 #### participantgroup level plot saving: `save_plots`
 For details on how the `save_plots` method works, run `help(ParticipantGroup)`. Scroll down to the description of `save_plots`, under "Methods". What is most essential is again that you specify the `save_dir=` argument, which is the directory you want the plots to be saved to, and the `file_format=` argument:
 ```r
-pg_full$save_plots(
+pg_large$save_plots(
   save_dir='path/to/save/folder',
   file_format='png',
   grapheme_size=2.2, 

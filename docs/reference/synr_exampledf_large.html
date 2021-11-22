@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate sample variance of 3D point distance from centroid — point_3d_variance • synr</title>
+<title>Raw consistency test data example, long format (small) — synr_exampledf_large • synr</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,14 @@
 
 
 
-<meta property="og:title" content="Calculate sample variance of 3D point distance from centroid — point_3d_variance" />
-<meta property="og:description" content="Calculates sample variance of points' distances in
-3D space from their centroid. This function is normally only used
-indirectly through `validate_get_twcv`." />
+<meta property="og:title" content="Raw consistency test data example, long format (small) — synr_exampledf_large" />
+<meta property="og:description" content="A data frame with an example of raw consistency test data that are
+compatible with the synr package's `create_participantgroup' function.
+The color and 'symbol' data are from five actual participants who did
+a test that included all letters, digits and weekdays, with 3 trials
+per grapheme. The response times are randomly generated. 
+Note that response times are optional. If you don't have
+them, you can still use synr - see `help(create_participantgroup_widedata)`." />
 
 
 
@@ -134,47 +138,34 @@ indirectly through `validate_get_twcv`." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate sample variance of 3D point distance from centroid</h1>
-    <small class="dont-index">Source: <a href='https://github.com/datalowe/synr/blob/master/R/point_3d_variance.R'><code>R/point_3d_variance.R</code></a></small>
-    <div class="hidden name"><code>point_3d_variance.Rd</code></div>
+    <h1>Raw consistency test data example, long format (small)</h1>
+    <small class="dont-index">Source: <a href='https://github.com/datalowe/synr/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>synr_exampledf_large.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculates sample variance of points' distances in
-3D space from their centroid. This function is normally only used
-indirectly through `validate_get_twcv`.</p>
+    <p>A data frame with an example of raw consistency test data that are
+compatible with the synr package's `create_participantgroup' function.
+The color and 'symbol' data are from five actual participants who did
+a test that included all letters, digits and weekdays, with 3 trials
+per grapheme. The response times are randomly generated. 
+Note that response times are optional. If you don't have
+them, you can still use synr - see `help(create_participantgroup_widedata)`.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>point_3d_variance</span><span class='op'>(</span><span class='va'>point_matrix</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>synr_exampledf_large</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>point_matrix</th>
-      <td><p>An n-by-3 numerical matrix where each
-row corresponds to a single point in 3D space.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A one-element numeric vector holding calculated variance</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>A data frame with 516 rows and 4 columns:</p><dl>
+  <dt>participant_id</dt><dd><p>Participant ID</p></dd>
+  <dt>trial_symbol</dt><dd><p>Column of trial symbols/graphemes</p></dd>
+  <dt>response_color</dt><dd><p>Column of trial response colors</p></dd>
+  <dt>response_time</dt><dd><p>Column of trial response times</p></dd>
 
-    
+</dl>
 
-<p>The variance here is taken to mean
-the sum of variances for each dimension/axis:
-$$
-\frac{\sum_{i=1}^n (x_i-x_m)^2 + (y_i-y_m)^2 + (z-z_m)^2}{n-1}
-$$
-Where \(X/Y/Z\) represent one axis each, \(a_m\) represents the mean
-of all points' coordinates on an axis, and \(n\) represents the total
-number of points.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='centroid_3d_sq_dist.html'>centroid_3d_sq_dist</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

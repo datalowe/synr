@@ -1,7 +1,7 @@
 #' Raw consistency test data example, wide format (small)
 #'
 #' A data frame with an example of raw consistency test data that are
-#' compatible with the synr package's `create_participantgroup_widedata_widedata` function,
+#' compatible with the synr package's `create_participantgroup_widedata` function,
 #' with data for three participants from a test that included three
 #' graphemes ("A", "D", 7) and two responses
 #' per grapheme. More graphemes and/or
@@ -42,9 +42,9 @@
 #' Raw consistency test data example, long format (small)
 #'
 #' A data frame with an example of raw consistency test data that are
-#' compatible with the synr package's `create_participantgroup_widedata` function,
-#' with data for three participants from a test that included three
-#' graphemes ("A", "D", 7) and two responses
+#' compatible with the synr package's `create_participantgroup` function,
+#' with completely made updata for three participants from a hypothetical 
+#' test that included three graphemes ("A", "D", 7) and two responses
 #' per grapheme. More graphemes and/or
 #' responses per grapheme can be handled by the package (though participant
 #' plots do not function correctly if there are more than three responses
@@ -60,21 +60,21 @@
 #' }
 "synr_exampledf_long_small"
 
-#' Raw consistency test data example (full)
+#' Raw consistency test data example, long format (small)
 #'
 #' A data frame with an example of raw consistency test data that are
-#' compatible with the synr package, with data for ten participants
-#' from a test that used English letters and weekdays, and digits. Has three responses
-#' per grapheme. More graphemes and/or
-#' responses per grapheme can be handled by the package (though participant
-#' plots do not function correctly if there are more than three responses
-#' per grapheme, and too many graphemes might make the plots look odd)
+#' compatible with the synr package's `create_participantgroup' function.
+#' The color and 'symbol' data are from five actual participants who did
+#' a test that included all letters, digits and weekdays, with 3 trials
+#' per grapheme. The response times are randomly generated. 
+#' Note that response times are optional. If you don't have
+#' them, you can still use synr - see `help(create_participantgroup_widedata)`.
 #'
-#' @format A data frame with 10 rows and 389 columns. The
-#' first two columns are participant id and time/date of testing.
-#' The remaining columns describe trial data, with each trial
-#' represented by a set of 3 columns. The 3 columsn represent
-#' the symbol (grapheme) used, response time, and the color code that
-#' the participant responded with.
-#'
-"synr_example_full"
+#' @format A data frame with 516 rows and 4 columns:
+#' \describe{
+#'   \item{participant_id}{Participant ID}
+#'   \item{trial_symbol}{Column of trial symbols/graphemes}
+#'   \item{response_color}{Column of trial response colors}
+#'   \item{response_time}{Column of trial response times}
+#' }
+"synr_exampledf_large"

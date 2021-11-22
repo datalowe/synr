@@ -188,6 +188,8 @@ calculating the mean response time.}
   grapheme_size = 2,
   grapheme_angle = 0,
   grapheme_spacing = 0.25,
+  foreground_color = "black",
+  background_color = "white",
   symbol_filter = NULL
 )}}{Returns a ggplot2 plot that describes this participant's
       grapheme color responses and per-grapheme consistency scores.
@@ -266,6 +268,8 @@ otherwise returns FALSE}
   mean_line = FALSE,
   grapheme_size = 2,
   grapheme_angle = 0,
+  foreground_color = "black",
+  background_color = "white",
   symbol_filter = NULL,
   ...
 )}}{Saves a ggplot2 plot that describes this participant's

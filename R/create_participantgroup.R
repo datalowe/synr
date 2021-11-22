@@ -64,7 +64,7 @@ create_participantgroup <- function(
 
     if (!is.null(time_col_name)) {
       part_tim_vec <- time_vector[part_rows_mask]
-    } else {part_tim_vec <- NULL}
+    } else { part_tim_vec <- NULL }
 
     new_p <- create_participant(participant_id=part_id,
                                 grapheme_symbols=unique_symbols,
