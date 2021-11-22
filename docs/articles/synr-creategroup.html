@@ -88,13 +88,13 @@
 
       
 
-      </header><script src="synr-creategroup_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="synr-creategroup_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating ParticipantGroup objects</h1>
                         <h4 class="author">Lowe Wilsson</h4>
             
-            <h4 class="date">2021-11-15</h4>
+            <h4 class="date">2021-11-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/datalowe/synr/blob/master/vignettes/synr-creategroup.Rmd"><code>vignettes/synr-creategroup.Rmd</code></a></small>
       <div class="hidden name"><code>synr-creategroup.Rmd</code></div>
@@ -110,7 +110,7 @@
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>To start using synr, you must first convert your data into a ParticipantGroup object. This tutorial explains how to convert raw consistency test data into this object. For more information on synr and ParticipantGroup itself, please see the <a href="synr-tutorial.html">main tutorial</a>.</p>
 <p>synr offers separate methods for converting ‘long format’ and ‘wide format’ raw data into ParticipantGroup objects. Brief explanations of the data formats are included at the beginning of each section.</p>
-<p>Note that if you have any <strong>missing data</strong>, e. g. if the response color hex codes for some participants are missing, those must be coded in the data frame as R <strong>NA values</strong>. If you have used other values to represent missingness, you must first replace those values with NA, e. g. by using the <a href="https://cran.r-project.org/web/packages/naniar/vignettes/replace-with-na.html">naniar</a> package.</p>
+<p>Note that if you have any <strong>missing data</strong>, e. g. if the response color hex codes for some participants are missing, those must be coded in the data frame as R <strong>NA values</strong>. If you have used other values to represent missingness, you must first replace those values with NA, e. g. by using the <a href="https://CRAN.R-project.org/package=naniar">naniar</a> package.</p>
 </div>
 <div id="long-format-data" class="section level2">
 <h2 class="hasAnchor">
@@ -225,7 +225,7 @@
 <div id="details-about-regular-expression-patterns-in-example" class="section level4">
 <h4 class="hasAnchor">
 <a href="#details-about-regular-expression-patterns-in-example" class="anchor"></a>Details about regular expression patterns in example</h4>
-<p>The regular expression patterns, like ‘symb’ or ‘col’ must <strong>only</strong> occur in the corresponding columns. In the example data frame, only names of trial columns with color data have the pattern ‘col’ in them, so <code>color_col_regex = 'col'</code> would also work. If for instance the participant ID column had been called ‘p_id_column", that column name would also fit the ’col’ pattern, and hence <code>color_col_regex = 'col'</code> wouldn’t work.</p>
+<p>The regular expression patterns, like ‘symb’ or ‘col’ must <strong>only</strong> occur in the corresponding columns. In the example data frame, only names of trial columns with color data have the pattern ‘col’ in them, so <code>color_col_regex = 'col'</code> would also work. If for instance the participant ID column had been called ‘p_id_column”, that column name would also fit the ’col’ pattern, and hence <code>color_col_regex = 'col'</code> wouldn’t work.</p>
 <p>You can use as long or short regular expressions as you need. In this example we could for example have used <code>color_col_regex = 'response_color_'</code>.</p>
 </div>
 </div>

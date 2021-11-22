@@ -235,9 +235,9 @@ and add each one using the add_grapheme() method.</p></dd>
 </ul><p></p></p></dd>
 
 <dt><code>get_consistency_scores(
-  na.rm = FALSE,
+  method = "euclidean",
   symbol_filter = NULL,
-  method = "euclidean"
+  na.rm = FALSE
 )</code></dt><dd><p>Returns a list of grapheme symbols with associated consistency scores.
       If na.rm = TRUE, for each grapheme a consistency score calculation is
       forced (except if ALL response colors associated with the grapheme
@@ -251,9 +251,9 @@ and add each one using the add_grapheme() method.</p></dd>
       the base R dist function for all options)</p></dd>
 
 <dt><code>get_mean_consistency_score(
-  na.rm = FALSE,
   symbol_filter = NULL,
-  method = "euclidean"
+  method = "euclidean",
+  na.rm = FALSE
 )</code></dt><dd><p>Returns the mean consistency score with respect to
       Grapheme instances associated with the participant.      If na.rm = FALSE, calculates the mean consistency score if
       all of the participants' graphemes only have response
@@ -271,7 +271,7 @@ and add each one using the add_grapheme() method.</p></dd>
       (usually 'manhattan' or 'euclidean' - see documentation for
       the base R dist function for all options)</p></dd>
 
-<dt><code>get_mean_response_time(na.rm = FALSE, symbol_filter = NULL)</code></dt><dd><p>Returns the mean response time, with respect to all
+<dt><code>get_mean_response_time(symbol_filter = NULL, na.rm = FALSE)</code></dt><dd><p>Returns the mean response time, with respect to all
 Grapheme instances associated with the participant.
 Weights response times based on number of valid responses
 that each grapheme has. If na.rm = TRUE, returns mean response

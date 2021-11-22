@@ -206,18 +206,19 @@ space to use for calculations with participant data. One of
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>pg</span> <span class='op'>&lt;-</span> <span class='fu'>create_participantgroup</span><span class='op'>(</span>
-  raw_df<span class='op'>=</span><span class='va'>synr_exampledf_long_small</span>,
-  n_trials_per_grapheme<span class='op'>=</span><span class='fl'>2</span>,
-  id_col_name<span class='op'>=</span><span class='st'>"participant_id"</span>,
-  symbol_col_name<span class='op'>=</span><span class='st'>"trial_symbol"</span>,
-  color_col_name<span class='op'>=</span><span class='st'>"response_color"</span>,
-  time_col_name<span class='op'>=</span><span class='st'>"response_time"</span>,
-  color_space_spec<span class='op'>=</span><span class='st'>"Luv"</span>
-<span class='op'>)</span>
-<span class='va'>cons_means</span> <span class='op'>&lt;-</span> <span class='va'>pg</span><span class='op'>$</span><span class='fu'>get_mean_consistency_scores</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>cons_means</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 131.2060 101.3738 151.9597</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>pg</span> <span class='op'>&lt;-</span> <span class='fu'>create_participantgroup</span><span class='op'>(</span></span>
+<span class='r-in'>  raw_df<span class='op'>=</span><span class='va'>synr_exampledf_long_small</span>,</span>
+<span class='r-in'>  n_trials_per_grapheme<span class='op'>=</span><span class='fl'>2</span>,</span>
+<span class='r-in'>  id_col_name<span class='op'>=</span><span class='st'>"participant_id"</span>,</span>
+<span class='r-in'>  symbol_col_name<span class='op'>=</span><span class='st'>"trial_symbol"</span>,</span>
+<span class='r-in'>  color_col_name<span class='op'>=</span><span class='st'>"response_color"</span>,</span>
+<span class='r-in'>  time_col_name<span class='op'>=</span><span class='st'>"response_time"</span>,</span>
+<span class='r-in'>  color_space_spec<span class='op'>=</span><span class='st'>"Luv"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cons_means</span> <span class='op'>&lt;-</span> <span class='va'>pg</span><span class='op'>$</span><span class='fu'>get_mean_consistency_scores</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>cons_means</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 131.2060 101.3738 151.9597</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -171,9 +171,9 @@ ParticipantGroup <- setRefClass(
     },
 
     get_mean_consistency_scores = function(
-      na.rm = FALSE,
+      method="euclidean",
       symbol_filter = NULL,
-      method="euclidean"
+      na.rm = FALSE
     ) {
       "Returns a vector of mean consistency scores for
       participants in the group. If na.rm=FALSE, for each
@@ -207,9 +207,9 @@ ParticipantGroup <- setRefClass(
       loop_index <- 1
       for (p in participants) {
         p_mean_c_score <- p$get_mean_consistency_score(
-          na.rm = na.rm,
+          method = method,
           symbol_filter = symbol_filter,
-          method = method
+          na.rm = na.rm
         )
         participant_level_mean_cons[loop_index] <- p_mean_c_score
         loop_index <- loop_index + 1
@@ -218,8 +218,8 @@ ParticipantGroup <- setRefClass(
     },
 
     get_mean_response_times = function(
-      na.rm = FALSE,
-      symbol_filter = NULL
+      symbol_filter = NULL,
+      na.rm = FALSE
     ) {
       "Returns the mean response times, with respect to
       Grapheme instances associated with each participant.
@@ -240,8 +240,8 @@ ParticipantGroup <- setRefClass(
       loop_index <- 1
       for (p in participants) {
         p_time <- p$get_mean_response_time(
-          na.rm = na.rm,
-          symbol_filter = symbol_filter
+          symbol_filter = symbol_filter,
+          na.rm = na.rm
         )
         participant_level_resp_times[loop_index] <- p_time
         loop_index <- loop_index + 1

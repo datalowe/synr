@@ -236,17 +236,18 @@ space is to be used for analyses of the data? The following color spaces are sup
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>pg</span> <span class='op'>&lt;-</span> <span class='fu'>create_participantgroup_widedata</span><span class='op'>(</span>raw_df<span class='op'>=</span><span class='va'>synr_exampledf_wide_small</span>,
-                              n_trials_per_grapheme<span class='op'>=</span><span class='fl'>2</span>,
-                              participant_col_name<span class='op'>=</span><span class='st'>"participant_id"</span>,
-                              symbol_col_regex<span class='op'>=</span><span class='st'>"symbol"</span>,
-                              color_col_regex<span class='op'>=</span><span class='st'>"colou*r"</span>,
-                              time_col_regex<span class='op'>=</span><span class='st'>"response_time"</span>,
-                              color_space_spec<span class='op'>=</span><span class='st'>"Luv"</span>
-<span class='op'>)</span>
-<span class='va'>cons_means</span> <span class='op'>&lt;-</span> <span class='va'>pg</span><span class='op'>$</span><span class='fu'>get_mean_consistency_scores</span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>cons_means</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 105.9028 135.8346 124.1099</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>pg</span> <span class='op'>&lt;-</span> <span class='fu'>create_participantgroup_widedata</span><span class='op'>(</span>raw_df<span class='op'>=</span><span class='va'>synr_exampledf_wide_small</span>,</span>
+<span class='r-in'>                              n_trials_per_grapheme<span class='op'>=</span><span class='fl'>2</span>,</span>
+<span class='r-in'>                              participant_col_name<span class='op'>=</span><span class='st'>"participant_id"</span>,</span>
+<span class='r-in'>                              symbol_col_regex<span class='op'>=</span><span class='st'>"symbol"</span>,</span>
+<span class='r-in'>                              color_col_regex<span class='op'>=</span><span class='st'>"colou*r"</span>,</span>
+<span class='r-in'>                              time_col_regex<span class='op'>=</span><span class='st'>"response_time"</span>,</span>
+<span class='r-in'>                              color_space_spec<span class='op'>=</span><span class='st'>"Luv"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cons_means</span> <span class='op'>&lt;-</span> <span class='va'>pg</span><span class='op'>$</span><span class='fu'>get_mean_consistency_scores</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>cons_means</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 105.9028 135.8346 124.1099</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

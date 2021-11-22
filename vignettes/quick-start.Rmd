@@ -31,7 +31,7 @@ pg <- create_participantgroup(
   id_col_name="participant_id",
   symbol_col_name="trial_symbol",
   color_col_name="response_color",
-  time_col_name="response_time",
+  time_col_name="response_time", # optional, not necessary for core functionality
   color_space_spec="Luv"
 )
 ```

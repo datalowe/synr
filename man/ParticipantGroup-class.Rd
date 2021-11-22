@@ -117,9 +117,9 @@ and add each one using the add_participant() method.}
 participants associated with the participantgroup.}
 
 \item{\code{get_mean_consistency_scores(
-  na.rm = FALSE,
+  method = "euclidean",
   symbol_filter = NULL,
-  method = "euclidean"
+  na.rm = FALSE
 )}}{Returns a vector of mean consistency scores for
       participants in the group. If na.rm=FALSE, for each
       participant calculates the mean consistency score if
@@ -143,7 +143,7 @@ participants associated with the participantgroup.}
       (usually 'manhattan' or 'euclidean' - see documentation for
       the base R dist function for all options)}
 
-\item{\code{get_mean_response_times(na.rm = FALSE, symbol_filter = NULL)}}{Returns the mean response times, with respect to
+\item{\code{get_mean_response_times(symbol_filter = NULL, na.rm = FALSE)}}{Returns the mean response times, with respect to
 Grapheme instances associated with each participant.
 If na.rm=TRUE, for each participant returns mean response time even
 if there are missing response times. If na.rm=FALSE, returns
