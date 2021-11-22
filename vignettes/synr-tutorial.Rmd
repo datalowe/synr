@@ -65,7 +65,7 @@ Once you have a ParticipantGroup object (simply called 'participantgroup' from h
 The participantgroup has a nested structure, where the **participantgroup** has a list of **participants**, and each participant has a list of **graphemes**. By using `$` as a separator, you can specify a participant and/or a grapheme to drill down into this nested structure and access data or methods you need.
 
 Let's start by accessing participants' data. Say you want to find what colors the participant with ID '3' used for the symbol 'A'. You can do this by using the syntax `<participantgroup>$participants[['<ID>']]$graphemes[[<symbol>]]`.
-``` {r access_participant_data}
+```{r access_participant_data}
 fetched_grapheme_data <- pg$participants[['3']]$graphemes[['A']]
 print(fetched_grapheme_data)
 ```
@@ -84,7 +84,7 @@ You can calculate the consistency score of a single grapheme by:
 2. Specifying what grapheme you want from the participant's list of graphemes.
 3. Using the grapheme's method `get_consistency_score`.
 
-``` {r individual_grapheme_cscore}
+```{r individual_grapheme_cscore}
 # fetching the consistency score of the second participant's grapheme 'A'
 cscore_p2_A <- pg$participants[[2]]$graphemes[['A']]$get_consistency_score()
 print(cscore_p2_A)
@@ -97,7 +97,7 @@ You can calculate an individual participant's mean consistency score by:
 1. Specifying what participant you want from the participantgroup.
 2. Calling the participant's method `get_mean_consistency_score`:
 
-``` {r individual_participant_mean_cscore}
+```{r individual_participant_mean_cscore}
 mean_cscore_p2 <- pg$participants[[2]]$get_mean_consistency_score()
 print(mean_cscore_p2)
 mean_cscore_p1 <- pg$participants[['1']]$get_mean_consistency_score()
@@ -107,12 +107,12 @@ print(mean_cscore_p1)
 
 #### participant level: `get_consistency_scores`
 Instead of doing it for just one grapheme, you can calculate the grapheme-level consistency score for all graphemes of a participant using the method `get_consistency_scores`, which produces a list:
-``` {r individual_participant_cscores}
+```{r individual_participant_cscores}
 cscores_p3 <- pg$participants[[3]]$get_consistency_scores()
 print(cscores_p3)
 ```
 If you prefer the data frame format, you can convert the list into a data frame:
-``` {r cscore_ls_to_df}
+```{r cscore_ls_to_df}
 cscores_p3_df <- data.frame(cscores_p3)
 print(cscores_p3_df)
 ```
@@ -120,14 +120,14 @@ print(cscores_p3_df)
 
 #### participantgroup level: `get_mean_consistency_scores`
 What many will want to do is simply calculate the mean consistency scores for all participants. The participantgroup method `get_mean_consistency_scores` does just that, producing a numeric vector with the consistency scores:
-``` {r mean_cscores}
+```{r mean_cscores}
 mean_cscores <- pg$get_mean_consistency_scores()
 print(mean_cscores)
 ```
 The order of the mean consistency scores is based on the order of participants in the original raw data frame.
 
 If you want to form a data frame that makes it easy to see which participant goes with which participant score, the participantgroup method `get_ids` comes in handy:
-``` {r mean_scores_df}
+```{r mean_scores_df}
 mean_cscores <- pg$get_mean_consistency_scores()
 p_ids <- pg$get_ids()
 mean_scores_df <- data.frame(participant_id=p_ids, mean_consistency_score=mean_cscores)
@@ -146,7 +146,7 @@ You can calculate the number of non-missing response color values for a single g
 2. Specifying what grapheme you want from the participant's list of graphemes.
 3. Using the grapheme's method `get_num_non_na_colors`.
 
-``` {r grapheme_numvalid}
+```{r grapheme_numvalid}
 p1_A_numvalid <- pg$participants[[1]]$graphemes[['7']]$get_num_non_na_colors()
 print(p1_A_numvalid)
 ```
@@ -158,7 +158,7 @@ For a participant, you can get the number of graphemes that **only** have non-NA
 1. Specifying what participant you want from the participantgroup.
 2. Calling the participant's method `get_number_all_colored_graphemes`:
 
-``` {r participant_numvalid}
+```{r participant_numvalid}
 num_onlynonna_p2 <- pg$participants[[2]]$get_number_all_colored_graphemes()
 print(num_onlynonna_p2)
 ```
@@ -166,14 +166,14 @@ So, the second participant gave only valid (non-NA) color responses for 3 graphe
 
 #### participantgroup level: `get_numbers_all_colored_graphemess`
 The participantgroup method `get_numbers_all_colored_graphemes` produces a numeric vector that holds each participant's number of valid color responses:
-``` {r pgroup_numvalid}
+```{r pgroup_numvalid}
 num_onlynonna <- pg$get_numbers_all_colored_graphemes()
 print(num_onlynonna)
 ```
 All three participants gave only valid (non-NA) color responses for 3 graphemes. The values are in the same order that participants were in in the raw data frame, meaning that the first value corresponds to the first participant, and so on.
 
 Of course, you can combine these values with participant ID's just like we did above with mean consistency scores:
-``` {r ctest_summary_df}
+```{r ctest_summary_df}
 mean_cscores <- pg$get_mean_consistency_scores()
 num_onlynonna <- pg$get_numbers_all_colored_graphemes()
 p_ids <- pg$get_ids()
@@ -190,7 +190,7 @@ Even if a participant responds with a color on each consistency test trial and t
 First you need to decide what color range you are interested in knowing how many response colors fall into. For this grapheme-level method, and for the participant/participantgroup-level methods below, you have two choices for specifying the color range. The first is to use `color_label=<label>`, with supported labels being <span style='color: blue;'>'blue'</span>, <span style='color: red;'>'red'</span>, <span style='color: green;'>'green'</span>, <span style='color: white; background-color:black;'>'white'</span>, <span style='color: black;'>'black'</span> and <span style='color: lightgrey;'>'hazy'</span> ('greyish' colors). The other option is to specify value ranges by using two-element numeric vectors, with rgb (red, green, blue) values on a 0-1 scale:  ` r = <vector1>, g = <vector2>, b = <vector3>`. For example, ` r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3)` would code for a dark color range.
 
 Let's look at a couple of examples:
-``` {r grapheme_propcol_label}
+```{r grapheme_propcol_label}
 propred_p3_7 <- pg$participants[[3]]$graphemes[['7']]$get_prop_color(color_label="red")
 print(propred_p3_7)
 ```
@@ -208,13 +208,13 @@ The proportion of participant 1's response colors for the grapheme 'A' that are 
 
 #### participant level: `get_prop_color`
 This works essentially the same as the grapheme-level method:
-``` {r participant_propcol_label}
+```{r participant_propcol_label}
 propgreen_p1 <- pg$participants[[1]]$get_prop_color(color_label = 'black')
 print(propgreen_p1)
 ```
 The proportion of participant 1's response colors that are black/very dark, is ~=0.167 (16.7%), which is roughly one sixth, meaning one of the participant's six responses falls within the 'black' label's color range.
 
-``` {r participant_propcol_vectors}
+```{r participant_propcol_vectors}
 propblue_p2 <- pg$participants[[2]]$get_prop_color(r=c(0, 0.3), 
                                                    g=c(0, 0.3), 
                                                    b=c(0.7, 1))
@@ -224,14 +224,14 @@ The proportion of participant 2's response colors that are high in blue, but low
 
 #### participant level: `get_prop_color_values`
 This also works essentially the same as the participant/grapheme-level method. The difference is that it returns a numeric vector with the values you would get if you called the participant-level `get_prop_color` for each participant:
-``` {r pgroup_propcol_label}
+```{r pgroup_propcol_label}
 propred_vals <- pg$get_prop_color_values(color_label = 'red')
 print(propred_vals)
 ```
 Participants 1 and 2 gave no responses that fall within the range defined by the 'red' label, while ~=16,7% of participant 3's response colors fall within the range.
 <br>
 
-``` {r pgroup_propcol_vectors}
+```{r pgroup_propcol_vectors}
 propwhite_vals <- pg$get_prop_color_values(r=c(0.7, 1), 
                                          g=c(0.7, 1), 
                                          b=c(0.7, 1))
@@ -242,7 +242,7 @@ Participants 1 and 3 gave no responses that have very high r/g/b color coordinat
 <br>
 
 You can again of course combine all the kinds of summary data we have talked about so far:
-``` {r ctest_summary_df_bigger}
+```{r ctest_summary_df_bigger}
 mean_cscores <- pg$get_mean_consistency_scores()
 num_onlynonna <- pg$get_numbers_all_colored_graphemes()
 p_ids <- pg$get_ids()
@@ -264,7 +264,7 @@ Participants who have synesthetic associations might only have those for some of
 For purposes of illustrating filtering, the larger example data frame `synr_example_full` is used (if you want, you can view it by using `View(synr_example_full)` once you've run `library(synr)`).
 
 ### participant level filtering
-``` {r participant_filter_weekdays}
+```{r participant_filter_weekdays}
 pg_full <- create_participantgroup_widedata(synr_example_full,
                               n_trials_per_grapheme = 3,
                               participant_col_name = 'participant_id',
@@ -280,7 +280,7 @@ print(propred_digits_pH)
 Looking at response colors for the participant with ID 'H' (remember, we can specify participants using their row number in the raw data frame, or their participant ID), ~=6.7% of the response colors for trials with digits as graphemes were red.
 
 ### participantgroup level filtering
-``` {r pgroup_filter_weekdays}
+```{r pgroup_filter_weekdays}
 cscores_weekdays <- pg_full$get_mean_consistency_scores(symbol_filter=c('Monday', 
                                                                         'Tuesday',
                                                                         'Wednesday',
@@ -294,7 +294,7 @@ The produced vector holds each participant's (there are 10 participants in this 
 
 ### Building filter vectors
 As you can see above, specifying the symbol_filter character vector might take some typing. To simplify things, synr includes the function `build_grapheme_vector`, with support for digits/letters/weekdays in English and Swedish. Say you want to filter by uppercase digits and letters (ignoring e. g. weekdays if those were also in your consistency test):
-``` {r build_grapheme_vector_demo_digits_letters}
+```{r build_grapheme_vector_demo_digits_letters}
 AZ_09_filter <- build_grapheme_vector(language='english',
                                       use_digits=TRUE,
                                       use_letters=TRUE)
@@ -303,7 +303,7 @@ print(cscores_AZ_09)
 
 ```
 If you instead want lowercase weekdays, you could build the vector this way:
-``` {r build_grapheme_vector_demo_weekdays}
+```{r build_grapheme_vector_demo_weekdays}
 weekdays_filter <- build_grapheme_vector(language='english',
                                          use_weekdays=TRUE,
                                          uppercase=FALSE)
@@ -349,7 +349,7 @@ It can often be helpful to get an overview of participants' response colors and 
 ### Producing plots for display in RStudio
 #### participant level plotting: `get_plot`
 For details on how the `get_plot` method works, please have a look at the documentation for the Participant class, by using `help(Participant)`. There, you can scroll down to the description of `get_plot`, under "Methods".
-``` {r get_plot_demo}
+```{r get_plot_demo}
 pg_full <- create_participantgroup_widedata(synr_example_full,
                               n_trials_per_grapheme = 3,
                               participant_col_name = 'participant_id',
@@ -364,21 +364,20 @@ At the bottom of the plot, you see the graphemes used in the test, colored in th
 
 ### Producing plots and saving them on your computer
 #### participant level plot saving: `save_plot`
-For details on how the `save_plot` method works, have a look again at `help(Participant)`. Scroll down to the description of `save_plot`, under "Methods". What is most essential is that you specify the `path=` argument, which is where you want the plot to be saved (including filename at the end), and the `file_format=` argument:
-```
-pg_full$participants[[6]]$save_plot(path='path/to/save/folder/filename.png',
+For details on how the `save_plot` method works, have a look again at `help(Participant)`. Scroll down to the description of `save_plot`, under "Methods". What is most essential is that you specify the `save_dir=` argument, which is where you want the plot to be saved (including filename at the end), and the `file_format=` argument:
+```r
+pg_full$participants[[6]]$save_plot(save_dir='path/to/save/folder/filename.png',
                                     file_format='png',
                                     grapheme_size=2.2, 
                                     grapheme_angle=30)
 ```
 #### participantgroup level plot saving: `save_plots`
-For details on how the `save_plots` method works, run `help(ParticipantGroup)`. Scroll down to the description of `save_plots`, under "Methods". What is most essential is again that you specify the `path=` argument, which is the directory you want the plots to be saved to, and the `file_format=` argument:
+For details on how the `save_plots` method works, run `help(ParticipantGroup)`. Scroll down to the description of `save_plots`, under "Methods". What is most essential is again that you specify the `save_dir=` argument, which is the directory you want the plots to be saved to, and the `file_format=` argument:
+```r
+pg_full$save_plots(
+  save_dir='path/to/save/folder',
+  file_format='png',
+  grapheme_size=2.2, 
+  grapheme_angle=30
+)
 ```
-pg_full$save_plots(path='path/to/save/folder',
-                   file_format='png',
-                   grapheme_size=2.2, 
-                   grapheme_angle=30)
-```
-
-## Feedback
-If you have any suggestions on improvements you can contact me as the author and maintainer of the package at datalowe@posteo.de, or you can directly commit code improvements to the github repo at https://github.com/datalowe/synr.

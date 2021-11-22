@@ -326,6 +326,8 @@ Participant <- setRefClass(
       grapheme_size = 2,
       grapheme_angle = 0,
       grapheme_spacing = 0.25,
+      foreground_color = "black",
+      background_color = "white",
       symbol_filter = NULL
     ) {
       # TO DO change the plotting functionality so that it can handle
@@ -380,21 +382,24 @@ Participant <- setRefClass(
         data = plot_df,
         ggplot2::aes(x = symbol, y = consistency_score)
       ) +
-        ggplot2::geom_col(fill = "black", color = "black", width = 0.5) +
+        ggplot2::geom_col(fill = foreground_color, color = foreground_color, width = 0.5) +
         ggplot2::scale_y_continuous(breaks = y_breaks) +
         ggplot2::labs(x = "Grapheme", y = "Sum distance between responses") +
         ggplot2::scale_x_discrete(labels = NULL) +
         ggplot2::theme(
+          axis.title = ggplot2::element_text(colour = foreground_color),
+          axis.text = ggplot2::element_text(colour = foreground_color),
           axis.ticks.y = ggplot2::element_blank(),
           panel.grid.major.y = ggplot2::element_blank(),
           panel.grid.minor.x = ggplot2::element_blank(),
           panel.grid.major.x = ggplot2::element_line(color = "#ADD8E6"),
-          panel.background = ggplot2::element_rect(fill = "#FFFFFF"),
+          panel.background = ggplot2::element_rect(fill = background_color),
           panel.border = ggplot2::element_rect(
             fill = "transparent",
             color = "#ADD8E6",
             size = 0.4
-          )
+          ),
+          plot.background = ggplot2::element_rect(fill = background_color)
         ) +
         ggplot2::coord_flip(y = c(-y_upper_limit * 0.7,
                                       y_upper_limit))
@@ -432,6 +437,8 @@ Participant <- setRefClass(
       mean_line = FALSE,
       grapheme_size = 2,
       grapheme_angle = 0,
+      foreground_color = "black",
+      background_color = "white",
       symbol_filter = NULL,
       ...
     ) {
@@ -468,18 +475,24 @@ Participant <- setRefClass(
       Apart from these, all other arguments
       that ggsave accepts (e. g. 'scale') also work with this function, since
       all arguments are passed on to ggsave."
-      consistency_plot <- get_plot(cutoff_line = cutoff_line,
-                                  mean_line = mean_line,
-                                  grapheme_size = grapheme_size,
-                                  grapheme_angle = grapheme_angle,
-                                  symbol_filter = symbol_filter)
+      consistency_plot <- get_plot(
+        cutoff_line = cutoff_line,
+        mean_line = mean_line,
+        grapheme_size = grapheme_size,
+        grapheme_angle = grapheme_angle,
+        foreground_color = foreground_color,
+        background_color = background_color,
+        symbol_filter = symbol_filter
+      )
       plot_file_name <- paste0(id, "_consistency_plot.", file_format)
       suppressWarnings(
-        ggplot2::ggsave(filename = plot_file_name,
-                      plot = consistency_plot,
-                      save_dir = save_dir,
-                      dpi = dpi,
-                      ... = ...)
+        ggplot2::ggsave(
+          filename = plot_file_name,
+          plot = consistency_plot,
+          path = save_dir,
+          dpi = dpi,
+          ... = ...
+        )
       )
     },
 

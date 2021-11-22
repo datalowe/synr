@@ -317,9 +317,15 @@ ParticipantGroup <- setRefClass(
     },
 
     save_plots = function(
-      path = NULL, file_format='png', dpi = 300,
-      cutoff_line = FALSE, mean_line = FALSE,
-      grapheme_size = 2, grapheme_angle = 0,
+      save_dir = NULL,
+      file_format='png',
+      dpi = 300,
+      cutoff_line = FALSE,
+      mean_line = FALSE,
+      grapheme_size = 2,
+      grapheme_angle = 0,
+      foreground_color = "black",
+      background_color = "white",
       symbol_filter = NULL,
       ...
     ) {
@@ -366,13 +372,15 @@ ParticipantGroup <- setRefClass(
       }
       for (p in participants) {
         p$save_plot(
-          path = path, 
+          save_dir = save_dir, 
           file_format = file_format,
           dpi = dpi,
           cutoff_line = cutoff_line,
           mean_line = mean_line,
           grapheme_size = grapheme_size,
           grapheme_angle = grapheme_angle,
+          foreground_color = foreground_color,
+          background_color = background_color,
           symbol_filter = symbol_filter,
           ...
         )
