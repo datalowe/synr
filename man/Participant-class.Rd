@@ -113,9 +113,9 @@ and add each one using the add_grapheme() method.}
     }
 
 \item{\code{get_consistency_scores(
-  na.rm = FALSE,
+  method = "euclidean",
   symbol_filter = NULL,
-  method = "euclidean"
+  na.rm = FALSE
 )}}{Returns a list of grapheme symbols with associated consistency scores.
       If na.rm = TRUE, for each grapheme a consistency score calculation is
       forced (except if ALL response colors associated with the grapheme
@@ -133,9 +133,9 @@ and add each one using the add_grapheme() method.}
       the base R dist function for all options)}
 
 \item{\code{get_mean_consistency_score(
-  na.rm = FALSE,
   symbol_filter = NULL,
-  method = "euclidean"
+  method = "euclidean",
+  na.rm = FALSE
 )}}{Returns the mean consistency score with respect to
       Grapheme instances associated with the participant.
 
@@ -159,7 +159,7 @@ and add each one using the add_grapheme() method.}
       (usually 'manhattan' or 'euclidean' - see documentation for
       the base R dist function for all options)}
 
-\item{\code{get_mean_response_time(na.rm = FALSE, symbol_filter = NULL)}}{Returns the mean response time, with respect to all
+\item{\code{get_mean_response_time(symbol_filter = NULL, na.rm = FALSE)}}{Returns the mean response time, with respect to all
 Grapheme instances associated with the participant.
 Weights response times based on number of valid responses
 that each grapheme has. If na.rm = TRUE, returns mean response

@@ -88,7 +88,7 @@
 
       
 
-      </header><script src="dingemanse-data-example_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="dingemanse-data-example_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using synr with real data: Coloured vowels</h1>
@@ -113,7 +113,7 @@
 <div id="load-required-libraries" class="section level2">
 <h2 class="hasAnchor">
 <a href="#load-required-libraries" class="anchor"></a>Load required libraries</h2>
-<p>We’ll use <code>tidyr</code> to reformat the raw data, explained below, and <code>ggplot2</code> for producing custom plots. You should already have <code>ggplot2</code> installed since <code>synr</code> depends on it, but may you need to run <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("tidyr")</a></code> to get <code>tidyr</code>.</p>
+<p>We’ll use <code>tidyr</code> to reformat the raw data, explained below, and <code>ggplot2</code> for producing custom plots. You should already have <code>ggplot2</code> installed since <code>synr</code> depends on it, but may you need to run <code>install.packages("tidyr")</code> to get <code>tidyr</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://datalowe.github.io/synr/">synr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
@@ -131,7 +131,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 'pivot' the data into a long (one row per observation/trial) format,</span>
 <span class="co"># using tidyr's pivot_longer function (and the 'pipe' %&gt;% operator)</span>
-<span class="va">cvow_long</span> <span class="op">&lt;-</span> <span class="va">dingemanse_voweldata</span> <span class="op">%&gt;%</span> 
+<span class="va">cvow_long</span> <span class="op">&lt;-</span> <span class="va">dingemanse_voweldata</span> <span class="op"><a href="https://tidyr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>
     cols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'color1'</span>, <span class="st">'color2'</span>, <span class="st">'color3'</span>,
       <span class="st">'timing1'</span>, <span class="st">'timing2'</span>, <span class="st">'timing3'</span><span class="op">)</span>,
@@ -140,7 +140,7 @@
     values_to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'color'</span>, <span class="st">'timing'</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">cvow_long</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 6 x 6</span>
+<span class="co">#&gt; # A tibble: 6 × 6</span>
 <span class="co">#&gt;   anonid                               setname  item trial color   timing</span>
 <span class="co">#&gt;   &lt;chr&gt;                                &lt;chr&gt;   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;int&gt;</span>
 <span class="co">#&gt; 1 0045dbc0-8936-4c47-b8a2-333f29f3a505 set1       12 1     #A82816  18689</span>
@@ -191,9 +191,9 @@
 <a href="#mean-consistency-scores" class="anchor"></a>Mean consistency scores</h3>
 <p>Here, we force a mean consistency score to be calculated even where participants have some (but not all) items with less than 3 valid color responses by specifying na.rm=TRUE. We specify that consistency scores should be calculated by using euclidean distances (synr uses euclidean distances by default, but it’s specified here for extra clarity).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mean_cons_scores</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span>
-  na.rm<span class="op">=</span><span class="cn">TRUE</span>, 
-  method<span class="op">=</span><span class="st">'euclidean'</span>
+<code class="sourceCode R"><span class="va">mean_cons_scores</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span> 
+  method<span class="op">=</span><span class="st">'euclidean'</span>,
+  na.rm<span class="op">=</span><span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
 <p>We’ll also put the consistency scores in a data frame where scores are linked to their respective participant ID’s:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">

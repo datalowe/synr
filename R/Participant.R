@@ -68,8 +68,8 @@ Participant <- setRefClass(
       },
 
     get_mean_response_time = function(
-        na.rm = FALSE,
-        symbol_filter = NULL
+        symbol_filter = NULL,
+        na.rm = FALSE
     ) {
       "Returns the mean response time, with respect to all
       Grapheme instances associated with the participant.
@@ -149,9 +149,9 @@ Participant <- setRefClass(
     },
 
     get_consistency_scores = function(
-      na.rm = FALSE,
+      method = "euclidean",
       symbol_filter = NULL,
-      method = "euclidean"
+      na.rm = FALSE
     ) {
       "Returns a list of grapheme symbols with associated consistency scores.
       If na.rm = TRUE, for each grapheme a consistency score calculation is
@@ -182,8 +182,8 @@ Participant <- setRefClass(
       )
       for (grapheme in filtered_graphemes) {
         g_c_score <- grapheme$get_consistency_score(
-          na.rm = na.rm,
-          method = method
+          method = method,
+          na.rm = na.rm
         )
         grapheme_consistency_scores[[grapheme$symbol]] <- g_c_score
       }
@@ -191,9 +191,9 @@ Participant <- setRefClass(
     },
 
     get_mean_consistency_score = function(
-      na.rm = FALSE,
       symbol_filter = NULL,
-      method="euclidean"
+      method="euclidean",
+      na.rm = FALSE
     ) {
       "Returns the mean consistency score with respect to
       Grapheme instances associated with the participant.
@@ -219,8 +219,8 @@ Participant <- setRefClass(
       the base R dist function for all options)"
       cons_vec <- unlist(
         get_consistency_scores(
-          symbol_filter = symbol_filter,
-          method = method
+          method = method,
+          symbol_filter = symbol_filter
         )
       )
       return(mean(cons_vec, na.rm = na.rm))

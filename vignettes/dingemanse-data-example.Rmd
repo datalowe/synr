@@ -98,9 +98,9 @@ Of course, it's not expected that most users will want to produce plots for all 
 Here, we force a mean consistency score to be calculated even where participants have some (but not all) items with less than 3 valid color responses by specifying na.rm=TRUE. We specify that consistency scores should be calculated by using euclidean distances (synr uses euclidean distances by default, but it's specified here for extra clarity).
 
 ```{r calc_cons_scores}
-mean_cons_scores <- pg$get_mean_consistency_scores(
-  na.rm=TRUE, 
-  method='euclidean'
+mean_cons_scores <- pg$get_mean_consistency_scores( 
+  method='euclidean',
+  na.rm=TRUE
 )
 ```
 
