@@ -16,8 +16,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r load_synr}
 library(synr)
+```
+
+```{r load_vignette_build_packages, include = FALSE}
 library(dbscan)
 library(plotly)
 ```
@@ -219,7 +222,7 @@ Should some or all of these be considered to be examples of invalid data? Opinio
 The basic issue is that participants might give responses that vary too little in color for the consistency scores to mean anything. It is of course at least theoretically possible that someone would truly only have synesthetic associations with a single color. The consistency test, however, cannot determine whether this is the case, or if the participant for instance just likes the color red and keeps responding with it since that's the color that comes to mind if they don't have a stimulus-specific association. 
 
 ## Previously used validation procedures
-Different research studies have handled possibly invalid data differently. Some (e.g. Cuskley et al., 2019) have opted for excluding participants which respond with 'no color' for more than a certain proportion of all trials. Others (TODO: add reference here) have opted for (also) excluding participants who respond with 'the same color' in too high a proportion of trials. Yet others (TODO: add reference) have excluded participants based on human judgments of whether data are invalid or not.
+Different research studies have handled possibly invalid data differently. Some (e.g. Cuskley et al., 2019) have opted for excluding participants which respond with 'no color' for more than a certain proportion of all trials. Others (Carmichael et al., 2015; Simner et al., 2006) have opted for (also) excluding participants who respond with 'the same color' in too high a proportion of trials. Yet others have excluded participants based on patterns that are more difficult to systematically define, such as a pattern involving selecting "e.g. red for ‘R’, green for ‘G’ and blue for ‘B’" (Carmichael et al., 2015).
 
 ### Data validation challenges
 Excluding participants based on the proportion or number of missing and/or 'no color' responses is relatively straight-forward, though there is currently no widely agreed upon threshold.
@@ -473,6 +476,7 @@ This approach enables invalidating data from participants who used one or just a
 ## Applying synr's validation procedure, `check_valid_get_twcv_scores`
 You first need a participantgroup (see the quickstart/main tutorial if this is new to you)
 ```{r}
+# if you don't already have synr loaded, run 'library(synr)' first
 # TODO: update with long format data/function once bigger sample df has been fixed
 pg <- create_participantgroup_widedata(
   synr_example_full,
@@ -529,7 +533,7 @@ head(val_id_df)
 ```
 
 ### Parameter values and previous applications of synr's data validation
-This approach of using DBSCAN together with 3D 'variance' scores is, so far, unique to synr. Thus, there are no norms regarding what particular values should be used.
+The approach of using DBSCAN together with 3D 'variance' scores for validation of consistency test data is, so far, unique to synr. Thus, there are no norms regarding what particular values should be used.
 
 The main developer of synr (Lowe Wilsson) has applied `check_valid_get_twcv_scores` to a sample of consistency test data from 268 participants with the exact values specified in the example above, and then compared the results to independent classifications by human raters. The data in the sample included digit and letter graphemes, where each grapheme had been used in 3 trials. Classifications were made separately for the digit and letter categories.
 
@@ -542,7 +546,9 @@ synr uses a novel approach for validating participant data which shows great pro
 
 Note that when synr classifies participant data as 'invalid', it essentially means that it's inappropriate to simply feed the data into consistency scoring algorithms. It's then up to you as a user to decide how to handle 'invalid' data sets, eg by excluding them from analyses entirely, or by considering participants with 'invalid' data as non-synesthetes.
 
-If you do use synr for data validation, when reporting the results, __please reference synr__ itself (for now, ) and include code and/or values you passed to `check_valid_get_twcv_scores`. Remember also that it's important to avoid post-hoc definitions of validation criteria, whenever possible. Thus, if it's feasible, __please make sure to decide before starting data collection, or based on a smaller initial sample, what values to use with `check_valid_get_twcv_scores`__.
+Some particular response patterns only make sense to humans and don't register at all with methods like DBSCAN. This includes things like using an __o__range color for the grapheme 'O', which was found in one study (Simner et al., 2006) to be done more frequently by self-reported non-synesthetes with low consistency scores than by self-reported synesthetes. Keep in mind that if you want to partly base validity assessments on these very subjective patterns (as in e. g. Carmichael et al., 2015), synr always needs to be complemented by human ratings.
+
+If you use synr for data validation __please reference synr__ itself (for now, https://github.com/datalowe/synr) and include code and/or values you passed to `check_valid_get_twcv_scores` when reporting the results. Remember also that it's important to avoid post-hoc definitions of validation criteria, whenever possible. Thus, if it's feasible, __please decide before starting data collection, or based on a smaller initial sample, what values to use with `check_valid_get_twcv_scores`__.
 
 ## More information
 ### DBSCAN
@@ -560,4 +566,10 @@ More details about data validation-related procedures can be found in synr's doc
 You can also find higher-level information in the documentation for the `check_valid_get_twcv_scores` method by running `?synr::ParticipantGroup`.
 
 ## References
+Carmichael, D. A., Down, M. P., Shillcock, R. C., Eagleman, D. M., & Simner, J. (2015). Validating a standardised test battery for synesthesia: Does the Synesthesia Battery reliably detect synesthesia? _Consciousness and Cognition_, 33, 375–385.
+
 Cuskley, C.1, Dingemanse, M.1, van Leeuwen, T. & Kirby, S. 2019. Cross-modal associations and synaesthesia: Categorical perception and structure in vowel-colour mappings in a large online sample. _Behaviour Research Methods_, doi: 10.3758/s13428-019-01203-7
+
+Simner, J., Mulvenna, C., Sagiv, N., Tsakanikos, E., Witherby, S. A., Fraser, C., Scott, K., & Ward, J. (2006). Synaesthesia: The prevalence of atypical cross-modal experiences. _Perception_, 35(8), 1024–1033.
+
+
