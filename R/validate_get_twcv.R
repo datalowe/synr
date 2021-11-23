@@ -54,6 +54,9 @@
 #'  \item{reason_invalid}{One-element character vector, empty if valid is TRUE}
 #'  \item{twcv}{One-element numeric (or NA if can't be calculated) vector,
 #' indicating TWCV}
+#'  \item{num_clusters}{One-element numeric (or NA if can't be calculated)
+#' vector, indicating the number of identified clusters counting toward the
+#' tally compared with 'safe_num_clusters'}
 #'
 #' @seealso \code{\link{point_3d_variance}} for single-cluster variance,
 #' \code{\link{total_within_cluster_variance}} for TWCV.
@@ -73,7 +76,8 @@ validate_get_twcv <- function(
     return(list(
       valid = FALSE,
       reason_invalid = "too_few_color_responses",
-      twcv = NA
+      twcv = NA,
+      num_clusters = NA
     ))
   }
 
@@ -84,6 +88,11 @@ validate_get_twcv <- function(
   )
   cluster_numbers <- unique(dbscan_res$cluster)
   twcv <- total_within_cluster_variance(color_matrix, dbscan_res$cluster)
+
+  # check if the noise cluster consists of less than 'dbscan_min_pts' points,
+  # in which case it should not be included in the 'cluster tally'
+  noise_c_few_pts <- sum(dbscan_res$cluster == 0) < dbscan_min_pts
+  num_clusters <- length(cluster_numbers) - as.numeric(noise_c_few_pts)
 
   for (clu_n in cluster_numbers) {
     cluster_mask <- dbscan_res$cluster == clu_n
@@ -97,19 +106,14 @@ validate_get_twcv <- function(
         return(list(
           valid = FALSE,
           reason_invalid = "hi_prop_tight_cluster",
-          twcv = twcv
+          twcv = twcv,
+          num_clusters = num_clusters
         ))
       }
     }
   }
   # check if TWCV score is low and
   # there are few clusters
-
-  # check if the noise cluster consists of less than 'dbscan_min_pts' points,
-  # in which case it should not be included in the 'cluster tally'
-  noise_c_few_pts <- sum(dbscan_res$cluster == 0) < dbscan_min_pts
-  num_clusters <- length(cluster_numbers) - as.numeric(noise_c_few_pts)
-
   twcv_score <- total_within_cluster_variance(
     color_matrix,
     dbscan_res$cluster
@@ -121,13 +125,15 @@ validate_get_twcv <- function(
     return(list(
       valid = FALSE,
       reason_invalid = "few_clusters_low_twcv",
-      twcv = twcv
+      twcv = twcv,
+      num_clusters = num_clusters
     ))
   }
 
   return(list(
     valid = TRUE,
     reason_invalid = "",
-    twcv = twcv
+    twcv = twcv,
+    num_clusters = num_clusters
   ))
 }

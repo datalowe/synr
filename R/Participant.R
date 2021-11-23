@@ -570,7 +570,13 @@ Participant <- setRefClass(
         }
         \\item{\\code{twcv} One-element numeric (or NA if there are no/too few
           graphemes with complete responses) vector indicating participant's
-          calculated TWCV.}
+          calculated TWCV.
+        }
+        \\item{\\code{num_clusters} One-element numeric (or NA if there are no/too few
+          graphemes with complete responses) vector indicating
+          the number of identified clusters counting toward the
+          tally compared with 'safe_num_clusters'.
+        }
       }
     }
     "

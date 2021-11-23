@@ -215,7 +215,8 @@ and add each one using the add_grapheme() method.</p></dd>
           points allowed to be within a single 'tight-knit' cluster (exceeding
           this leads to classification as invalid). Defaults to 0.6.</p></li>
 <li><p><code>safe_num_clusters</code> Minimum number of identified DBSCAN
-          clusters (including 'noise' cluster) that guarantees validity if
+          clusters (including 'noise' cluster only if it consists of at least
+          'dbscan_min_pts' points) that guarantees validity if
           points are 'non-tight-knit'. Defaults to 4.</p></li>
 <li><p><code>safe_twcv</code> Minimum total within-cluster variance (TWCV)
           score that guarantees validity if points are 'non-tight-knit'.
@@ -232,6 +233,10 @@ and add each one using the add_grapheme() method.</p></dd>
 <li><p><code>twcv</code> One-element numeric (or NA if there are no/too few
           graphemes with complete responses) vector indicating participant's
           calculated TWCV.</p></li>
+<li><p><code>num_clusters</code> One-element numeric (or NA if there are no/too few
+          graphemes with complete responses) vector indicating
+          the number of identified clusters counting toward the
+          tally compared with 'safe_num_clusters'.</p></li>
 </ul><p></p></p></dd>
 
 <dt><code>get_consistency_scores(

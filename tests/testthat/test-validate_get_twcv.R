@@ -178,4 +178,8 @@ test_that(paste0(
     abs(res$twcv-0.458),
     0.001
   )
+  expect_equal(
+    res$num_clusters,
+    2
+  )
 })

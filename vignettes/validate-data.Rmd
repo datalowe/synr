@@ -469,15 +469,12 @@ Once steps 1-4 are cleared:
 
 In other words, if the participant data had few clusters, _and_ their TWCV score was below 250, they are classified as invalid.
 
-(TODO: add explanation that 'noise' cluster is only counted if it includes the minimum number of cluster points, once this has been implemented in code)
-
 This approach enables invalidating data from participants who used one or just a few colors too much, while still validating different valid patterns of responding.
 
 ## Applying synr's validation procedure, `check_valid_get_twcv_scores`
 You first need a participantgroup (see the quickstart/main tutorial if this is new to you)
 ```{r}
 # if you don't already have synr loaded, run 'library(synr)' first
-# TODO: update with long format data/function once bigger sample df has been fixed
 pg <- create_participantgroup(
   raw_df=synr_exampledf_large,
   n_trials_per_grapheme=3,
@@ -513,7 +510,7 @@ __Parameters__
 * `dbscan_min_pts` Minimum number of points required in the epsilon neighborhood for core points (including the core point itself) when applying DBSCAN clustering.
 * `max_var_tight_cluster` Maximum variance for an identified DBSCAN cluster to be considered 'tight-knit'.
 * `max_prop_single_tight_cluster` Maximum proportion of color points allowed to be within a single 'tight-knit'   cluster (if a participant's data exceed this limit, they are classified as invalid).
-* `safe_num_clusters` Minimum number of identified DBSCAN clusters (including 'noise' cluster; TODO update with info about when noise cluster is included after implementation has been changed) that guarantees validity of a participant's data if points are 'non-tight-knit'.
+* `safe_num_clusters` Minimum number of identified DBSCAN clusters (including the 'noise' cluster _if it consists of at least `dbscan_min_pts` points_) that guarantees validity of a participant's data if points are 'non-tight-knit'.
 * `safe_twcv` Minimum total within-cluster variance (TWCV) score that guarantees a participant's data's validity if points are 'non-tight-knit'.
 * `symbol_filter` A character vector (or NULL) that specifies which graphemes' data to use. Defaults to NULL, meaning data from all of the participants' graphemes will be used.
 
@@ -521,7 +518,8 @@ __Output__ A data frame with columns:
 
 * `valid` Holds TRUE for participants whose data were classified as valid, FALSE for participants whose data were classified as invalid.
 * `reason_invalid` Strings which describe for each participant why their data were deemed invalid. Participants whose data were classified as valid have empty strings here.
-* `twcv` Numeric column which holds participants' calculated TWCV scores (NA for participants who had no/too few graphemes with complete responses).
+* `twcv` Numeric column which holds participants' calculated TWCV scores.
+* `num_clusters` Numeric column which for each participant holds the number of identified clusters (including the 'noise' cluster _if it consists of at least `dbscan_min_pts` points_).
 
 Note the `set.seed(1)` call. This is necessary for replication. DBSCAN uses a partially random procedure for determining clusters. In practice, when this has been tested by the main developer (see below), the results have always been the same, but for some very unusual sets of data the results might differ. Hence, `set.seed(<number>)` should always be included in any code you save/share, to be absolutely certain that `check_valid_get_twcv_scores` will produce the same output if run again.
 
@@ -543,13 +541,13 @@ The validity criteria used by human raters in the example sudy were chiefly that
 When classifications produced by synr were compared with those of human raters, there was agreement for all but a handful of participants. In most of these cases, it turned out that the human raters had missed some detail, eg participants who had used the same color for just over 60% of all responses had been erroneously classified as valid. In one case, a participant had responded with different shades of red that were somewhat close to orange, leading to a disagreement among the human raters. In the end, after discussion the consensus was that synr's classifications were the most accurate in all cases.
 
 ## Summary
-synr uses a novel approach for validating participant data which shows great promise as a tool for data cleaning. It is likely to reduce time spent on monotonous work with sorting through consistency test data. Most of all however, it lets researchers clearly specify what they consider to be valid data and how they formalized these criteria. A downside is that this validation procedure involves more abstract concepts like 'total within-cluster variance', but the benefit of not having to rely on familiar but diffuse concepts like 'number of colors' hopefully weighs greater.
+synr uses a novel approach for validating participant data which shows great promise. It is likely to reduce time spent on manually sorting through consistency test data. Most of all, it lets researchers clearly specify and operationalize valid data criteria. The procedure involves more abstract concepts like 'total within-cluster variance', but has the benefit of not having to rely on diffuse concepts like 'number of colors'.
 
-Note that when synr classifies participant data as 'invalid', it essentially means that it's inappropriate to simply feed the data into consistency scoring algorithms. It's then up to you as a user to decide how to handle 'invalid' data sets, eg by excluding them from analyses entirely, or by considering participants with 'invalid' data as non-synesthetes.
+Note that a synr 'invalid' classification essentially means that it's inappropriate to simply feed the data into consistency scoring algorithms. It's up to users to decide how to handle participants with 'invalid' data, eg by excluding them from analyses entirely or considering them as non-synesthetes.
 
-Some particular response patterns only make sense to humans and don't register at all with methods like DBSCAN. This includes things like using an __o__range color for the grapheme 'O', which was found in one study (Simner et al., 2006) to be done more frequently by self-reported non-synesthetes with low consistency scores than by self-reported synesthetes. Keep in mind that if you want to partly base validity assessments on these very subjective patterns (as in e. g. Carmichael et al., 2015), synr always needs to be complemented by human ratings.
+Some response patterns only make sense to humans and cannot be picked up by DBSCAN. An example is using an __o__range color for the grapheme 'O', which was found in one study (Simner et al., 2006) to be more frequent among self-reported non-synesthetes with low consistency scores than among self-reported synesthetes. If validity assessments are to take these very subjective patterns into account (as done in e. g. Carmichael et al., 2015), synr needs to be complemented by human ratings.
 
-If you use synr for data validation __please reference synr__ itself (for now, https://github.com/datalowe/synr) and include code and/or values you passed to `check_valid_get_twcv_scores` when reporting the results. Remember also that it's important to avoid post-hoc definitions of validation criteria, whenever possible. Thus, if it's feasible, __please decide before starting data collection, or based on a smaller initial sample, what values to use with `check_valid_get_twcv_scores`__.
+If synr is used for data validation then __please reference synr__ itself (for now, https://github.com/datalowe/synr) and include code and/or values you passed to `check_valid_get_twcv_scores` when reporting results. It's also important to avoid post-hoc definitions of validation criteria Thus, if it's feasible, __please decide before starting data collection, or based on a smaller initial sample, what values to use with `check_valid_get_twcv_scores`__.
 
 ## More information
 ### DBSCAN

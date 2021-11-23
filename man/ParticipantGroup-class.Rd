@@ -109,7 +109,13 @@ and add each one using the add_participant() method.}
         }
         \item{\code{twcv} Numeric column which holds participants'
           calculated TWCV scores (NA for participants who had no/too
-          few graphemes with complete responses).}
+          few graphemes with complete responses).
+        }
+        \item{\code{num_clusters} One-element numeric (or NA if there are no/too few
+          graphemes with complete responses) vector indicating
+          the number of identified clusters counting toward the
+          tally compared with 'safe_num_clusters'.
+        }
       }
     }
     }

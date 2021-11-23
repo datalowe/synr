@@ -45,6 +45,9 @@ A list with components
  \item{reason_invalid}{One-element character vector, empty if valid is TRUE}
  \item{twcv}{One-element numeric (or NA if can't be calculated) vector,
 indicating TWCV}
+ \item{num_clusters}{One-element numeric (or NA if can't be calculated)
+vector, indicating the number of identified clusters counting toward the
+tally compared with 'safe_num_clusters'}
 }
 \description{
 Checks if passed color data are valid, i. e. are bountiful
