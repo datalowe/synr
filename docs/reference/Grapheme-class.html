@@ -194,14 +194,6 @@ a format ready for use in Participant.get_plot_data()
 method as a row of plot
 data.</p></dd>
 
-<dt><code>get_prop_color(color_label = NULL, r = NULL, g = NULL, b = NULL)</code></dt><dd><p>Get the proportion of response colors that are within a
-specified color range. The range is specified using color_label
-or the r/g/b arguments. Possible color_label specifications are:
-"blue", "red", "green", "white", "black" or "hazy".
-For r/g/b arguments, value ranges are specified using two-element
-numeric vectors, with rgb values on a 0-1 scale. E. g. r=c(0, 0.3),
-g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range.</p></dd>
-
 <dt><code>has_only_non_na_colors()</code></dt><dd><p>Returns TRUE if the grapheme only has responses with valid colors,
 FALSE if there are responses with nonvalid colors or there are
 no responses at all.</p></dd>
