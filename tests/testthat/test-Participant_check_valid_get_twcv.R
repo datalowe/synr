@@ -36,7 +36,8 @@ test_that(
 test_that(
   "A participant with two graphemes, of which one includes an NA
   response color, is classified as invalid by check_valid_get_twcv
-  even when min_complete_graphemes is set to 1.",
+  even when min_complete_graphemes is set to 1 and
+  complete_graphemes_only = FALSE.",
   {
     p <- Participant$new()
     g1 <- Grapheme$new(symbol='a')
@@ -44,7 +45,10 @@ test_that(
     g2 <- Grapheme$new(symbol='b')
     g2$set_colors(c("#0000FF", "#0000FF", "#00FF00"), "Luv")
     p$add_graphemes(list(g1, g2))
-    res <- p$check_valid_get_twcv(min_complete_graphemes=1)
+    res <- p$check_valid_get_twcv(
+      min_complete_graphemes = 1,
+      complete_graphemes_only = FALSE
+    )
     expect_false(res$valid)
     expect_equal(res$reason_invalid, "hi_prop_tight_cluster")
     expect_equal(res$twcv, 0)
@@ -83,5 +87,55 @@ test_that(
     expect_true(res$valid)
     expect_equal(res$reason_invalid, "")
     expect_gt(res$twcv, 500)
+  }
+)
+
+test_that(
+  "check_valid_get_twcv: A participant with:
+  15 graphemes, with 2 responses each of wildly
+  varying (randomly generated) colors, and
+  8 graphemes of the same color
+  is classified as invalid by when 'complete_graphemes_only = TRUE' (default)."
+  , {
+    p <- Participant$new()
+    for (l in LETTERS[1:15]) {
+      g <- Grapheme$new(symbol=l)
+      g$set_colors(c(get_random_color(), get_random_color(), NA), "Luv")
+      p$add_grapheme(g)
+    }
+    for (l in LETTERS[16:23]) {
+      g <- Grapheme$new(symbol=l)
+      g$set_colors(c("#FFFFFF", "#FFFFFF", "#FFFFFF"), "Luv")
+      p$add_grapheme(g)
+    }
+    res <- p$check_valid_get_twcv()
+    expect_false(res$valid)
+    expect_equal(res$reason_invalid, "hi_prop_tight_cluster")
+    expect_lt(res$twcv, 50)
+  }
+)
+
+test_that(
+  "check_valid_get_twcv: A participant with:
+  15 graphemes, with 2 responses each of wildly
+  varying (randomly generated) colors, and
+  8 graphemes of the same color
+  is classified as valid when 'complete_graphemes_only = FALSE'."
+  , {
+    p <- Participant$new()
+    for (l in LETTERS[1:15]) {
+      g <- Grapheme$new(symbol=l)
+      g$set_colors(c(get_random_color(), get_random_color(), NA), "Luv")
+      p$add_grapheme(g)
+    }
+    for (l in LETTERS[16:23]) {
+      g <- Grapheme$new(symbol=l)
+      g$set_colors(c("#FFFFFF", "#FFFFFF", "#FFFFFF"), "Luv")
+      p$add_grapheme(g)
+    }
+    res <- p$check_valid_get_twcv(complete_graphemes_only = FALSE)
+    expect_true(res$valid)
+    expect_equal(res$reason_invalid, "")
+    expect_gt(res$twcv, 200)
   }
 )

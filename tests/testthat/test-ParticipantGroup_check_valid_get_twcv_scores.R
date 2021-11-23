@@ -85,3 +85,33 @@ test_that(
     expect_gt(val_res$twcv[1], 500)
 })
 
+
+test_that(
+  "check_valid_get_twcv_scores: A participant with:
+  15 graphemes, with 2 responses each of wildly
+  varying (randomly generated) colors, and
+  8 graphemes of the same color
+  is classified as valid when 'complete_graphemes_only = FALSE',
+  and invalid when 'complete_graphemes_only = TRUE'."
+  , {
+    p <- Participant$new(id="1")
+    for (l in LETTERS[1:15]) {
+      g <- Grapheme$new(symbol=l)
+      g$set_colors(c(get_random_color(), get_random_color(), NA), "Luv")
+      p$add_grapheme(g)
+    }
+    for (l in LETTERS[16:23]) {
+      g <- Grapheme$new(symbol=l)
+      g$set_colors(c("#FFFFFF", "#FFFFFF", "#FFFFFF"), "Luv")
+      p$add_grapheme(g)
+    }
+    pg <- ParticipantGroup$new()
+    pg$add_participant(p)
+
+    res_df_not_only_complete <- pg$check_valid_get_twcv_scores(complete_graphemes_only = FALSE)
+    expect_true(res_df_not_only_complete$valid[1])
+
+    res_df_only_complete <- pg$check_valid_get_twcv_scores(complete_graphemes_only = TRUE)
+    expect_false(res_df_only_complete$valid[1])
+  }
+)

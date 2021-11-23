@@ -40,7 +40,7 @@ test_that("Conversion to Luv and back to hex code using Grapheme.get_hex_colors(
 
 
 test_that("ParticipantGroup.get_numbers_all_colored_graphemes() returns correct number of graphemes
-          with all colored graphemes for 1 participant", {
+          with all colored responses for 1 participant", {
             g1 <- Grapheme$new(symbol="a")
             g2 <- Grapheme$new(symbol="b")
             g1$set_colors(c("#800020", "#F08000", "#993322"), "Luv")
