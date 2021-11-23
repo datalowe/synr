@@ -172,30 +172,6 @@ participant has.  If a character vector is passed to symbol_filter,
 only data connected to graphemes with symbols in the passed vector
 are used.}
 
-\item{\code{get_prop_color_values(
-  color_label = NULL,
-  r = NULL,
-  g = NULL,
-  b = NULL,
-  symbol_filter = NULL
-)}}{For each participant, get the proportion of its response colors that
-    are within a specified color range. The range is specified using
-    color_label or the r/g/b arguments.
-
-    Possible color_label specifications are:
-    "blue", "red", "green", "white",
-    "black" or "hazy". Note that the ranges associated with each color
-    label are extremely arbitrary and cannot be relied on - use them only,
-    if at all, to get a very rough idea of sample characteristics.
-
-    For r/g/b arguments, value ranges are specified
-    using two-element numeric vectors, with rgb values on a 0-1 scale.
-    E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3)
-    would code for a dark color range.
-
-    If a character vector is passed to symbol_filter, only data for graphemes
-    with symbols in the passed vector are used.}
-
 \item{\code{has_participants()}}{Returns TRUE if there is at least one
 participant in the participantgroup's participants list,
 otherwise returns FALSE}

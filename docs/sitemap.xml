@@ -13,9 +13,6 @@
     <loc>https://datalowe.github.io/synr//reference/ParticipantGroup-class.html</loc>
   </url>
   <url>
-    <loc>https://datalowe.github.io/synr//reference/build_grapheme_vector.html</loc>
-  </url>
-  <url>
     <loc>https://datalowe.github.io/synr//reference/centroid_3d_sq_dist.html</loc>
   </url>
   <url>
@@ -32,9 +29,6 @@
   </url>
   <url>
     <loc>https://datalowe.github.io/synr//reference/filter_graphemes.html</loc>
-  </url>
-  <url>
-    <loc>https://datalowe.github.io/synr//reference/is_in_color_range.html</loc>
   </url>
   <url>
     <loc>https://datalowe.github.io/synr//reference/point_3d_variance.html</loc>

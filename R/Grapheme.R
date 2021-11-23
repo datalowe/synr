@@ -97,33 +97,6 @@ Grapheme<- setRefClass("Grapheme",
                            return(hex_vec)
                          },
 
-                         get_prop_color = function(color_label=NULL,
-                                                   r=NULL, g=NULL, b=NULL) {
-                           "Get the proportion of response colors that are within a
-                           specified color range. The range is specified using color_label
-                           or the r/g/b arguments. Possible color_label specifications are:
-                           \"blue\", \"red\", \"green\", \"white\", \"black\" or \"hazy\".
-                           For r/g/b arguments, value ranges are specified using two-element
-                           numeric vectors, with rgb values on a 0-1 scale. E. g. r=c(0, 0.3),
-                           g=c(0, 0.3), b=c(0, 0.3) would code for a dark color range."
-                           non_na_colors <- response_colors[complete.cases(response_colors), , drop=FALSE]
-                           num_non_na <- nrow(non_na_colors)
-                           if (num_non_na==0) {
-                             return(NA)
-                           }
-                           bool_is_color <- apply(non_na_colors, 1,
-                                              function(x) {
-                                                is_in_color_range(x,
-                                                                  color_label=color_label,
-                                                                  color_space=color_space,
-                                                                  r=r,
-                                                                  g=g,
-                                                                  b=b)
-                                                }
-                                              )
-                           return(sum(bool_is_color)/num_non_na)
-                         },
-
                          get_consistency_score = function(na.rm=FALSE,
                                                           method = "euclidean") {
                            "Calculate the consistency score based on the

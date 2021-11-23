@@ -3,7 +3,6 @@
 export(Grapheme)
 export(Participant)
 export(ParticipantGroup)
-export(build_grapheme_vector)
 export(create_grapheme)
 export(create_participant)
 export(create_participantgroup)

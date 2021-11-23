@@ -183,6 +183,7 @@ and add each one using the add_grapheme() method.</p></dd>
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 4,
   safe_twcv = 250,
+  complete_graphemes_only = TRUE,
   symbol_filter = NULL
 )</code></dt><dd><p>Checks if this participant's data are valid based on passed arguments.
     This method aims to identify participants who had too few responses or
@@ -221,6 +222,10 @@ and add each one using the add_grapheme() method.</p></dd>
 <li><p><code>safe_twcv</code> Minimum total within-cluster variance (TWCV)
           score that guarantees validity if points are 'non-tight-knit'.
           Defaults to 250.</p></li>
+<li><p><code>complete_graphemes_only</code> A logical vector. If TRUE, 
+          only data from graphemes that have all non-NA color responses
+          are used; if FALSE, even data from graphemes with some NA color
+          responses are used. Defaults to TRUE.</p></li>
 <li><p><code>symbol_filter</code> A character vector (or NULL) that specifies
           which graphemes' data to use. Defaults to NULL, meaning data from
           all of the participant's graphemes will be used.</p></li>
@@ -238,6 +243,11 @@ and add each one using the add_grapheme() method.</p></dd>
           the number of identified clusters counting toward the
           tally compared with 'safe_num_clusters'.</p></li>
 </ul><p></p></p></dd>
+
+<dt><code>get_all_colored_symbols(symbol_filter = NULL)</code></dt><dd><p>Returns a character vector of symbols corresponding to graphemes for
+which all responses have an associated non-NA color. If a
+character vector is passed to symbol_filter, only
+symbols in the passed vector are returned.</p></dd>
 
 <dt><code>get_consistency_scores(
   method = "euclidean",
@@ -294,10 +304,9 @@ only data from responses associated with graphemes with symbols
 are included.</p></dd>
 
 <dt><code>get_number_all_colored_graphemes(symbol_filter = NULL)</code></dt><dd><p>Returns the number of graphemes for which all
-responses have an associated non-na color. If a
-character vector is passed to symbol_filter, only data from
-graphemes with symbols in the passed vector are used when
-calculating the mean response time.</p></dd>
+responses have an associated non-NA color. If a
+character vector is passed to symbol_filter, only
+graphemes with symbols in the passed vector are counted.</p></dd>
 
 <dt><code>get_plot(
   cutoff_line = FALSE,
@@ -334,23 +343,6 @@ calculating the mean response time.</p></dd>
       if not all of the participant's graphemes have the same number
       of color responses. This is intended.      If a character vector is passed to symbol_filter, only data for graphemes
       with symbols in the passed vector are used.</p></dd>
-
-<dt><code>get_prop_color(
-  color_label = NULL,
-  r = NULL,
-  g = NULL,
-  b = NULL,
-  symbol_filter = NULL
-)</code></dt><dd><p>Get the proportion of participant's response colors that
-are within a specified color range. The range is specified using
-color_label or the r/g/b arguments. Possible color_label
-specifications are: "blue", "red", "green", "white",
-"black" or "hazy". For r/g/b arguments, value ranges are specified
-using two-element numeric vectors, with rgb values on a 0-1 scale.
-E. g. r = c(0, 0.3), g = c(0, 0.3), b = c(0, 0.3) would code
-for a dark color range. If a character vector is passed to
-symbol_filter, only data for graphemes with symbols in the
-passed vector are used.</p></dd>
 
 <dt><code>get_symbols()</code></dt><dd><p>Returns a character vector with all symbols for
 graphemes associated with the participant.</p></dd>

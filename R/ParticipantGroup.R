@@ -263,46 +263,6 @@ ParticipantGroup <- setRefClass(
       return(participant_level_resp_times)
     },
 
-    get_prop_color_values = function(
-      color_label = NULL,
-      r = NULL, g = NULL, b = NULL,
-      symbol_filter = NULL
-    ) {
-      "For each participant, get the proportion of its response colors that
-    are within a specified color range. The range is specified using
-    color_label or the r/g/b arguments.
-
-    Possible color_label specifications are:
-    \"blue\", \"red\", \"green\", \"white\",
-    \"black\" or \"hazy\". Note that the ranges associated with each color
-    label are extremely arbitrary and cannot be relied on - use them only,
-    if at all, to get a very rough idea of sample characteristics.
-
-    For r/g/b arguments, value ranges are specified
-    using two-element numeric vectors, with rgb values on a 0-1 scale.
-    E. g. r=c(0, 0.3), g=c(0, 0.3), b=c(0, 0.3)
-    would code for a dark color range.
-
-    If a character vector is passed to symbol_filter, only data for graphemes
-    with symbols in the passed vector are used."
-      if (!has_participants()) {
-        stop(paste0("Tried to get 'proportion of specified color' values ",
-          "for participantgroup without participants. Please add ",
-          "participants before calling get_prop_color_values()."
-        ))
-      }
-      participant_level_prop_cols <- numeric(length(participants))
-      loop_index <- 1
-      for (p in participants) {
-        p_prop_col <- p$get_prop_color(color_label = color_label,
-                                      r = r, g = g, b = b,
-                                      symbol_filter = symbol_filter)
-        participant_level_prop_cols[loop_index] <- p_prop_col
-        loop_index <- loop_index + 1
-      }
-      return(participant_level_prop_cols)
-    },
-
     get_numbers_all_colored_graphemes = function(symbol_filter = NULL) {
       "Returns a vector with numbers representing how many
       graphemes with all-valid (non-na) response colors that each
