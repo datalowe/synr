@@ -113,5 +113,7 @@ test_that(
 
     res_df_only_complete <- pg$check_valid_get_twcv_scores(complete_graphemes_only = TRUE)
     expect_false(res_df_only_complete$valid[1])
+
+    expect_equal(res_df_only_complete$num_clusters[1], 1)
   }
 )

@@ -1,6 +1,5 @@
 #' A Reference Class for representing consistency test graphemes
-#'
-#'
+#' 
 #' @field symbol A one-element character vector containing the symbol/set of symbols
 #' that describe(s) the grapheme, e. g. '7' or 'Monday'. Set at class new() call or using set_symbol method.
 #' @field response_colors A matrix where each row specifies color coordinates for each participant

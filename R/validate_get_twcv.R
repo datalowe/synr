@@ -63,11 +63,11 @@
 
 validate_get_twcv <- function(
   color_matrix,
-  dbscan_eps = 30,
+  dbscan_eps = 20,
   dbscan_min_pts = 4,
-  max_var_tight_cluster = 100,
+  max_var_tight_cluster = 150,
   max_prop_single_tight_cluster = 0.6,
-  safe_num_clusters = 4,
+  safe_num_clusters = 3,
   safe_twcv = 250
 ) {
   # if there are less than dbscan_min_pts points, it doesn't make sense to run
@@ -89,9 +89,11 @@ validate_get_twcv <- function(
   cluster_numbers <- unique(dbscan_res$cluster)
   twcv <- total_within_cluster_variance(color_matrix, dbscan_res$cluster)
 
-  # check if the noise cluster consists of less than 'dbscan_min_pts' points,
+  # check if the noise cluster consists of at least one but 
+  # less than 'dbscan_min_pts' points,
   # in which case it should not be included in the 'cluster tally'
-  noise_c_few_pts <- sum(dbscan_res$cluster == 0) < dbscan_min_pts
+  num_noise_pts <- sum(dbscan_res$cluster == 0)
+  noise_c_few_pts <- (num_noise_pts > 0) && (num_noise_pts < dbscan_min_pts)
   num_clusters <- length(cluster_numbers) - as.numeric(noise_c_few_pts)
 
   for (clu_n in cluster_numbers) {

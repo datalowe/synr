@@ -95,7 +95,7 @@ test_that(
   15 graphemes, with 2 responses each of wildly
   varying (randomly generated) colors, and
   8 graphemes of the same color
-  is classified as invalid by when 'complete_graphemes_only = TRUE' (default)."
+  is classified as invalid when 'complete_graphemes_only = TRUE' (default)."
   , {
     p <- Participant$new()
     for (l in LETTERS[1:15]) {
@@ -112,6 +112,7 @@ test_that(
     expect_false(res$valid)
     expect_equal(res$reason_invalid, "hi_prop_tight_cluster")
     expect_lt(res$twcv, 50)
+    expect_equal(res$num_clusters, 1)
   }
 )
 
@@ -137,5 +138,6 @@ test_that(
     expect_true(res$valid)
     expect_equal(res$reason_invalid, "")
     expect_gt(res$twcv, 200)
+    expect_gt(res$num_clusters, 1)
   }
 )

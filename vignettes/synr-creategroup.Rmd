@@ -1,7 +1,6 @@
 ---
 title: "Creating ParticipantGroup objects"
 author: "Lowe Wilsson"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Creating ParticipantGroup objects}
