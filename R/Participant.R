@@ -234,51 +234,6 @@ Participant <- setRefClass(
       return(mean(cons_vec, na.rm = na.rm))
     },
 
-    get_prop_color = function(
-      color_label = NULL,
-      r = NULL,
-      g = NULL,
-      b = NULL,
-      symbol_filter = NULL
-    ) {
-      "Get the proportion of participant's response colors that
-      are within a specified color range. The range is specified using
-      color_label or the r/g/b arguments. Possible color_label
-      specifications are: \"blue\", \"red\", \"green\", \"white\",
-      \"black\" or \"hazy\". For r/g/b arguments, value ranges are specified
-      using two-element numeric vectors, with rgb values on a 0-1 scale.
-      E. g. r = c(0, 0.3), g = c(0, 0.3), b = c(0, 0.3) would code
-      for a dark color range. If a character vector is passed to
-      symbol_filter, only data for graphemes with symbols in the
-      passed vector are used."
-      if (!has_graphemes()) {
-        stop(paste0(
-          "Tried to fetch proportion of responses within a color range ",
-          "for participant without graphemes. Please add graphemes before ",
-          "calling get_prop_color()."
-        ))
-      }
-      grapheme_level_color_props <- numeric()
-      filtered_graphemes <- filter_graphemes(
-        graphemes,
-        symbol_filter
-      )
-      for (grapheme in filtered_graphemes) {
-        weight <- nrow(grapheme$response_colors)
-        g_prop_col <- grapheme$get_prop_color(
-          color_label = color_label,
-          r = r,
-          g = g,
-          b = b
-        )
-        grapheme_level_color_props <- c(
-          grapheme_level_color_props,
-          rep(g_prop_col, weight)
-        )
-      }
-      return(mean(grapheme_level_color_props, na.rm = TRUE))
-    },
-
     get_plot_data = function(symbol_filter = NULL) {
       "Returns a data frame with the following columns:\n
       1. grapheme (grapheme names - of type character)\n
