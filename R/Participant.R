@@ -61,6 +61,27 @@ Participant <- setRefClass(
       return(length(graphemes) > 0)
     },
 
+    get_all_colored_symbols = function(symbol_filter = NULL) {
+      "Returns a character vector of symbols corresponding to graphemes for
+      which all responses have an associated non-NA color. If a
+      character vector is passed to symbol_filter, only
+      symbols in the passed vector are returned."
+      allcolor_symbols <- character()
+      if (!has_graphemes()) {
+        return(allcolor_symbols)
+      }
+      filtered_graphemes <- filter_graphemes(
+        graphemes,
+        symbol_filter
+      )
+      for (grapheme in filtered_graphemes) {
+        if (grapheme$has_only_non_na_colors()) {
+          allcolor_symbols <- c(allcolor_symbols, grapheme$symbol)
+        }
+      }
+      return(allcolor_symbols)
+    },
+
     get_symbols = function() {
         "Returns a character vector with all symbols for
         graphemes associated with the participant."
@@ -128,24 +149,11 @@ Participant <- setRefClass(
 
     get_number_all_colored_graphemes = function(symbol_filter = NULL) {
       "Returns the number of graphemes for which all
-      responses have an associated non-na color. If a
-      character vector is passed to symbol_filter, only data from
-      graphemes with symbols in the passed vector are used when
-      calculating the mean response time."
-      if (!has_graphemes()) {
-        return(0)
-      }
-      num_all_colored_response <- 0
-      filtered_graphemes <- filter_graphemes(
-        graphemes,
-        symbol_filter
-      )
-      for (grapheme in filtered_graphemes) {
-        if (grapheme$has_only_non_na_colors()) {
-          num_all_colored_response <- num_all_colored_response + 1
-        }
-      }
-      return(num_all_colored_response)
+      responses have an associated non-NA color. If a
+      character vector is passed to symbol_filter, only
+      graphemes with symbols in the passed vector are counted."
+      num_all_colored <- length(get_all_colored_symbols(symbol_filter = symbol_filter))
+      return(num_all_colored)
     },
 
     get_consistency_scores = function(
@@ -504,6 +512,7 @@ Participant <- setRefClass(
       max_prop_single_tight_cluster = 0.6,
       safe_num_clusters = 4,
       safe_twcv = 250,
+      complete_graphemes_only = TRUE,
       symbol_filter = NULL
     ) {
     "
@@ -553,6 +562,11 @@ Participant <- setRefClass(
           score that guarantees validity if points are 'non-tight-knit'.
           Defaults to 250.
         }
+        \\item{\\code{complete_graphemes_only} A logical vector. If TRUE, 
+          only data from graphemes that have all non-NA color responses
+          are used; if FALSE, even data from graphemes with some NA color
+          responses are used. Defaults to TRUE.
+        }
         \\item{\\code{symbol_filter} A character vector (or NULL) that specifies
           which graphemes' data to use. Defaults to NULL, meaning data from
           all of the participant's graphemes will be used.
@@ -597,6 +611,10 @@ Participant <- setRefClass(
           reason_invalid = "too_few_graphemes_with_complete_responses",
           twcv = NA
         ))
+      }
+
+      if(complete_graphemes_only) {
+        symbol_filter <- get_all_colored_symbols(symbol_filter = symbol_filter)
       }
 
       color_matrix <- get_nonna_color_resp_mat(

@@ -44,6 +44,7 @@ and add each one using the add_grapheme() method.}
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 4,
   safe_twcv = 250,
+  complete_graphemes_only = TRUE,
   symbol_filter = NULL
 )}}{    Checks if this participant's data are valid based on passed arguments.
     This method aims to identify participants who had too few responses or
@@ -91,6 +92,11 @@ and add each one using the add_grapheme() method.}
           score that guarantees validity if points are 'non-tight-knit'.
           Defaults to 250.
         }
+        \item{\code{complete_graphemes_only} A logical vector. If TRUE, 
+          only data from graphemes that have all non-NA color responses
+          are used; if FALSE, even data from graphemes with some NA color
+          responses are used. Defaults to TRUE.
+        }
         \item{\code{symbol_filter} A character vector (or NULL) that specifies
           which graphemes' data to use. Defaults to NULL, meaning data from
           all of the participant's graphemes will be used.
@@ -118,6 +124,11 @@ and add each one using the add_grapheme() method.}
       }
     }
     }
+
+\item{\code{get_all_colored_symbols(symbol_filter = NULL)}}{Returns a character vector of symbols corresponding to graphemes for
+which all responses have an associated non-NA color. If a
+character vector is passed to symbol_filter, only
+symbols in the passed vector are returned.}
 
 \item{\code{get_consistency_scores(
   method = "euclidean",
@@ -184,10 +195,9 @@ only data from responses associated with graphemes with symbols
 are included.}
 
 \item{\code{get_number_all_colored_graphemes(symbol_filter = NULL)}}{Returns the number of graphemes for which all
-responses have an associated non-na color. If a
-character vector is passed to symbol_filter, only data from
-graphemes with symbols in the passed vector are used when
-calculating the mean response time.}
+responses have an associated non-NA color. If a
+character vector is passed to symbol_filter, only
+graphemes with symbols in the passed vector are counted.}
 
 \item{\code{get_plot(
   cutoff_line = FALSE,

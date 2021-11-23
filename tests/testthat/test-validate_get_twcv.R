@@ -138,11 +138,11 @@ test_that("Data in single high-variance cluster are classified as valid", {
 
 
 
-test_that(paste0(
-  "Data in two low-variance clusters and one noise point are classified as invalid ",
-  "(since noise cluster needs to have > dbscan_min_pts points in order to count ",
-  "toward 'cluster tally') when 'safe_num_clusters' set to 3."
-  ), {
+test_that(
+  "Data in two low-variance clusters and having an extra one noise point are
+  classified as invalid (since noise cluster needs to have > dbscan_min_pts
+  points in order to count toward 'cluster tally') when 'safe_num_clusters'
+  is set to 3.", {
   point_matrix <- matrix(
     c(
       1, 0, 0,

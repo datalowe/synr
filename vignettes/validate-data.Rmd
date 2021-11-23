@@ -457,12 +457,13 @@ What follows is a rough overview of an example of synr's validation procedure be
 (TODO: add step where data from graphemes with non-complete color response data are disregarded, once this has been implemented.)
 
 1. If a participant has less than __6__ graphemes with complete color responses (3 color responses that aren't of type 'blank'/'no color'), their data are directly classified as invalid.
-2. DBSCAN is applied to find clusters of color points.
-3. The 'variance' of each cluster is calculated.
-4. The TWCV is calculated.
-4. If a single low-variance cluster, ie a 'tight-knit' cluster, includes more than __60%__ of all color points, the participant data are classified as invalid.
+2. Data from graphemes with non-complete color responses are filtered away.
+3. DBSCAN is applied to find clusters of color points in the 'complete grapheme' data.
+4. The 'variance' of each cluster is calculated.
+5. The TWCV is calculated.
+6. If a single low-variance cluster, ie a 'tight-knit' cluster, includes more than __60%__ of all color points, the participant data are classified as invalid.
 
-Once steps 1-4 are cleared: 
+Once steps 1-6 are cleared: 
 
 * If DBSCAN identified __4__ or more clusters (roughly meaning that 4 or more colors were each used for multiple responses), the participant data are classified as valid.
 * If the TWCV score was __250__ or more, the participant data are classified as valid.
@@ -498,6 +499,7 @@ val_df <- pg$check_valid_get_twcv_scores(
   max_prop_single_tight_cluster = 0.6,
   safe_num_clusters = 3,
   safe_twcv = 250,
+  complete_graphemes_only = TRUE,
   symbol_filter = LETTERS
 )
 
@@ -512,7 +514,8 @@ __Parameters__
 * `max_prop_single_tight_cluster` Maximum proportion of color points allowed to be within a single 'tight-knit'   cluster (if a participant's data exceed this limit, they are classified as invalid).
 * `safe_num_clusters` Minimum number of identified DBSCAN clusters (including the 'noise' cluster _if it consists of at least `dbscan_min_pts` points_) that guarantees validity of a participant's data if points are 'non-tight-knit'.
 * `safe_twcv` Minimum total within-cluster variance (TWCV) score that guarantees a participant's data's validity if points are 'non-tight-knit'.
-* `symbol_filter` A character vector (or NULL) that specifies which graphemes' data to use. Defaults to NULL, meaning data from all of the participants' graphemes will be used.
+* `complete_graphemes_only` If TRUE, only data from graphemes with complete sets of associated color responses are used for clustering and variance calulations. If FALSE, even data from graphemes with 'incomplete' response data are included.
+* `symbol_filter` A character vector (or NULL) that specifies which graphemes' data to use. If NULL, data from all of the participants' graphemes (apart from filtering based on complete response data) will be used.
 
 __Output__ A data frame with columns:
 
