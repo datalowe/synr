@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -118,11 +118,16 @@
     color_col_name<span class="op">=</span><span class="st">'color'</span>, <span class="co"># rname of column which holds response color HEX codes</span>
     color_space_spec <span class="op">=</span> <span class="st">"Luv"</span> <span class="co"># color space to use for all calculations with participant group</span>
 <span class="op">)</span></code></pre></div>
-<p>Using the resulting object (<code>pgroup</code>), you can call various methods. A couple of examples follow.</p>
+<p>Using the resulting object (<code>pgroup</code>), you can call various methods. A few examples follow.</p>
 <div id="example-group-level-method-get_mean_consistency_scores" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-group-level-method-get_mean_consistency_scores" class="anchor"></a>Example group-level method: get_mean_consistency_scores</h3>
 <p><code>pgroup$get_mean_consistency_scores(symbol_filter=LETTERS)</code> would return a vector of <a href="https://en.wikipedia.org/wiki/CIELUV">CIELUV</a>-based consistency scores, using only data from trials involving capital letters.</p>
+</div>
+<div id="example-group-level-method-check_valid_get_twcv_scores" class="section level3">
+<h3 class="hasAnchor">
+<a href="#example-group-level-method-check_valid_get_twcv_scores" class="anchor"></a>Example group-level method: check_valid_get_twcv_scores</h3>
+<p><code>pgroup$check_valid_get_twcv_scores(symbol_filter=0:9)</code> would return a data frame which describes classifications of all participant data, where each data set is classified as ‘invalid’ or ‘valid’, based largely on <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN clustering</a>. This may be used to identify participants who varied their responses too little, e. g. by responding with an orange color on every trial.</p>
 </div>
 <div id="example-participant-level-method-get_plot" class="section level3">
 <h3 class="hasAnchor">
@@ -133,7 +138,7 @@
 <div id="detailed-usage-information" class="section level3">
 <h3 class="hasAnchor">
 <a href="#detailed-usage-information" class="anchor"></a>Detailed usage information</h3>
-<p>More details on required data format and how to use synr itself can be found in the <a href="https://datalowe.github.io/synr/articles/">package’s vignettes</a>, which are also included in the package itself (run <code><a href="reference/synr-package.html">help(synr)</a></code> to find them).</p>
+<p>More details on required data format and how to use the above functions and more can be found in the <a href="https://datalowe.github.io/synr/articles/">package’s vignettes</a>, which are also included in the package itself (run <code><a href="reference/synr-package.html">help(synr)</a></code> to find them).</p>
 </div>
 </div>
 <div id="feedback" class="section level2">

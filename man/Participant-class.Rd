@@ -37,12 +37,12 @@ is overwritten.}
 and add each one using the add_grapheme() method.}
 
 \item{\code{check_valid_get_twcv(
-  min_complete_graphemes = 7,
-  dbscan_eps = 30,
+  min_complete_graphemes = 5,
+  dbscan_eps = 20,
   dbscan_min_pts = 4,
-  max_var_tight_cluster = 100,
+  max_var_tight_cluster = 150,
   max_prop_single_tight_cluster = 0.6,
-  safe_num_clusters = 4,
+  safe_num_clusters = 3,
   safe_twcv = 250,
   complete_graphemes_only = TRUE,
   symbol_filter = NULL
@@ -67,17 +67,17 @@ and add each one using the add_grapheme() method.}
         \item{\code{min_complete_graphemes} The minimum number of graphemes
           with complete (all non-NA color) responses that the participant data
           must have for them to not be categorized as invalid based on this
-          criterion. Defaults to 7.
+          criterion. Defaults to 5.
         }
         \item{\code{dbscan_eps} Radius of 'epsilon neighborhood' when applying
-          DBSCAN clustering. Defaults to 30.
+          DBSCAN clustering. Defaults to 20.
         }
         \item{\code{dbscan_min_pts} Minimum number of points required in the
           epsilon neighborhood for core points (including the core point
           itself). Defaults to 4.
         }
         \item{\code{max_var_tight_cluster} Maximum variance for an identified
-          DBSCAN cluster to be considered 'tight-knit'. Defaults to 100.
+          DBSCAN cluster to be considered 'tight-knit'. Defaults to 150.
         }
         \item{\code{max_prop_single_tight_cluster} Maximum proportion of
           points allowed to be within a single 'tight-knit' cluster (exceeding
@@ -86,7 +86,7 @@ and add each one using the add_grapheme() method.}
         \item{\code{safe_num_clusters} Minimum number of identified DBSCAN
           clusters (including 'noise' cluster only if it consists of at least
           'dbscan_min_pts' points) that guarantees validity if
-          points are 'non-tight-knit'. Defaults to 4.
+          points are 'non-tight-knit'. Defaults to 3.
         }
         \item{\code{safe_twcv} Minimum total within-cluster variance (TWCV)
           score that guarantees validity if points are 'non-tight-knit'.

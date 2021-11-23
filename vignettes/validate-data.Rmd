@@ -329,7 +329,7 @@ plot_actual_colors(
 The problem with simple measures of spread is that they are very sensitive to outliers and don't take into account that responses might be 'grouped together'. For instance, consider a participant who has given black color responses 80% of the time, and white color responses the rest of the time. To a human observer, it would appear that the participant has used a black color far too much for the data to say anything. But simple measures of spread would indicate that the participant response colors are very varied; since black and white are extreme opposites, the 'middle' will end up quite far from both groups of responses, and hence the (squared) distances will be long. 
 
 ### Clustering
-One way to take into account that there might be patterns to response colors is to use so-called clustering (TODO: add reference). This is a general statistical approach for identifying groups of data that belong together and includes a number of specific methods, such as 'k-means clustering' and 'Density-based spatial clustering of applications with noise' (DBSCAN; TODO: add reference). DBSCAN is a good fit for grouping color responses since it doesn't make any assumptions about the shape or number of clusters. See 'More information' at the end of this article to find out more about DBSCAN itself.
+One way to take into account that there might be patterns to response colors is to use so-called clustering (Jain, 2010). This is a general statistical approach for identifying groups of data that belong together and includes a number of specific methods, such as 'k-means clustering' and 'Density-based spatial clustering of applications with noise' (DBSCAN; Khan et al., 2014). DBSCAN is a good fit for grouping color responses since it doesn't make any assumptions about the shape or number of clusters. See 'More information' at the end of this article to find out more about DBSCAN itself.
 
 To understand what clustering and specifically DBSCAN does with color data, visualization helps. Let's say a participant has a set of response colors as described by this interactive graph:
 
@@ -454,8 +454,6 @@ As part of the validation procedure, synr calculates _total within-cluster varia
 
 What follows is a rough overview of an example of synr's validation procedure being applied. It is assumed that participant data are from a consistency test where each grapheme was presented for 3 trials. Many aspects of the validation are specified by you as the user, but example values (marked in bold) are used to make the example more concrete.
 
-(TODO: add step where data from graphemes with non-complete color response data are disregarded, once this has been implemented.)
-
 1. If a participant has less than __6__ graphemes with complete color responses (3 color responses that aren't of type 'blank'/'no color'), their data are directly classified as invalid.
 2. Data from graphemes with non-complete color responses are filtered away.
 3. DBSCAN is applied to find clusters of color points in the 'complete grapheme' data.
@@ -558,6 +556,8 @@ If synr is used for data validation then __please reference synr__ itself (for n
 
 Official documentation for the `dbscan` package: [https://www.rdocumentation.org/packages/dbscan/versions/1.1-8](https://www.rdocumentation.org/packages/dbscan/)
 
+Apart from the above sources, if you are new to clustering you might find it helpful to search for introductory material on clustering in general, and multiple visualizations of applying DBSCAN specifically. In particular, the documentation for the `dbscan` package might not make much sense until you understand the theoretical background.
+
 ### Data validation in synr
 More details about data validation-related procedures can be found in synr's documentation for the following functions (access the documentation by running e.g. `?synr::centroid_3d_sq_dist`):
 
@@ -572,6 +572,8 @@ Carmichael, D. A., Down, M. P., Shillcock, R. C., Eagleman, D. M., & Simner, J. 
 
 Cuskley, C.1, Dingemanse, M.1, van Leeuwen, T. & Kirby, S. 2019. Cross-modal associations and synaesthesia: Categorical perception and structure in vowel-colour mappings in a large online sample. _Behaviour Research Methods_, doi: 10.3758/s13428-019-01203-7
 
+Khan, K., Rehman, S. U., Aziz, K., Fong, S., & Sarasvady, S. (2014). DBSCAN: Past, present and future. The Fifth International Conference on the Applications of Digital Information and Web Technologies (ICADIWT 2014), 232–238.
+
+Jain, A. K. (2010). Data clustering: 50 years beyond K-means. Pattern Recognition Letters, 31(8), 651–666.
+
 Simner, J., Mulvenna, C., Sagiv, N., Tsakanikos, E., Witherby, S. A., Fraser, C., Scott, K., & Ward, J. (2006). Synaesthesia: The prevalence of atypical cross-modal experiences. _Perception_, 35(8), 1024–1033.
-
-

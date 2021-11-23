@@ -1,6 +1,5 @@
 #' A Reference Class for representing consistency test participants
-#'
-#'
+#' 
 #' @field id A one-element character vector containing the participant's ID.
 #' Set at class new() call.
 #' @field test_date A one-element Date vector which specifies the date
@@ -10,7 +9,6 @@
 #' @export Participant
 #' @exportClass Participant
 
-# TO DO add examples above
 Participant <- setRefClass(
   "Participant",
   fields = list(id = "character",
@@ -293,11 +291,6 @@ Participant <- setRefClass(
       background_color = "white",
       symbol_filter = NULL
     ) {
-      # TO DO change the plotting functionality so that it can handle
-      # all-black graphemes (this leads to clustering of symbols at
-      # one position atm)
-      # TO DO add support for more than three graphemes (this leads
-      # to one symbol ending up below the plot area and cut off atm)
       "Returns a ggplot2 plot that describes this participant's
       grapheme color responses and per-grapheme consistency scores.
 
@@ -460,12 +453,12 @@ Participant <- setRefClass(
     },
 
     check_valid_get_twcv = function(
-      min_complete_graphemes = 7,
-      dbscan_eps = 30,
+      min_complete_graphemes = 5,
+      dbscan_eps = 20,
       dbscan_min_pts = 4,
-      max_var_tight_cluster = 100,
+      max_var_tight_cluster = 150,
       max_prop_single_tight_cluster = 0.6,
-      safe_num_clusters = 4,
+      safe_num_clusters = 3,
       safe_twcv = 250,
       complete_graphemes_only = TRUE,
       symbol_filter = NULL
@@ -492,17 +485,17 @@ Participant <- setRefClass(
         \\item{\\code{min_complete_graphemes} The minimum number of graphemes
           with complete (all non-NA color) responses that the participant data
           must have for them to not be categorized as invalid based on this
-          criterion. Defaults to 7.
+          criterion. Defaults to 5.
         }
         \\item{\\code{dbscan_eps} Radius of 'epsilon neighborhood' when applying
-          DBSCAN clustering. Defaults to 30.
+          DBSCAN clustering. Defaults to 20.
         }
         \\item{\\code{dbscan_min_pts} Minimum number of points required in the
           epsilon neighborhood for core points (including the core point
           itself). Defaults to 4.
         }
         \\item{\\code{max_var_tight_cluster} Maximum variance for an identified
-          DBSCAN cluster to be considered 'tight-knit'. Defaults to 100.
+          DBSCAN cluster to be considered 'tight-knit'. Defaults to 150.
         }
         \\item{\\code{max_prop_single_tight_cluster} Maximum proportion of
           points allowed to be within a single 'tight-knit' cluster (exceeding
@@ -511,7 +504,7 @@ Participant <- setRefClass(
         \\item{\\code{safe_num_clusters} Minimum number of identified DBSCAN
           clusters (including 'noise' cluster only if it consists of at least
           'dbscan_min_pts' points) that guarantees validity if
-          points are 'non-tight-knit'. Defaults to 4.
+          points are 'non-tight-knit'. Defaults to 3.
         }
         \\item{\\code{safe_twcv} Minimum total within-cluster variance (TWCV)
           score that guarantees validity if points are 'non-tight-knit'.
@@ -553,7 +546,8 @@ Participant <- setRefClass(
         return(list(
           valid = FALSE,
           reason_invalid = "no_color_responses",
-          twcv = NA
+          twcv = NA,
+          num_clusters = NA
         ))
       }
 
@@ -564,7 +558,8 @@ Participant <- setRefClass(
         return(list(
           valid = FALSE,
           reason_invalid = "too_few_graphemes_with_complete_responses",
-          twcv = NA
+          twcv = NA,
+          num_clusters = NA
         ))
       }
 

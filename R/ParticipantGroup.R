@@ -1,11 +1,11 @@
 #' A Reference Class for representing a group of consistency test participants
+#' 
 #' @field participants A list of \code{\link{Participant}}
 #' class instances.
 #' @importFrom methods new
 #' @export ParticipantGroup
 #' @exportClass ParticipantGroup
 
-# TO DO add examples above
 ParticipantGroup <- setRefClass(
   "ParticipantGroup",
   fields = list(participants = "list"),
@@ -40,12 +40,12 @@ ParticipantGroup <- setRefClass(
     },
 
     check_valid_get_twcv_scores = function(
-      min_complete_graphemes = 7,
-      dbscan_eps = 30,
+      min_complete_graphemes = 5,
+      dbscan_eps = 20,
       dbscan_min_pts = 4,
-      max_var_tight_cluster = 100,
+      max_var_tight_cluster = 150,
       max_prop_single_tight_cluster = 0.6,
-      safe_num_clusters = 4,
+      safe_num_clusters = 3,
       safe_twcv = 250,
       complete_graphemes_only = TRUE,
       symbol_filter = NULL
@@ -85,7 +85,7 @@ ParticipantGroup <- setRefClass(
           itself). Defaults to 4.
         }
         \\item{\\code{max_var_tight_cluster} Maximum variance for an identified
-          DBSCAN cluster to be considered 'tight-knit'. Defaults to 100.
+          DBSCAN cluster to be considered 'tight-knit'. Defaults to 150.
         }
         \\item{\\code{max_prop_single_tight_cluster} Maximum proportion of
           points allowed to be within a single 'tight-knit' cluster (if a
@@ -95,7 +95,7 @@ ParticipantGroup <- setRefClass(
         \\item{\\code{safe_num_clusters} Minimum number of identified DBSCAN
           clusters (including 'noise' cluster only if it consists of at least
           'dbscan_min_pts' points) that guarantees validity of
-          a participant's data if points are 'non-tight-knit'. Defaults to 4.
+          a participant's data if points are 'non-tight-knit'. Defaults to 3.
         }
         \\item{\\code{safe_twcv} Minimum total within-cluster variance (TWCV)
           score that guarantees a participant's data's validity if points are
@@ -145,6 +145,7 @@ ParticipantGroup <- setRefClass(
       participant_level_val_class <- logical(length(participants))
       participant_level_reason_inv <- numeric(length(participants))
       participant_level_twcv <- numeric(length(participants))
+      participant_level_num_clusters <- numeric(length(participants))
       loop_index <- 1
       for (p in participants) {
         p_res_list <- p$check_valid_get_twcv(
@@ -161,12 +162,14 @@ ParticipantGroup <- setRefClass(
         participant_level_val_class[loop_index] <- p_res_list$valid
         participant_level_reason_inv[loop_index] <- p_res_list$reason_invalid
         participant_level_twcv[loop_index] <- p_res_list$twcv
+        participant_level_num_clusters[loop_index] <- p_res_list$num_clusters
         loop_index <- loop_index + 1
       }
       all_data_df <- data.frame(
         valid = participant_level_val_class,
         reason_invalid = participant_level_reason_inv,
-        twcv = participant_level_twcv
+        twcv = participant_level_twcv,
+        num_clusters = participant_level_num_clusters
       )
       return(all_data_df)
     },

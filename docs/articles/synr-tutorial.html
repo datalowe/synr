@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -94,7 +94,6 @@
       <h1 data-toc-skip>synr: Main tutorial</h1>
                         <h4 class="author">Lowe Wilsson</h4>
             
-            <h4 class="date">2021-11-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/datalowe/synr/blob/master/vignettes/synr-tutorial.Rmd"><code>vignettes/synr-tutorial.Rmd</code></a></small>
       <div class="hidden name"><code>synr-tutorial.Rmd</code></div>
@@ -109,13 +108,13 @@
 <div id="synesthesia-and-consistency-testing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#synesthesia-and-consistency-testing" class="anchor"></a>Synesthesia and consistency testing</h3>
-<p>Within <a href="https://en.wikipedia.org/wiki/Synesthesia">synesthesia</a> research, specifically research about <a href="https://en.wikipedia.org/wiki/Grapheme%E2%80%93color_synesthesia">grapheme-color synesthesia</a>, <strong><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4118597/#S4title">consistency tests</a></strong> are often used. Basically, a participant is shown a set of <strong>graphemes</strong> (e. g. letters, digits, months, or other words) and has to respond by indicating what color, if any, they associate with the grapheme. Each grapheme is repeated a certain number of times, usually three times, throughout the test. If the participant is unusually consistent in the colors they respond with, e. g. choosing a red color every time an ‘A’ is shown and always choosing a green color for ‘H’, this indicates that the participant might have synesthetic grapheme-color associations. In reality of course, there might be other reasons for consistent response patterns, such as if the participant employed mnemonic strategies. It may therefore be appropriate to combine consistency testing with other measures for synesthesia classification. Still, consistency testing is widely considered to be an important tool for synesthesia research.</p>
+<p>Within <a href="https://en.wikipedia.org/wiki/Synesthesia">synesthesia</a> research, specifically research about <a href="https://en.wikipedia.org/wiki/Grapheme%E2%80%93color_synesthesia">grapheme-color synesthesia</a>, <strong><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4118597/#S4title">consistency tests</a></strong> are often used. Basically, a participant is shown a set of <strong>graphemes</strong> (e. g. letters, digits, months, or other words) and has to respond by indicating what color, if any, they associate with the grapheme. Each grapheme is repeated a certain number of times, usually three times, throughout the test. If the participant is unusually consistent in the colors they respond with, e. g. choosing a red color every time an ‘A’ is shown and always choosing a green color for ‘H’, this indicates that the participant might have synesthetic grapheme-color associations. There might of course be other reasons for consistent response patterns, such as if the participant employed mnemonic strategies, for which reason consistency testing is often combided with other measures for synesthesia classification. Still, consistency testing is widely considered to be an important tool for synesthesia research.</p>
 <p>In consistency testing, participants’ levels of consistency are estimated by using a score based on response colors’ color space distances. This has been called by different names, such as <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4118597/#S4title">‘color variation score’</a>. Within the synr package, the term <strong>‘consistency score’</strong> is used to refer to this score.</p>
 </div>
 <div id="synrs-purpose" class="section level3">
 <h3 class="hasAnchor">
 <a href="#synrs-purpose" class="anchor"></a>synr’s purpose</h3>
-<p>The aim of this package is to facilitate analysis of consistency test data by providing functionality for rolling all the consistency test data up into one specialized R object. This object, with its linked methods, constitutes an effective interface for:</p>
+<p>The aim of this package is to facilitate analysis of consistency test data by providing functionality for rolling all the consistency test data up into one specialized R object. This object, with its linked methods (functions), constitutes an effective interface for:</p>
 <ul>
 <li>Quick access/lookup of individual participants’ data.</li>
 <li>Calculation of consistency scores.
@@ -124,14 +123,14 @@
 <li>Similarly, different algorithms (e. g. <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">manhattan distance</a> or <a href="https://en.wikipedia.org/wiki/Euclidean_distance">Euclidean distance</a> have been utilized to calculate color space distances. synr allows for choosing between some options here also, through specifications in method calls.</li>
 </ul>
 </li>
-<li>Summation of data on what proportion of participant responses fall within a certain color range and for how many graphemes the participant has given valid responses.
+<li>Validating participant data using so-called <a href="https://en.wikipedia.org/wiki/Cluster_analysis">clustering</a>.
 <ul>
-<li>This helps identify participants who might have too few responses or have used too few colors, e. g. only black and white, for their data to be reliable for estimating the degree of synesthetic associations.</li>
+<li>This identifies participants who have too few responses or have used too few colors, e. g. only black and white, for their data to be reliable for estimating the degree of synesthetic associations.</li>
 </ul>
 </li>
 <li>Filtering the data in order to calculate the above statistics only for a subset of graphemes.
 <ul>
-<li>This helps when trying to identify e. g. participants who only have synesthesia for digits, but not other graphemes.</li>
+<li>This helps when trying to identify e. g. participants who have synesthesia for digits, but not other graphemes.</li>
 </ul>
 </li>
 <li>Simple plotting of individual participants’ data.
@@ -148,8 +147,18 @@
 <div id="rolling-up-the-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#rolling-up-the-data" class="anchor"></a>Rolling up the data</h3>
-<p>When using synr, your main interface to the data is the ParticipantGroup class. For information on how to convert raw consistency test data into a ParticipantGroup object, please see the separate tutorial <a href="synr-creategroup-with-long-format.html">Creating ParticipantGroup objects</a>. Here, it’s assumed that the raw data are in ‘long format’ and are thus loaded like this:</p>
+<p>When using synr, your main interface to the data is the ParticipantGroup class. For information on how to convert raw consistency test data into a ParticipantGroup object, please see the separate tutorial <a href="synr-creategroup-with-long-format.html">Creating ParticipantGroup objects</a>. Here, it’s assumed that the raw data are in ‘long format’, as briefly shown below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">synr_exampledf_long_small</span><span class="op">)</span>
+<span class="co">#&gt;   participant_id trial_symbol response_color response_time</span>
+<span class="co">#&gt; 1              1            A         23F0BE           1.2</span>
+<span class="co">#&gt; 2              1            7         99EECC           3.7</span>
+<span class="co">#&gt; 3              1            D         001100           2.5</span>
+<span class="co">#&gt; 4              1            D         9788DD           1.7</span>
+<span class="co">#&gt; 5              1            A         1348CA           0.9</span>
+<span class="co">#&gt; 6              1            7         173EF3           2.0</span></code></pre></div>
+<p>Since the data are in ‘long format’, they can be used with <code>create_participantgroup</code> like this:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_participantgroup.html">create_participantgroup</a></span><span class="op">(</span>
   raw_df<span class="op">=</span><span class="va">synr_exampledf_long_small</span>,
   n_trials_per_grapheme<span class="op">=</span><span class="fl">2</span>,
@@ -159,16 +168,16 @@
   time_col_name<span class="op">=</span><span class="st">"response_time"</span>,
   color_space_spec<span class="op">=</span><span class="st">"Luv"</span>
 <span class="op">)</span></code></pre></div>
-<p>Once you have a ParticipantGroup object (simply called ‘participantgroup’ from here on), you can start using methods with it and accessing its attributes. synr implements this with <a href="http://adv-r.had.co.nz/OO-essentials.html#rc">reference classes</a>, which is an advanced topic. The idea however is that you can learn through this vignette and synr’s help documentation how to use the tools without having to worry about how they work under the hood.</p>
+<p>Once you have a ParticipantGroup object (simply called ‘participantgroup’ from here on), you can start using methods with it and accessing its attributes. synr implements this with <a href="http://adv-r.had.co.nz/OO-essentials.html#rc">reference classes</a>, which is an advanced topic. The idea however is that you can learn through synr’s articles and help documentation how to use the tools without having to worry about how they work under the hood.</p>
 </div>
 <div id="accessing-participantgroup-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#accessing-participantgroup-data" class="anchor"></a>Accessing participantgroup data</h3>
 <p>The participantgroup has a nested structure, where the <strong>participantgroup</strong> has a list of <strong>participants</strong>, and each participant has a list of <strong>graphemes</strong>. By using <code>$</code> as a separator, you can specify a participant and/or a grapheme to drill down into this nested structure and access data or methods you need.</p>
 <p>Let’s start by accessing participants’ data. Say you want to find what colors the participant with ID ‘3’ used for the symbol ‘A’. You can do this by using the syntax <code>&lt;participantgroup&gt;$participants[['&lt;ID&gt;']]$graphemes[[&lt;symbol&gt;]]</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fetched_grapheme_data</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">'3'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">graphemes</span><span class="op">[[</span><span class="st">'A'</span><span class="op">]</span><span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">fetched_grapheme_data</span><span class="op">)</span>
+<span class="va">fetched_grapheme_data</span>
 <span class="co">#&gt; Reference class object of class "Grapheme"</span>
 <span class="co">#&gt; Field "symbol":</span>
 <span class="co">#&gt; [1] "A"</span>
@@ -181,13 +190,13 @@
 <span class="co">#&gt; Field "color_space":</span>
 <span class="co">#&gt; [1] "Luv"</span></code></pre></div>
 <p>The response colors are represented by an nx3 matrix, where n is the number of trials per grapheme (2 in this example). Each row corresponds to one response. The three columns correspond to the dimensions of the used color space, in this case ‘L’, ‘u’ and ‘v’ (because of the specification <code>color_space_spec = "Luv"</code> when creating the participantgroup).</p>
-<p>You can access participants by either their row number in the raw data frame, or by their participant ID. In the example, these happen to be the same except that one is of type numeric and the other of type character (the participant on row number 3 of the raw data frame has the ID ‘3’), so both <code>pg$participants[['3']]$graphemes[['A']]</code> and <code>pg$participants[[3]]$graphemes[['A']]</code> work. If instead the third participant was called ‘jane’, you could use either <code>pg$participants[['jane']]$graphemes[['A']]</code> or <code>pg$participants[[3]]$graphemes[['A']]</code>.</p>
+<p>You can access participants by either their row number in the raw data frame, or by their participant ID. In the example, these happen to be the same except that one is of type numeric and the other of type character (the participant on row number 3 of the raw data frame has the ID ‘3’), so both <code>pg$participants[['3']]$graphemes[['A']]</code> and <code>pg$participants[[3]]$graphemes[['A']]</code> work. If instead the third participant had the ID ‘jane’, you could use either <code>pg$participants[['jane']]$graphemes[['A']]</code> or <code>pg$participants[[3]]$graphemes[['A']]</code>.</p>
 </div>
 </div>
 <div id="summarizing-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summarizing-data" class="anchor"></a>Summarizing data</h2>
-<p>To use methods with synr objects, like the participantgroup or an individual participant, you use the syntax <code>&lt;object&gt;$&lt;method_name&gt;()</code>. The examples below illustrate this.</p>
+<p>A method is a function that is linked to a particular R object, and synr relies heavily on methods. The syntax for using methods is <code>&lt;object&gt;$&lt;method_name&gt;()</code>. The examples below illustrate this.</p>
 <div id="consistency-scores" class="section level3">
 <h3 class="hasAnchor">
 <a href="#consistency-scores" class="anchor"></a>Consistency scores</h3>
@@ -201,12 +210,12 @@
 <li>Specifying what grapheme you want from the participant’s list of graphemes.</li>
 <li>Using the grapheme’s method <code>get_consistency_score</code>.</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># fetching the consistency score of the second participant's grapheme 'A'</span>
 <span class="va">cscore_p2_A</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">graphemes</span><span class="op">[[</span><span class="st">'A'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_consistency_score</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">cscore_p2_A</span><span class="op">)</span>
+<span class="va">cscore_p2_A</span>
 <span class="co">#&gt; [1] 76.40256</span></code></pre></div>
-<p><br></p>
+<p>There are many more grapheme-level methods, but you usually only need the corresponding participant- and participantgroup-level methods. For this reason, no more examples of grapheme-level methods are provided in this tutorial; you can instead read the help documentation if you want (run <code><a href="../reference/Grapheme-class.html">help(Grapheme)</a></code>).</p>
 </div>
 <div id="participant-level-get_mean_consistency_score" class="section level4">
 <h4 class="hasAnchor">
@@ -217,55 +226,28 @@
 <li>Specifying what participant you want from the participantgroup.</li>
 <li>Calling the participant’s method <code>get_mean_consistency_score</code>:</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mean_cscore_p2</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_mean_consistency_score</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">mean_cscore_p2</span><span class="op">)</span>
-<span class="co">#&gt; [1] 101.3738</span>
-<span class="va">mean_cscore_p1</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">'1'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_mean_consistency_score</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">mean_cscore_p1</span><span class="op">)</span>
-<span class="co">#&gt; [1] 131.206</span></code></pre></div>
-<p><br></p>
-</div>
-<div id="participant-level-get_consistency_scores" class="section level4">
-<h4 class="hasAnchor">
-<a href="#participant-level-get_consistency_scores" class="anchor"></a>participant level: <code>get_consistency_scores</code>
-</h4>
-<p>Instead of doing it for just one grapheme, you can calculate the grapheme-level consistency score for all graphemes of a participant using the method <code>get_consistency_scores</code>, which produces a list:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cscores_p3</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_consistency_scores</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">cscores_p3</span><span class="op">)</span>
-<span class="co">#&gt; $A</span>
-<span class="co">#&gt; [1] 193.0242</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`7`</span>
-<span class="co">#&gt; [1] 164.87</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $D</span>
-<span class="co">#&gt; [1] 97.98484</span></code></pre></div>
-<p>If you prefer the data frame format, you can convert the list into a data frame:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cscores_p3_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">cscores_p3</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">cscores_p3_df</span><span class="op">)</span>
-<span class="co">#&gt;          A     X7        D</span>
-<span class="co">#&gt; 1 193.0242 164.87 97.98484</span></code></pre></div>
+<code class="sourceCode R"><span class="va">mean_cscore_p1</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">'1'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_mean_consistency_score</span><span class="op">(</span><span class="op">)</span>
+<span class="va">mean_cscore_p1</span>
+<span class="co">#&gt; [1] 131.206</span></code></pre></div>
 <p><br></p>
 </div>
 <div id="participantgroup-level-get_mean_consistency_scores" class="section level4">
 <h4 class="hasAnchor">
 <a href="#participantgroup-level-get_mean_consistency_scores" class="anchor"></a>participantgroup level: <code>get_mean_consistency_scores</code>
 </h4>
-<p>What many will want to do is simply calculate the mean consistency scores for all participants. The participantgroup method <code>get_mean_consistency_scores</code> does just that, producing a numeric vector with the consistency scores:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>The participantgroup method <code>get_mean_consistency_scores</code> calculates the mean consistency scores for all participants, producing a numeric vector with the consistency scores:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mean_cscores</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">mean_cscores</span><span class="op">)</span>
+<span class="va">mean_cscores</span>
 <span class="co">#&gt; [1] 131.2060 101.3738 151.9597</span></code></pre></div>
 <p>The order of the mean consistency scores is based on the order of participants in the original raw data frame.</p>
-<p>If you want to form a data frame that makes it easy to see which participant goes with which participant score, the participantgroup method <code>get_ids</code> comes in handy:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p>To form a data frame that shows which participant goes with which participant score, the participantgroup method <code>get_ids</code> comes in handy:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mean_cscores</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span><span class="op">)</span>
 <span class="va">p_ids</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_ids</span><span class="op">(</span><span class="op">)</span>
 <span class="va">mean_scores_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>participant_id<span class="op">=</span><span class="va">p_ids</span>, mean_consistency_score<span class="op">=</span><span class="va">mean_cscores</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">mean_scores_df</span><span class="op">)</span>
+<span class="va">mean_scores_df</span>
 <span class="co">#&gt;   participant_id mean_consistency_score</span>
 <span class="co">#&gt; 1              1               131.2060</span>
 <span class="co">#&gt; 2              2               101.3738</span>
@@ -275,152 +257,194 @@
 <div id="number-of-valid-responses" class="section level3">
 <h3 class="hasAnchor">
 <a href="#number-of-valid-responses" class="anchor"></a>Number of valid responses</h3>
-<p>It’s often helpful to examine how many valid color responses participants have provided during the experiment. It’s common for consistency tests to provide some kind of ‘no color’ response. This is usually provided mainly as a tool for people who <strong>do</strong> have synesthetic associations to use for non-inducing stimuli, but might be ‘abused’ by people with no synesthetic associations. A mean consistency score is virtually meaningless if a participant has only picked a color for say two graphemes, as it would be very easy for that person to memorize what color to use for each grapheme. For these reasons, synr provides functionality for examining how many of a participant’s graphemes have only valid color responses.</p>
-<p>Note that for synr to work, ‘no color’ responses must be coded as <code>NA</code> values. For more information about this, please see the vignette <a href="synr-creategroup-with-long-format.html">Creating ParticipantGroup objects</a>.</p>
-<div id="grapheme-level-get_num_non_na_colors" class="section level4">
-<h4 class="hasAnchor">
-<a href="#grapheme-level-get_num_non_na_colors" class="anchor"></a>grapheme level: <code>get_num_non_na_colors</code>
-</h4>
-<p>You can calculate the number of non-missing response color values for a single grapheme by:</p>
-<ol style="list-style-type: decimal">
-<li>Specifying what participant you want from the participantgroup.</li>
-<li>Specifying what grapheme you want from the participant’s list of graphemes.</li>
-<li>Using the grapheme’s method <code>get_num_non_na_colors</code>.</li>
-</ol>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p1_A_numvalid</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">graphemes</span><span class="op">[[</span><span class="st">'7'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_num_non_na_colors</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">p1_A_numvalid</span><span class="op">)</span>
-<span class="co">#&gt; [1] 2</span></code></pre></div>
-<p>So, the first participant gave two valid (non-NA) color responses for the grapheme ‘7’, and they were registered correctly.</p>
-</div>
+<p>It often helps to see how many valid color responses participants have provided during the experiment. It’s common for consistency tests to provide some kind of ‘no color’ response. This is usually provided mainly as a tool for people who <strong>do</strong> have synesthetic associations to use for non-inducing stimuli, but might be ‘abused’ by people with no synesthetic associations. A mean consistency score is meaningless if a participant has for instance responded with ‘no color’ for all but two graphemes’ responsese, since it’s simple to memorize colors for two symbols.</p>
+<p>Note that for synr to work, ‘no color’ responses must be coded as <code>NA</code> values. For more information about this, please see the article <a href="synr-creategroup-with-long-format.html">Creating ParticipantGroup objects</a>.</p>
 <div id="participant-level-get_number_all_colored_graphemes" class="section level4">
 <h4 class="hasAnchor">
 <a href="#participant-level-get_number_all_colored_graphemes" class="anchor"></a>participant level: <code>get_number_all_colored_graphemes</code>
 </h4>
-<p>For a participant, you can get the number of graphemes that <strong>only</strong> have non-NA color responses. This would mean the number of graphemes with 3 non-NA color responses, if there are 3 trials/grapheme. You calculate the number of graphemes with only non-NA responses by:</p>
-<ol style="list-style-type: decimal">
-<li>Specifying what participant you want from the participantgroup.</li>
-<li>Calling the participant’s method <code>get_number_all_colored_graphemes</code>:</li>
-</ol>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">num_onlynonna_p2</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_number_all_colored_graphemes</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">num_onlynonna_p2</span><span class="op">)</span>
+<p>This method returns the number of graphemes that <strong>only</strong> have non-NA color responses. Thus, if data are from a consistency test with 3 trials/grapheme, the number of graphemes with 3 non-NA responses is returned.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">num_onlynonna_p2</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">'2'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_number_all_colored_graphemes</span><span class="op">(</span><span class="op">)</span>
+<span class="va">num_onlynonna_p2</span>
 <span class="co">#&gt; [1] 3</span></code></pre></div>
 <p>So, the second participant gave only valid (non-NA) color responses for 3 graphemes.</p>
+<p>The rest of the tutorial will focus on participantgroup-level methods. You can find more info about participant-level methods by running <code><a href="../reference/Participant-class.html">help(Participant)</a></code>.</p>
 </div>
 <div id="participantgroup-level-get_numbers_all_colored_graphemess" class="section level4">
 <h4 class="hasAnchor">
 <a href="#participantgroup-level-get_numbers_all_colored_graphemess" class="anchor"></a>participantgroup level: <code>get_numbers_all_colored_graphemess</code>
 </h4>
 <p>The participantgroup method <code>get_numbers_all_colored_graphemes</code> produces a numeric vector that holds each participant’s number of valid color responses:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">num_onlynonna</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_numbers_all_colored_graphemes</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">num_onlynonna</span><span class="op">)</span>
+<span class="va">num_onlynonna</span>
 <span class="co">#&gt; [1] 3 3 3</span></code></pre></div>
 <p>All three participants gave only valid (non-NA) color responses for 3 graphemes. The values are in the same order that participants were in in the raw data frame, meaning that the first value corresponds to the first participant, and so on.</p>
 <p>Of course, you can combine these values with participant ID’s just like we did above with mean consistency scores:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mean_cscores</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span><span class="op">)</span>
 <span class="va">num_onlynonna</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_numbers_all_colored_graphemes</span><span class="op">(</span><span class="op">)</span>
 <span class="va">p_ids</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_ids</span><span class="op">(</span><span class="op">)</span>
-<span class="va">ctest_summary_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>participant_id<span class="op">=</span><span class="va">p_ids</span>, 
-                               mean_consistency_score<span class="op">=</span><span class="va">mean_cscores</span>,
-                               num_valid_graphemes<span class="op">=</span><span class="va">num_onlynonna</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ctest_summary_df</span><span class="op">)</span>
+<span class="va">ctest_summary_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+  participant_id<span class="op">=</span><span class="va">p_ids</span>, 
+  mean_consistency_score<span class="op">=</span><span class="va">mean_cscores</span>,
+  num_valid_graphemes<span class="op">=</span><span class="va">num_onlynonna</span>
+<span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ctest_summary_df</span><span class="op">)</span>
 <span class="co">#&gt;   participant_id mean_consistency_score num_valid_graphemes</span>
 <span class="co">#&gt; 1              1               131.2060                   3</span>
 <span class="co">#&gt; 2              2               101.3738                   3</span>
 <span class="co">#&gt; 3              3               151.9597                   3</span></code></pre></div>
 </div>
 </div>
-</div>
-<div id="filtering-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#filtering-data" class="anchor"></a>Filtering data</h2>
-<p>Participants who have synesthetic associations might only have those for some of the graphemes used in a test. For instance, a participant might only have synesthetic associations for weekdays, but not digits or letters, even though all are included in the test. synr helps you apply filters to calculate summary statistics for only a subset of graphemes. Filters are applied by passing a character vector of symbols/graphemes to the <code>symbol_filter=</code> argument, when using participant-level or participantgroup-level methods for summary statistics.</p>
-<p>For purposes of illustrating filtering, the example data frame <code>synr_exampledf_large</code> is used (if you want, you can view it by running <code>View(synr_exampledf_large)</code>).</p>
-<div id="participant-level-filtering" class="section level3">
+<div id="validating-participant-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#participant-level-filtering" class="anchor"></a>participant level filtering</h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<a href="#validating-participant-data" class="anchor"></a>Validating participant data</h3>
+<p>synr includes a unique procedure for validating participant data based on estimating how varied participants’ color responses are. Detailed information is available in the <a href="validate-data.html">validation-focused article</a>. A very rough example and explanation follows.</p>
+<div id="participantgroup-level-check_valid_get_twcv_scores" class="section level4">
+<h4 class="hasAnchor">
+<a href="#participantgroup-level-check_valid_get_twcv_scores" class="anchor"></a>participantgroup level: <code>check_valid_get_twcv_scores</code>
+</h4>
+<p>The larger example data frame <code>synr_exampledf_large</code> (with 3 trials per grapheme) is used in this example:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pg_large</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_participantgroup.html">create_participantgroup</a></span><span class="op">(</span>
   raw_df<span class="op">=</span><span class="va">synr_exampledf_large</span>,
   n_trials_per_grapheme<span class="op">=</span><span class="fl">3</span>,
   id_col_name<span class="op">=</span><span class="st">"participant_id"</span>,
   symbol_col_name<span class="op">=</span><span class="st">"trial_symbol"</span>,
   color_col_name<span class="op">=</span><span class="st">"response_color"</span>,
-  time_col_name<span class="op">=</span><span class="st">"response_time"</span>, <span class="co"># optional, not necessary for core functionality</span>
   color_space_spec<span class="op">=</span><span class="st">"Luv"</span>
 <span class="op">)</span>
-<span class="va">parta_digits_cons</span> <span class="op">&lt;-</span> <span class="va">pg_large</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">'partA'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_mean_consistency_score</span><span class="op">(</span>symbol_filter<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">parta_digits_cons</span><span class="op">)</span>
-<span class="co">#&gt; [1] 271.9048</span></code></pre></div>
-<p>The mean consistency score <em>when looking at only digits</em> for the participant with ID ‘partA’ (remember, we can specify participants using their row number in the raw data frame, or their participant ID) was 271.905.</p>
+<span class="co"># see separate article for explanation of why 'set.seed' is called</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> 
+
+<span class="co"># call validation method</span>
+<span class="va">val_df</span> <span class="op">&lt;-</span> <span class="va">pg_large</span><span class="op">$</span><span class="fu">check_valid_get_twcv_scores</span><span class="op">(</span>
+  min_complete_graphemes <span class="op">=</span> <span class="fl">5</span>,
+  dbscan_eps <span class="op">=</span> <span class="fl">20</span>,
+  dbscan_min_pts <span class="op">=</span> <span class="fl">4</span>,
+  max_var_tight_cluster <span class="op">=</span> <span class="fl">150</span>,
+  max_prop_single_tight_cluster <span class="op">=</span> <span class="fl">0.6</span>,
+  safe_num_clusters <span class="op">=</span> <span class="fl">3</span>,
+  safe_twcv <span class="op">=</span> <span class="fl">250</span>,
+  complete_graphemes_only <span class="op">=</span> <span class="cn">TRUE</span>,
+  symbol_filter <span class="op">=</span> <span class="va">LETTERS</span>
+<span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">val_df</span><span class="op">)</span>
+<span class="co">#&gt;   valid        reason_invalid      twcv num_clusters</span>
+<span class="co">#&gt; 1  TRUE                       1077.9557            8</span>
+<span class="co">#&gt; 2 FALSE hi_prop_tight_cluster  195.1215            2</span>
+<span class="co">#&gt; 3  TRUE                       1222.0226            5</span>
+<span class="co">#&gt; 4  TRUE                       1568.6686            5</span>
+<span class="co">#&gt; 5  TRUE                       3154.0720            4</span></code></pre></div>
+<p>In the example, we basically ask synr to check for each participant if they have, <em>looking at letters only</em>:</p>
+<ul>
+<li>used at least 3 clearly discernible colors (e. g. ‘red’, ‘yellow’ and ‘blue’) or otherwise greatly varied their responses (e. g. used very different shades of ‘red’/‘red-orange’ and ‘yellow’/‘yellow-green’)</li>
+<li>given all non-NA color responses for at least 4 letters</li>
+<li>not answered with roughly the same color (say, ‘black’) for more than 60% of the trials</li>
+</ul>
+<p>This method, unlike other ones we’ve seen, returns a data frame. Looking at it, we can see that all data sets except the second one were classified as valid. The second data set was classified as invalid due to ‘hi_prop_tight_cluster’, which means that the participant responded with roughly the same color for more than 60% of all letter trials. The ‘twcv’ column gives a summary statistic which roughly describes how much variation there was in the participant’s data. The ‘num_clusters’ column gives an estimate of about how many clearly discernible colors that the participant repeatedly used.</p>
+<p>There are various ways to combine the returned data frame with participant ID’s, here’s one using the R built-in <code>cbind</code> function:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">val_id_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>
+  participant_id<span class="op">=</span><span class="va">pg_large</span><span class="op">$</span><span class="fu">get_ids</span><span class="op">(</span><span class="op">)</span>,
+  <span class="va">val_df</span>
+<span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">val_id_df</span><span class="op">)</span>
+<span class="co">#&gt;   participant_id valid        reason_invalid      twcv num_clusters</span>
+<span class="co">#&gt; 1          partA  TRUE                       1077.9557            8</span>
+<span class="co">#&gt; 2          partB FALSE hi_prop_tight_cluster  195.1215            2</span>
+<span class="co">#&gt; 3          partC  TRUE                       1222.0226            5</span>
+<span class="co">#&gt; 4          partD  TRUE                       1568.6686            5</span>
+<span class="co">#&gt; 5          partE  TRUE                       3154.0720            4</span></code></pre></div>
+<p>Again, please see the <a href="validate-data.html">validation-focused article</a> for more information.</p>
 </div>
+</div>
+</div>
+<div id="filtering-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#filtering-data" class="anchor"></a>Filtering data</h2>
+<p>Participants who have synesthetic associations might only have those for some of the graphemes used in a test. For instance, a participant might only have synesthetic associations for digits, but not letters, even though both categories are included in the test. synr helps you apply filters to calculate summary statistics for only a subset of graphemes. Filters are applied by passing a character vector of symbols/graphemes to the <code>symbol_filter=</code> argument, when using participant-level or participantgroup-level methods for summary statistics.</p>
 <div id="participantgroup-level-filtering" class="section level3">
 <h3 class="hasAnchor">
 <a href="#participantgroup-level-filtering" class="anchor"></a>participantgroup level filtering</h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cscores_weekdays</span> <span class="op">&lt;-</span> <span class="va">pg_large</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span>symbol_filter<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Monday'</span>, 
-                                                                        <span class="st">'Tuesday'</span>,
-                                                                        <span class="st">'Wednesday'</span>,
-                                                                        <span class="st">'Thursday'</span>,
-                                                                        <span class="st">'Friday'</span>, 
-                                                                        <span class="st">'Saturday'</span>,
-                                                                        <span class="st">'Sunday'</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">cscores_weekdays</span><span class="op">)</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">weekdays_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+  <span class="st">'Monday'</span>, <span class="st">'Tuesday'</span>, <span class="st">'Wednesday'</span>, <span class="st">'Thursday'</span>,
+  <span class="st">'Friday'</span>, <span class="st">'Saturday'</span>, <span class="st">'Sunday'</span>
+<span class="op">)</span>
+<span class="co"># note that the 'large' example data (rolled up in 'pg_large')</span>
+<span class="co"># are used again here</span>
+<span class="va">cscores_weekdays</span> <span class="op">&lt;-</span> <span class="va">pg_large</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span>symbol_filter<span class="op">=</span><span class="va">weekdays_filter</span><span class="op">)</span>
+<span class="va">cscores_weekdays</span>
 <span class="co">#&gt; [1] 256.61146  79.72227  63.34418 256.80966  32.72955</span></code></pre></div>
-<p>The produced vector holds each participant’s (there are 10 participants in this case) mean consistency score, only taking trials that had a weekday grapheme into account.</p>
+<p>The produced vector holds each participant’s (there are 5 participants in this case) mean consistency score, only taking data from trials that had a weekday grapheme into account.</p>
 </div>
 </div>
 <div id="handling-summary-statistics-efficiently" class="section level2">
 <h2 class="hasAnchor">
 <a href="#handling-summary-statistics-efficiently" class="anchor"></a>Handling summary statistics efficiently</h2>
-<div id="joining-data-frames-with-dplyr" class="section level3">
-<h3 class="hasAnchor">
-<a href="#joining-data-frames-with-dplyr" class="anchor"></a>Joining data frames with dplyr</h3>
-<p>As you use synr to calculate more statistics you might find that simply cramming them all into one huge data frame becomes unwieldy. It is recommended that you instead separate different kinds of summary statistics into different data frames. You can then, when you need to combine data from the different data frames for analysis, intuitively join the data frames by making use of the <a href="https://www.rdocumentation.org/packages/dplyr/versions/0.7.8">dplyr</a> package, specifically its function <a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a>. Here’s a simple example of how you can use inner_join:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># TODO update example with validity classification (previously looked at percentage of responses</span>
-<span class="co"># within one 'color range')</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'dplyr'</span><span class="op">)</span> <span class="co"># if you haven't installed dplyr yet</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="va">pg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_participantgroup.html">create_participantgroup</a></span><span class="op">(</span>
-  raw_df<span class="op">=</span><span class="va">synr_exampledf_long_small</span>,
-  n_trials_per_grapheme<span class="op">=</span><span class="fl">2</span>,
+<p>If calculating many statistics with synr, putting them into a single data frame becomes unwieldy. It may help to separate different kinds of summary statistics into different data frames. When data (produced by synr or from other sources) need to be combined, data frames can be combined with the R <code>merge</code> function. A simple example follows:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_participantgroup.html">create_participantgroup</a></span><span class="op">(</span>
+  raw_df<span class="op">=</span><span class="va">synr_exampledf_large</span>,
+  n_trials_per_grapheme<span class="op">=</span><span class="fl">3</span>,
   id_col_name<span class="op">=</span><span class="st">"participant_id"</span>,
   symbol_col_name<span class="op">=</span><span class="st">"trial_symbol"</span>,
   color_col_name<span class="op">=</span><span class="st">"response_color"</span>,
   time_col_name<span class="op">=</span><span class="st">"response_time"</span>,
   color_space_spec<span class="op">=</span><span class="st">"Luv"</span>
 <span class="op">)</span>
-<span class="va">mean_cscores</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span><span class="op">)</span>
-<span class="va">num_onlynonna</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_numbers_all_colored_graphemes</span><span class="op">(</span><span class="op">)</span>
-<span class="va">p_ids</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_ids</span><span class="op">(</span><span class="op">)</span>
-<span class="va">cons_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>participant_id<span class="op">=</span><span class="va">p_ids</span>, 
-                      mean_consistency_score<span class="op">=</span><span class="va">mean_cscores</span><span class="op">)</span>
-<span class="co"># we now have one data frame for consistency scores, and one for </span>
-<span class="co"># 'proportion of responses falling within color range &lt;X&gt;' values</span>
 
-<span class="co"># joining the two data frames</span>
-<span class="va">cons_propcol_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">cons_df</span>, <span class="va">propcol_df</span>, by<span class="op">=</span><span class="st">'participant_id'</span><span class="op">)</span></code></pre></div>
-<p>The code above would join the two separate data frames into one. They key is to make sure each separate data frame includes the participant ID’s, and then set the <code>by=</code> argument to <code>'participant_id'</code> (or whatever you call your data frames’ participant ID columns). This example is a bit contrived, but you will probably want to adopt this strategy as you calculate more statistics, using different filters. Note that you can also use <code>inner_join</code> to combine the summary statistics with other data you might have about your participants. Just make sure that the other data frames have a participant ID column with the same name as the column name used in your summary statistics data frames.</p>
-</div>
+<span class="co"># form first data frame, with consistency scores</span>
+<span class="va">mean_cscores</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span><span class="op">)</span>
+<span class="va">p_ids</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_ids</span><span class="op">(</span><span class="op">)</span>
+<span class="va">cons_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+  participant_id<span class="op">=</span><span class="va">p_ids</span>, 
+  mean_consistency_score<span class="op">=</span><span class="va">mean_cscores</span>
+<span class="op">)</span>
+
+<span class="co"># form second data frame, with validation-related information</span>
+<span class="va">val_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>
+  participant_id<span class="op">=</span><span class="va">pg</span><span class="op">$</span><span class="fu">get_ids</span><span class="op">(</span><span class="op">)</span>, 
+  <span class="va">pg</span><span class="op">$</span><span class="fu">check_valid_get_twcv_scores</span><span class="op">(</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="co"># combine the two data frames, by telling R to 'link them up'</span>
+<span class="co"># based on the 'participant_id' column</span>
+<span class="va">cons_val_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">cons_df</span>, <span class="va">val_df</span>, by<span class="op">=</span><span class="st">'participant_id'</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">cons_val_df</span><span class="op">)</span>
+<span class="co">#&gt;   participant_id mean_consistency_score valid        reason_invalid     twcv</span>
+<span class="co">#&gt; 1          partA              270.62529  TRUE                       3649.047</span>
+<span class="co">#&gt; 2          partB               50.55262 FALSE hi_prop_tight_cluster  770.760</span>
+<span class="co">#&gt; 3          partC                     NA  TRUE                        531.202</span>
+<span class="co">#&gt; 4          partD              271.88148  TRUE                       4806.165</span>
+<span class="co">#&gt; 5          partE                     NA  TRUE                       1702.389</span>
+<span class="co">#&gt;   num_clusters</span>
+<span class="co">#&gt; 1            4</span>
+<span class="co">#&gt; 2            4</span>
+<span class="co">#&gt; 3            6</span>
+<span class="co">#&gt; 4            3</span>
+<span class="co">#&gt; 5            5</span></code></pre></div>
+<p>They key is to make sure each separate data frame includes the participant ID’s and then set <code>by='participant_id'</code> (or whatever the data frames’ participant ID columns are named).</p>
 </div>
 <div id="visualizing-participant-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualizing-participant-data" class="anchor"></a>Visualizing participant data</h2>
-<p>It can often be helpful to get an overview of participants’ response colors and each grapheme’s consistency score. synr uses <a href="https://ggplot2.tidyverse.org/">ggplot2</a> to achieve this:</p>
-<div id="producing-plots-for-display-in-rstudio" class="section level3">
+<p>It can often be helpful to get an overview of participants’ response colors and each grapheme’s consistency score. synr uses <a href="https://ggplot2.tidyverse.org/">ggplot2</a> to achieve this.</p>
+<div id="producing-plots-for-immediate-display" class="section level3">
 <h3 class="hasAnchor">
-<a href="#producing-plots-for-display-in-rstudio" class="anchor"></a>Producing plots for display in RStudio</h3>
+<a href="#producing-plots-for-immediate-display" class="anchor"></a>Producing plots for immediate display</h3>
 <div id="participant-level-plotting-get_plot" class="section level4">
 <h4 class="hasAnchor">
 <a href="#participant-level-plotting-get_plot" class="anchor"></a>participant level plotting: <code>get_plot</code>
 </h4>
 <p>For details on how the <code>get_plot</code> method works, please have a look at the documentation for the Participant class, by using <code><a href="../reference/Participant-class.html">help(Participant)</a></code>. There, you can scroll down to the description of <code>get_plot</code>, under “Methods”.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pg_large</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_participantgroup.html">create_participantgroup</a></span><span class="op">(</span>
   raw_df<span class="op">=</span><span class="va">synr_exampledf_large</span>,
   n_trials_per_grapheme<span class="op">=</span><span class="fl">3</span>,
@@ -449,19 +473,21 @@
 <h4 class="hasAnchor">
 <a href="#participant-level-plot-saving-save_plot" class="anchor"></a>participant level plot saving: <code>save_plot</code>
 </h4>
-<p>For details on how the <code>save_plot</code> method works, have a look again at <code><a href="../reference/Participant-class.html">help(Participant)</a></code>. Scroll down to the description of <code>save_plot</code>, under “Methods”. What is most essential is that you specify the <code>save_dir=</code> argument, which is where you want the plot to be saved (including filename at the end), and the <code>file_format=</code> argument:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pg_large</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="fl">6</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">save_plot</span><span class="op">(</span>save_dir<span class="op">=</span><span class="st">'path/to/save/folder/filename.png'</span>,
-                                    file_format<span class="op">=</span><span class="st">'png'</span>,
-                                    grapheme_size<span class="op">=</span><span class="fl">2.2</span>, 
-                                    grapheme_angle<span class="op">=</span><span class="fl">30</span><span class="op">)</span></code></pre></div>
+<p>For details on how the <code>save_plot</code> method works, have a look again at <code><a href="../reference/Participant-class.html">help(Participant)</a></code>. Scroll down to the description of <code>save_plot</code>, under “Methods”. What is most essential is that you specify the <code>save_dir=</code> argument, which is where you want the plot to be saved (including filename at the end):</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pg_large</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="fl">6</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">save_plot</span><span class="op">(</span>
+  save_dir<span class="op">=</span><span class="st">'path/to/save/folder/'</span>,
+  file_format<span class="op">=</span><span class="st">'png'</span>,
+  grapheme_size<span class="op">=</span><span class="fl">2.2</span>, 
+  grapheme_angle<span class="op">=</span><span class="fl">30</span>
+<span class="op">)</span></code></pre></div>
 </div>
 <div id="participantgroup-level-plot-saving-save_plots" class="section level4">
 <h4 class="hasAnchor">
 <a href="#participantgroup-level-plot-saving-save_plots" class="anchor"></a>participantgroup level plot saving: <code>save_plots</code>
 </h4>
 <p>For details on how the <code>save_plots</code> method works, run <code><a href="../reference/ParticipantGroup-class.html">help(ParticipantGroup)</a></code>. Scroll down to the description of <code>save_plots</code>, under “Methods”. What is most essential is again that you specify the <code>save_dir=</code> argument, which is the directory you want the plots to be saved to, and the <code>file_format=</code> argument:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pg_large</span><span class="op">$</span><span class="fu">save_plots</span><span class="op">(</span>
   save_dir<span class="op">=</span><span class="st">'path/to/save/folder'</span>,
   file_format<span class="op">=</span><span class="st">'png'</span>,
@@ -470,6 +496,12 @@
 <span class="op">)</span></code></pre></div>
 </div>
 </div>
+</div>
+<div id="next-steps" class="section level2">
+<h2 class="hasAnchor">
+<a href="#next-steps" class="anchor"></a>Next steps</h2>
+<p>There are additional articles which explain synr, including some mentioned throughout this article. To better understand how synr is used in practice, you might want to read <a href="dingemanse-data-example.html">Using synr with real data: Coloured vowels</a>.</p>
+<p>There is more detailed and technical information about synr that you can find in the help documentation, as mentioned throughout this article.</p>
 </div>
   </div>
 

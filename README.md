@@ -21,10 +21,13 @@ pgroup <- create_participantgroup(
     color_space_spec = "Luv" # color space to use for all calculations with participant group
 )
 ```
-Using the resulting object (`pgroup`), you can call various methods. A couple of examples follow. 
+Using the resulting object (`pgroup`), you can call various methods. A few examples follow. 
 
 ### Example group-level method: get_mean_consistency_scores
 `pgroup$get_mean_consistency_scores(symbol_filter=LETTERS)` would return a vector of [CIELUV](https://en.wikipedia.org/wiki/CIELUV)-based consistency scores, using only data from trials involving capital letters.
+
+### Example group-level method: check_valid_get_twcv_scores
+`pgroup$check_valid_get_twcv_scores(symbol_filter=0:9)` would return a data frame which describes classifications of all participant data, where each data set is classified as 'invalid' or 'valid', based largely on [DBSCAN clustering](https://en.wikipedia.org/wiki/DBSCAN). This may be used to identify participants who varied their responses too little, e. g. by responding with an orange color on every trial.
 
 ### Example participant-level method: get_plot
 `pgroup$participants[[1]]$get_plot(symbol_filter=LETTERS)` would produce a bar plot of per-grapheme consistency scores for a single participant, using only data from trials involving capital letters. You can see an example below.
@@ -32,7 +35,7 @@ Using the resulting object (`pgroup`), you can call various methods. A couple of
 <img src="man/figures/example_consistency_plot.png" width="400" alt="Example bar plot of grapheme-level consistency scores">
 
 ### Detailed usage information
-More details on required data format and how to use synr itself can be found in the [package's vignettes](https://datalowe.github.io/synr/articles/), which are also included in the package itself (run `help(synr)` to find them).
+More details on required data format and how to use the above functions and more can be found in the [package's vignettes](https://datalowe.github.io/synr/articles/), which are also included in the package itself (run `help(synr)` to find them).
 
 ## Feedback
 If you have any suggestions on improvements you are very welcome to directly raise issues or commit code improvements to the github repository at https://github.com/datalowe/synr.

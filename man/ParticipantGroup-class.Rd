@@ -32,12 +32,12 @@ is overwritten.}
 and add each one using the add_participant() method.}
 
 \item{\code{check_valid_get_twcv_scores(
-  min_complete_graphemes = 7,
-  dbscan_eps = 30,
+  min_complete_graphemes = 5,
+  dbscan_eps = 20,
   dbscan_min_pts = 4,
-  max_var_tight_cluster = 100,
+  max_var_tight_cluster = 150,
   max_prop_single_tight_cluster = 0.6,
-  safe_num_clusters = 4,
+  safe_num_clusters = 3,
   safe_twcv = 250,
   complete_graphemes_only = TRUE,
   symbol_filter = NULL
@@ -75,7 +75,7 @@ and add each one using the add_participant() method.}
           itself). Defaults to 4.
         }
         \item{\code{max_var_tight_cluster} Maximum variance for an identified
-          DBSCAN cluster to be considered 'tight-knit'. Defaults to 100.
+          DBSCAN cluster to be considered 'tight-knit'. Defaults to 150.
         }
         \item{\code{max_prop_single_tight_cluster} Maximum proportion of
           points allowed to be within a single 'tight-knit' cluster (if a
@@ -85,7 +85,7 @@ and add each one using the add_participant() method.}
         \item{\code{safe_num_clusters} Minimum number of identified DBSCAN
           clusters (including 'noise' cluster only if it consists of at least
           'dbscan_min_pts' points) that guarantees validity of
-          a participant's data if points are 'non-tight-knit'. Defaults to 4.
+          a participant's data if points are 'non-tight-knit'. Defaults to 3.
         }
         \item{\code{safe_twcv} Minimum total within-cluster variance (TWCV)
           score that guarantees a participant's data's validity if points are

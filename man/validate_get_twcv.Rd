@@ -6,11 +6,11 @@
 \usage{
 validate_get_twcv(
   color_matrix,
-  dbscan_eps = 30,
+  dbscan_eps = 20,
   dbscan_min_pts = 4,
-  max_var_tight_cluster = 100,
+  max_var_tight_cluster = 150,
   max_prop_single_tight_cluster = 0.6,
-  safe_num_clusters = 4,
+  safe_num_clusters = 3,
   safe_twcv = 250
 )
 }
