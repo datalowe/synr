@@ -92,7 +92,8 @@ ParticipantGroup <- setRefClass(
           invalid). Defaults to 0.6.
         }
         \\item{\\code{safe_num_clusters} Minimum number of identified DBSCAN
-          clusters (including 'noise' cluster) that guarantees validity of
+          clusters (including 'noise' cluster only if it consists of at least
+          'dbscan_min_pts' points) that guarantees validity of
           a participant's data if points are 'non-tight-knit'. Defaults to 4.
         }
         \\item{\\code{safe_twcv} Minimum total within-cluster variance (TWCV)
@@ -118,7 +119,13 @@ ParticipantGroup <- setRefClass(
         }
         \\item{\\code{twcv} Numeric column which holds participants'
           calculated TWCV scores (NA for participants who had no/too
-          few graphemes with complete responses).}
+          few graphemes with complete responses).
+        }
+        \\item{\\code{num_clusters} One-element numeric (or NA if there are no/too few
+          graphemes with complete responses) vector indicating
+          the number of identified clusters counting toward the
+          tally compared with 'safe_num_clusters'.
+        }
       }
     }
     "

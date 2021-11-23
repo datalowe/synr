@@ -83,7 +83,8 @@ and add each one using the add_grapheme() method.}
           this leads to classification as invalid). Defaults to 0.6.
         }
         \item{\code{safe_num_clusters} Minimum number of identified DBSCAN
-          clusters (including 'noise' cluster) that guarantees validity if
+          clusters (including 'noise' cluster only if it consists of at least
+          'dbscan_min_pts' points) that guarantees validity if
           points are 'non-tight-knit'. Defaults to 4.
         }
         \item{\code{safe_twcv} Minimum total within-cluster variance (TWCV)
@@ -107,7 +108,13 @@ and add each one using the add_grapheme() method.}
         }
         \item{\code{twcv} One-element numeric (or NA if there are no/too few
           graphemes with complete responses) vector indicating participant's
-          calculated TWCV.}
+          calculated TWCV.
+        }
+        \item{\code{num_clusters} One-element numeric (or NA if there are no/too few
+          graphemes with complete responses) vector indicating
+          the number of identified clusters counting toward the
+          tally compared with 'safe_num_clusters'.
+        }
       }
     }
     }

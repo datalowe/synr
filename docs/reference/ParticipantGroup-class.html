@@ -214,7 +214,8 @@ and add each one using the add_participant() method.</p></dd>
           participant's data exceed this limit, they are classified as
           invalid). Defaults to 0.6.</p></li>
 <li><p><code>safe_num_clusters</code> Minimum number of identified DBSCAN
-          clusters (including 'noise' cluster) that guarantees validity of
+          clusters (including 'noise' cluster only if it consists of at least
+          'dbscan_min_pts' points) that guarantees validity of
           a participant's data if points are 'non-tight-knit'. Defaults to 4.</p></li>
 <li><p><code>safe_twcv</code> Minimum total within-cluster variance (TWCV)
           score that guarantees a participant's data's validity if points are
@@ -233,6 +234,10 @@ and add each one using the add_participant() method.</p></dd>
 <li><p><code>twcv</code> Numeric column which holds participants'
           calculated TWCV scores (NA for participants who had no/too
           few graphemes with complete responses).</p></li>
+<li><p><code>num_clusters</code> One-element numeric (or NA if there are no/too few
+          graphemes with complete responses) vector indicating
+          the number of identified clusters counting toward the
+          tally compared with 'safe_num_clusters'.</p></li>
 </ul><p></p></p></dd>
 
 <dt><code>get_ids()</code></dt><dd><p>Returns a character vector with all ids for

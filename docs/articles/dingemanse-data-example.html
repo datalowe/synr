@@ -268,10 +268,13 @@
 <span class="co"># and only relevant columns</span>
 <span class="va">cons_score_df</span><span class="op">[</span><span class="op">!</span><span class="va">cons_score_df</span><span class="op">$</span><span class="va">data_valid</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"participant_id"</span>, <span class="st">"mean_cons_score"</span>, <span class="st">"reason_invalid"</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt;                            participant_id mean_cons_score        reason_invalid</span>
+<span class="co">#&gt; 11   01e8370f-22a2-434a-b86b-ebfc65f28327     63.30219869 few_clusters_low_twcv</span>
 <span class="co">#&gt; 26   06644552-815c-47ad-a1a4-d774ac61f1e8     38.09724961 hi_prop_tight_cluster</span>
 <span class="co">#&gt; 37   0b40b649-8cd0-4252-bcad-04b607694eb9     36.04509901 hi_prop_tight_cluster</span>
 <span class="co">#&gt; 100  1fcd6ef5-057d-4655-a314-17aee2cbac99     25.20097383 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 134  28f1a586-d2c5-4c44-ba33-60e59768847c     59.66737827 few_clusters_low_twcv</span>
 <span class="co">#&gt; 288  58156a1e-2633-4435-b404-750ec370bd51     36.42790210 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 378  70f34bb1-7234-4cc2-9401-c68ea6d1d090    111.02773077 few_clusters_low_twcv</span>
 <span class="co">#&gt; 408  7ae98022-d5d8-460e-a1c3-68b43487e191     16.41104298 hi_prop_tight_cluster</span>
 <span class="co">#&gt; 554  ad9219a1-9566-4654-ba28-ac277175a347     36.19079247 hi_prop_tight_cluster</span>
 <span class="co">#&gt; 606  bc3ed730-ceed-44f0-97ac-8bf7fe1b8615     39.27415198 hi_prop_tight_cluster</span>
@@ -280,7 +283,9 @@
 <span class="co">#&gt; 717  de916a2b-5041-4ecf-af86-4e11feaa5d4c      0.03445631 hi_prop_tight_cluster</span>
 <span class="co">#&gt; 931  5b84fcd8-7982-46bd-9f13-1771a4f2b6df     44.28342864 hi_prop_tight_cluster</span>
 <span class="co">#&gt; 935  660ed2f1-7631-4c97-a46e-f9481d37bc4b     56.10827516 hi_prop_tight_cluster</span>
-<span class="co">#&gt; 1104 43dd077f-b955-4ba0-8ebb-a442a4ad913f     34.78898926 hi_prop_tight_cluster</span></code></pre></div>
+<span class="co">#&gt; 992  e8dd5ab3-8d3d-4137-9fd4-3b6fdf42cb97     69.07712926 few_clusters_low_twcv</span>
+<span class="co">#&gt; 1104 43dd077f-b955-4ba0-8ebb-a442a4ad913f     34.78898926 hi_prop_tight_cluster</span>
+<span class="co">#&gt; 1154 2b20c245-5ca1-4a1e-9b71-daa17ef445e1     46.99291493 few_clusters_low_twcv</span></code></pre></div>
 <p>All of the identified data sets that were classified by synr as invalid appear to have 80% or more of all responses be in roughly the same color. One of the participants, ‘de916a2b-5041-4ecf-af86-4e11feaa5d4c’, very clearly has invalid data even based on just their consistency score (0.034), as it is extremely low (due to having responded with black on all trials). What might be more interesting is to take a closer look at the participant with the highest consistency score (44.2), as their case might be somewhat less clear-cut.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">"d47c0e32-e3e2-4acf-84d0-08bf7375308b"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_plot</span><span class="op">(</span>
