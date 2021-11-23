@@ -7,7 +7,7 @@
 #' @section Details:
 #' This function relies heavily on the DBSCAN algorithm and its implementation
 #' in the R package `dbscan`, for clustering color points. For further
-#' information regarding the 'eps' and
+#' information regarding the 'dbscan_eps' and
 #' 'dbscan_min_pts' parameters as well as DBSCAN itself, please see
 #' the `dbscan` documentation. Once clustering is done, passed validation
 #' criteria are applied:
@@ -23,11 +23,14 @@
 #' always classified as valid.
 #' }
 #' Note that this means data can be classified as valid by either having
-#' a larger number of clusters, \emph{or} by having points included
-#' by a smaller number of clusters but spaced relatively far apart
-#' \emph{within} these clusters. Also note that the DBSCAN 'noise'
-#' cluster and its associated points are considered as valid and
-#' included in all relevant calculations.
+#' at least 'safe_num_cluster' clusters, \emph{or} by having points composing
+#' a smaller number of clusters but spaced relatively far apart
+#' \emph{within} these clusters.
+#' 
+#' The DBSCAN 'noise' cluster only counts towards the 'cluster tally' 
+#' (compared with 'safe_num_cluster') if it includes at least 'dbscan_min_pts' points.
+#' Points in the noise cluster are however always included in
+#' other calculations, e. g. total within-cluster variance (TWCV).
 #'
 #' @param color_matrix An n-by-3 numerical matrix where each
 #' row corresponds to a single point in 3D color space.
@@ -101,7 +104,12 @@ validate_get_twcv <- function(
   }
   # check if TWCV score is low and
   # there are few clusters
-  num_clusters <- length(cluster_numbers)
+
+  # check if the noise cluster consists of less than 'dbscan_min_pts' points,
+  # in which case it should not be included in the 'cluster tally'
+  noise_c_few_pts <- sum(dbscan_res$cluster == 0) < dbscan_min_pts
+  num_clusters <- length(cluster_numbers) - as.numeric(noise_c_few_pts)
+
   twcv_score <- total_within_cluster_variance(
     color_matrix,
     dbscan_res$cluster
