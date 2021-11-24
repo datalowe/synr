@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -147,7 +147,7 @@
 <div id="rolling-up-the-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#rolling-up-the-data" class="anchor"></a>Rolling up the data</h3>
-<p>When using synr, your main interface to the data is the ParticipantGroup class. For information on how to convert raw consistency test data into a ParticipantGroup object, please see the separate tutorial <a href="synr-creategroup-with-long-format.html">Creating ParticipantGroup objects</a>. Here, it’s assumed that the raw data are in ‘long format’, as briefly shown below:</p>
+<p>When using synr, your main interface to the data is the ParticipantGroup class. For information on how to convert raw consistency test data into a ParticipantGroup object, please see the separate tutorial <a href="synr-creategroup.html">Creating ParticipantGroup objects</a>. Here, it’s assumed that the raw data are in ‘long format’, as briefly shown below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">synr_exampledf_long_small</span><span class="op">)</span>
 <span class="co">#&gt;   participant_id trial_symbol response_color response_time</span>
@@ -258,7 +258,7 @@
 <h3 class="hasAnchor">
 <a href="#number-of-valid-responses" class="anchor"></a>Number of valid responses</h3>
 <p>It often helps to see how many valid color responses participants have provided during the experiment. It’s common for consistency tests to provide some kind of ‘no color’ response. This is usually provided mainly as a tool for people who <strong>do</strong> have synesthetic associations to use for non-inducing stimuli, but might be ‘abused’ by people with no synesthetic associations. A mean consistency score is meaningless if a participant has for instance responded with ‘no color’ for all but two graphemes’ responsese, since it’s simple to memorize colors for two symbols.</p>
-<p>Note that for synr to work, ‘no color’ responses must be coded as <code>NA</code> values. For more information about this, please see the article <a href="synr-creategroup-with-long-format.html">Creating ParticipantGroup objects</a>.</p>
+<p>Note that for synr to work, ‘no color’ responses must be coded as <code>NA</code> values. For more information about this, please see the article <a href="synr-creategroup.html">Creating ParticipantGroup objects</a>.</p>
 <div id="participant-level-get_number_all_colored_graphemes" class="section level4">
 <h4 class="hasAnchor">
 <a href="#participant-level-get_number_all_colored_graphemes" class="anchor"></a>participant level: <code>get_number_all_colored_graphemes</code>

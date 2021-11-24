@@ -43,7 +43,7 @@ githuburl <- 'https://raw.githubusercontent.com/mdingemanse/colouredvowels/maste
 dingemanse_voweldata <- read.csv(githuburl, sep=' ')
 ```
 
-The downloaded data are in a 'one-row-per-stimulus' (vocal sound) format. synr needs the data to be in either 'long' or 'wide' format, as described in the article [Creating ParticipantGroup objects](synr-creategroup-with-long-format.html). Generally, 'long' format is preferred, so let's reformat the data to this.
+The downloaded data are in a 'one-row-per-stimulus' (vocal sound) format. synr needs the data to be in either 'long' or 'wide' format, as described in the article [Creating ParticipantGroup objects](synr-creategroup.html). Generally, 'long' format is preferred, so let's reformat the data to this.
 
 ```{r reformat_raw_data}
 # 'pivot' the data into a long (one row per observation/trial) format,

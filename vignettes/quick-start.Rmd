@@ -22,7 +22,7 @@ library(synr)
 This is the 'quick start' guide to synr. For an in-depth tutorial, please see the [main tutorial](synr-tutorial.html).
 
 ## Rolling up the data
-If you have long format data (otherwise see [Creating ParticipantGroup objects](synr-creategroup-with-long-format.html)):
+If you have long format data (otherwise see [Creating ParticipantGroup objects](synr-creategroup.html)):
 
 ```{r roll_up_data}
 pg <- create_participantgroup(

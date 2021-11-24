@@ -44,7 +44,7 @@ The aim of this package is to facilitate analysis of consistency test data by pr
 
 ## Getting started
 ### Rolling up the data
-When using synr, your main interface to the data is the ParticipantGroup class. For information on how to convert raw consistency test data into a ParticipantGroup object, please see the separate tutorial [Creating ParticipantGroup objects](synr-creategroup-with-long-format.html). Here, it's assumed that the raw data are in 'long format', as briefly shown below:
+When using synr, your main interface to the data is the ParticipantGroup class. For information on how to convert raw consistency test data into a ParticipantGroup object, please see the separate tutorial [Creating ParticipantGroup objects](synr-creategroup.html). Here, it's assumed that the raw data are in 'long format', as briefly shown below:
 ```{r show_long_format}
 head(synr_exampledf_long_small)
 ```
@@ -128,7 +128,7 @@ mean_scores_df
 ### Number of valid responses
 It often helps to see how many valid color responses participants have provided during the experiment. It's common for consistency tests to provide some kind of 'no color' response. This is usually provided mainly as a tool for people who **do** have synesthetic associations to use for non-inducing stimuli, but might be 'abused' by people with no synesthetic associations. A mean consistency score is meaningless if a participant has for instance responded with 'no color' for all but two graphemes' responsese, since it's simple to memorize colors for two symbols.
 
-Note that for synr to work, 'no color' responses must be coded as `NA` values. For more information about this, please see the article [Creating ParticipantGroup objects](synr-creategroup-with-long-format.html).
+Note that for synr to work, 'no color' responses must be coded as `NA` values. For more information about this, please see the article [Creating ParticipantGroup objects](synr-creategroup.html).
 
 #### participant level: `get_number_all_colored_graphemes`
 This method returns the number of graphemes that **only** have non-NA color responses. Thus, if data are from a consistency test with 3 trials/grapheme, the number of graphemes with 3 non-NA responses is returned. 

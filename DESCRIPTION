@@ -1,6 +1,6 @@
 Package: synr
 Title: Explore and Process Synesthesia Consistency Test Data
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: person("Lowe", "Wilsson", email = "datalowe@posteo.de",
                   role = c("aut", "cre"))
 Description: Explore synesthesia

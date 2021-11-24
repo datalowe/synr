@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@
 <code class="sourceCode R"><span class="co"># download the 'coloured vowels' data</span>
 <span class="va">githuburl</span> <span class="op">&lt;-</span> <span class="st">'https://raw.githubusercontent.com/mdingemanse/colouredvowels/master/BRM_colouredvowels_voweldata.csv'</span>
 <span class="va">dingemanse_voweldata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">githuburl</span>, sep<span class="op">=</span><span class="st">' '</span><span class="op">)</span></code></pre></div>
-<p>The downloaded data are in a ‘one-row-per-stimulus’ (vocal sound) format. synr needs the data to be in either ‘long’ or ‘wide’ format, as described in the article <a href="synr-creategroup-with-long-format.html">Creating ParticipantGroup objects</a>. Generally, ‘long’ format is preferred, so let’s reformat the data to this.</p>
+<p>The downloaded data are in a ‘one-row-per-stimulus’ (vocal sound) format. synr needs the data to be in either ‘long’ or ‘wide’ format, as described in the article <a href="synr-creategroup.html">Creating ParticipantGroup objects</a>. Generally, ‘long’ format is preferred, so let’s reformat the data to this.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 'pivot' the data into a long (one row per observation/trial) format,</span>
 <span class="co"># using tidyr's pivot_longer function (and the 'pipe' %&gt;% operator)</span>
