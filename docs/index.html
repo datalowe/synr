@@ -101,13 +101,16 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>TODO: This section will be updated once it’s been decided where to make synr binaries available.</p>
+<p>synr is available <a href="https://cran.r-project.org/package=synr">on CRAN</a>, meaning you can simply:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'synr'</span><span class="op">)</span></code></pre></div>
+<p>Note that this will also install packages that synr depends on unless you already have them (<code>dbscan</code>, <code>data.table</code> and <code>ggplot2</code>).</p>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>Once data are in an appropriately formatted data frame/tibble (‘long format’ - see vignettes for more information), everything starts with rolling up participant data into a ‘ParticipantGroup’ object with <code>create_participantgroup_widedata</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://datalowe.github.io/synr/">synr</a></span><span class="op">)</span>
 
 <span class="va">pgroup</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_participantgroup.html">create_participantgroup</a></span><span class="op">(</span>
@@ -153,6 +156,8 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=synr">https://​cloud.r-project.org/​package=synr</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/datalowe/synr/">https://​github.com/​datalowe/​synr/​</a>
 </li>
 </ul>
