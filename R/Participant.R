@@ -127,8 +127,8 @@ Participant <- setRefClass(
       "Returns an n-by-3 matrix of all non-NA color responses' data,
       where each column represents a color axis and each row a response
       color. If a character vector is passed to symbol_filter,
-      only data from responses associated with graphemes with symbols
-      are included."
+      only data from responses associated with graphemes with corresponding 
+      symbols are included."
       if (!has_graphemes()) {
         return(matrix(nrow = 0, ncol = 3))
       }
