@@ -1,4 +1,4 @@
-pandoc: 2.14.0.3
+pandoc: 2.16.2
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
@@ -7,7 +7,7 @@ articles:
   synr-creategroup: synr-creategroup.html
   synr-tutorial: synr-tutorial.html
   validate-data: validate-data.html
-last_built: 2021-11-29T07:15Z
+last_built: 2022-03-07T16:27Z
 urls:
   reference: https://datalowe.github.io/synr//reference
   article: https://datalowe.github.io/synr//articles

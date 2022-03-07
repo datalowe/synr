@@ -191,8 +191,8 @@ calculating the mean response time.}
 \item{\code{get_nonna_color_resp_mat(symbol_filter = NULL)}}{Returns an n-by-3 matrix of all non-NA color responses' data,
 where each column represents a color axis and each row a response
 color. If a character vector is passed to symbol_filter,
-only data from responses associated with graphemes with symbols
-are included.}
+only data from responses associated with graphemes with corresponding 
+symbols are included.}
 
 \item{\code{get_number_all_colored_graphemes(symbol_filter = NULL)}}{Returns the number of graphemes for which all
 responses have an associated non-NA color. If a
