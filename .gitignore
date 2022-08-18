@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+..Rcheck
 inst/doc
 .DS_Store
 /doc/

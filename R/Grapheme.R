@@ -126,7 +126,7 @@ Grapheme<- setRefClass("Grapheme",
                            return the result (using the color space
                            set at grapheme initialization) as a 3-element vector."
                            if (all(is.na(response_colors))) {
-                             return(NA)
+                             return(c(NA, NA, NA))
                            }
                            return(colMeans(response_colors))
                          },
