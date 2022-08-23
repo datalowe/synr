@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/datalowe/synr/">
+  <a href="https://github.com/datalowe/synr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,14 +84,15 @@
 
       
 
-      </header><script src="synr-creategroup_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating ParticipantGroup objects</h1>
-                        <h4 class="author">Lowe Wilsson</h4>
+                        <h4 data-toc-skip class="author">Lowe
+Wilsson</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/datalowe/synr/blob/master/vignettes/synr-creategroup.Rmd"><code>vignettes/synr-creategroup.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/datalowe/synr/blob/HEAD/vignettes/synr-creategroup.Rmd" class="external-link"><code>vignettes/synr-creategroup.Rmd</code></a></small>
       <div class="hidden name"><code>synr-creategroup.Rmd</code></div>
 
     </div>
@@ -103,21 +100,37 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://datalowe.github.io/synr/">synr</a></span><span class="op">)</span></code></pre></div>
-<div id="introduction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>To start using synr, you must first convert your data into a ParticipantGroup object. This tutorial explains how to convert raw consistency test data into this object. For more information on synr and ParticipantGroup itself, please see the <a href="synr-tutorial.html">main tutorial</a>.</p>
-<p>synr offers separate methods for converting ‘long format’ and ‘wide format’ raw data into ParticipantGroup objects. Brief explanations of the data formats are included at the beginning of each section.</p>
-<p>Note that if you have any <strong>missing data</strong>, e. g. if the response color hex codes for some participants are missing, those must be coded in the data frame as R <strong>NA values</strong>. If you have used other values to represent missingness, you must first replace those values with NA, e. g. by using the <a href="https://CRAN.R-project.org/package=naniar">naniar</a> package.</p>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://datalowe.github.io/synr/">synr</a></span><span class="op">)</span></code></pre></div>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>To start using synr, you must first convert your data into a
+ParticipantGroup object. This tutorial explains how to convert raw
+consistency test data into this object. For more information on synr and
+ParticipantGroup itself, please see the <a href="synr-tutorial.html">main tutorial</a>.</p>
+<p>synr offers separate methods for converting ‘long format’ and ‘wide
+format’ raw data into ParticipantGroup objects. Brief explanations of
+the data formats are included at the beginning of each section.</p>
+<p>Note that if you have any <strong>missing data</strong>, e. g. if the
+response color hex codes for some participants are missing, those must
+be coded in the data frame as R <strong>NA values</strong>. If you have
+used other values to represent missingness, you must first replace those
+values with NA, e. g. by using the <a href="https://CRAN.R-project.org/package=naniar" class="external-link">naniar</a> package.</p>
 </div>
-<div id="long-format-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#long-format-data" class="anchor"></a>‘Long format’ data</h2>
-<p><a href="https://stefvanbuuren.name/fimd/sec-longandwide.html">‘Long format’ data</a> adhere to the rule that there should only be one column for each variable/type of data. For consistency tests, this means that each trial should have one row in the data frame and there should be only one column for participant color responses and one for trial graphemes/symbols. You might also be familiar with the ‘long format’ from working with <a href="https://r4ds.had.co.nz/tidy-data.html">tidy data</a>.</p>
-<div id="example-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-data" class="anchor"></a>Example data</h3>
+<div class="section level2">
+<h2 id="long-format-data">‘Long format’ data<a class="anchor" aria-label="anchor" href="#long-format-data"></a>
+</h2>
+<p><a href="https://stefvanbuuren.name/fimd/sec-longandwide.html" class="external-link">‘Long
+format’ data</a> adhere to the rule that there should only be one column
+for each variable/type of data. For consistency tests, this means that
+each trial should have one row in the data frame and there should be
+only one column for participant color responses and one for trial
+graphemes/symbols. You might also be familiar with the ‘long format’
+from working with <a href="https://r4ds.had.co.nz/tidy-data.html" class="external-link">tidy
+data</a>.</p>
+<div class="section level3">
+<h3 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
+</h3>
 <p>Here’s an example of long formatted consistency test data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">synr_exampledf_long_small</span>
@@ -140,11 +153,16 @@
 <span class="co">#&gt; 16              3            7         000000           1.7</span>
 <span class="co">#&gt; 17              3            D         FFFFFF           9.3</span>
 <span class="co">#&gt; 18              3            A         4811ED           8.1</span></code></pre></div>
-<p>There were three participants. Each participant did 6 trials. Each trial is represented by a row, which holds the participant’s ID, the grapheme/symbol used, the participant’s response color (as an <a href="https://en.wikipedia.org/wiki/Web_colors#Hex_triplet">RGB hex code</a>), and the time it took for the participant to respond after grapheme presentation. Note that response time data are optional - you can still use synr if you don’t have those.</p>
+<p>There were three participants. Each participant did 6 trials. Each
+trial is represented by a row, which holds the participant’s ID, the
+grapheme/symbol used, the participant’s response color (as an <a href="https://en.wikipedia.org/wiki/Web_colors#Hex_triplet" class="external-link">RGB hex
+code</a>), and the time it took for the participant to respond after
+grapheme presentation. Note that response time data are optional - you
+can still use synr if you don’t have those.</p>
 </div>
-<div id="convert-data-into-a-participantgroup-object" class="section level3">
-<h3 class="hasAnchor">
-<a href="#convert-data-into-a-participantgroup-object" class="anchor"></a>Convert data into a ParticipantGroup object</h3>
+<div class="section level3">
+<h3 id="convert-data-into-a-participantgroup-object">Convert data into a ParticipantGroup object<a class="anchor" aria-label="anchor" href="#convert-data-into-a-participantgroup-object"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_participantgroup.html">create_participantgroup</a></span><span class="op">(</span>
   raw_df<span class="op">=</span><span class="va">synr_exampledf_long_small</span>,
@@ -159,19 +177,27 @@
 <ul>
 <li>A long-formatted data frame.</li>
 <li>How many trials were run for each grapheme/symbol.</li>
-<li>The name of participant ID, grapheme/symbol and response color columns.</li>
-<li>A string that specifies which <a href="https://en.wikipedia.org/wiki/List_of_color_spaces_and_their_uses">color space</a> you want to use (“XYZ”, “sRGB”, “Apple RGB”, “Lab”, or “Luv”) later, when doing calculations with synr.</li>
+<li>The name of participant ID, grapheme/symbol and response color
+columns.</li>
+<li>A string that specifies which <a href="https://en.wikipedia.org/wiki/List_of_color_spaces_and_their_uses" class="external-link">color
+space</a> you want to use (“XYZ”, “sRGB”, “Apple RGB”, “Lab”, or “Luv”)
+later, when doing calculations with synr.</li>
 </ul>
-<p>If you want, you can also specify the name of a column of response times, if you have those.</p>
+<p>If you want, you can also specify the name of a column of response
+times, if you have those.</p>
 </div>
 </div>
-<div id="wide-format-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#wide-format-data" class="anchor"></a>‘Wide format’ data</h2>
-<p><a href="https://stefvanbuuren.name/fimd/sec-longandwide.html">‘Wide format’ data</a> roughly adhere to the rule that there should only be one row for each subject/‘object of interest’. For consistency tests, this means that each participant has a single row in the data frame, and multiple columns for each trial.</p>
-<div id="example-data-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-data-1" class="anchor"></a>Example data</h3>
+<div class="section level2">
+<h2 id="wide-format-data">‘Wide format’ data<a class="anchor" aria-label="anchor" href="#wide-format-data"></a>
+</h2>
+<p><a href="https://stefvanbuuren.name/fimd/sec-longandwide.html" class="external-link">‘Wide
+format’ data</a> roughly adhere to the rule that there should only be
+one row for each subject/‘object of interest’. For consistency tests,
+this means that each participant has a single row in the data frame, and
+multiple columns for each trial.</p>
+<div class="section level3">
+<h3 id="example-data-1">Example data<a class="anchor" aria-label="anchor" href="#example-data-1"></a>
+</h3>
 <p>Here’s an example of wide formatted consistency test data.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">synr_exampledf_wide_small</span>
@@ -191,11 +217,16 @@
 <span class="co">#&gt; 1             2.5        7           000000             1.7</span>
 <span class="co">#&gt; 2             9.9        D           FFFFFF             9.3</span>
 <span class="co">#&gt; 3             3.9        A           4811ED             8.1</span></code></pre></div>
-<p>There were three participants. Each participant did 6 trials. Each participant is represented by a row. Each trial is represented by three columns, e. g. <code>symbol_1</code>, <code>response_color_1</code> and <code>response_time_1</code> for the first trial. Note that response time data are optional - you can still use synr if you don’t have those.</p>
+<p>There were three participants. Each participant did 6 trials. Each
+participant is represented by a row. Each trial is represented by three
+columns, e. g. <code>symbol_1</code>, <code>response_color_1</code> and
+<code>response_time_1</code> for the first trial. Note that response
+time data are optional - you can still use synr if you don’t have
+those.</p>
 </div>
-<div id="convert-data-into-a-participantgroup-object-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#convert-data-into-a-participantgroup-object-1" class="anchor"></a>Convert data into a ParticipantGroup object</h3>
+<div class="section level3">
+<h3 id="convert-data-into-a-participantgroup-object-1">Convert data into a ParticipantGroup object<a class="anchor" aria-label="anchor" href="#convert-data-into-a-participantgroup-object-1"></a>
+</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_participantgroup_widedata.html">create_participantgroup_widedata</a></span><span class="op">(</span>
   raw_df<span class="op">=</span><span class="va">synr_exampledf_wide_small</span>,
@@ -212,20 +243,34 @@
 <li>The participant column’s name.</li>
 <li>The number of trials used per grapheme (defaults to 3)</li>
 <li>
-<a href="https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions">Regular expression</a> patterns that are unique for names of
+<a href="https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions" class="external-link">Regular
+expression</a> patterns that are unique for names of
 <ul>
-<li>trial columns that hold symbols/graphemes displayed to the participants.</li>
-<li>trial columns that hold participants’ response color <a href="https://en.wikipedia.org/wiki/Web_colors#Hex_triplet">RGB hex codes</a>.</li>
+<li>trial columns that hold symbols/graphemes displayed to the
+participants.</li>
+<li>trial columns that hold participants’ response color <a href="https://en.wikipedia.org/wiki/Web_colors#Hex_triplet" class="external-link">RGB hex
+codes</a>.</li>
 </ul>
 </li>
-<li>A string that specifies which <a href="https://en.wikipedia.org/wiki/List_of_color_spaces_and_their_uses">color space</a> you want to use (“XYZ”, “sRGB”, “Apple RGB”, “Lab”, or “Luv”) later, when doing calculations with synr.</li>
+<li>A string that specifies which <a href="https://en.wikipedia.org/wiki/List_of_color_spaces_and_their_uses" class="external-link">color
+space</a> you want to use (“XYZ”, “sRGB”, “Apple RGB”, “Lab”, or “Luv”)
+later, when doing calculations with synr.</li>
 </ul>
-<p>If you want, you can also specify a regular expression for response time columns, if you have those.</p>
-<div id="details-about-regular-expression-patterns-in-example" class="section level4">
-<h4 class="hasAnchor">
-<a href="#details-about-regular-expression-patterns-in-example" class="anchor"></a>Details about regular expression patterns in example</h4>
-<p>The regular expression patterns, like ‘symb’ or ‘col’ must <strong>only</strong> occur in the corresponding columns. In the example data frame, only names of trial columns with color data have the pattern ‘col’ in them, so <code>color_col_regex = 'col'</code> would also work. If for instance the participant ID column had been called ‘p_id_column”, that column name would also fit the ’col’ pattern, and hence <code>color_col_regex = 'col'</code> wouldn’t work.</p>
-<p>You can use as long or short regular expressions as you need. In this example we could for example have used <code>color_col_regex = 'response_color_'</code>.</p>
+<p>If you want, you can also specify a regular expression for response
+time columns, if you have those.</p>
+<div class="section level4">
+<h4 id="details-about-regular-expression-patterns-in-example">Details about regular expression patterns in example<a class="anchor" aria-label="anchor" href="#details-about-regular-expression-patterns-in-example"></a>
+</h4>
+<p>The regular expression patterns, like ‘symb’ or ‘col’ must
+<strong>only</strong> occur in the corresponding columns. In the example
+data frame, only names of trial columns with color data have the pattern
+‘col’ in them, so <code>color_col_regex = 'col'</code> would also work.
+If for instance the participant ID column had been called ‘p_id_column”,
+that column name would also fit the ’col’ pattern, and hence
+<code>color_col_regex = 'col'</code> wouldn’t work.</p>
+<p>You can use as long or short regular expressions as you need. In this
+example we could for example have used
+<code>color_col_regex = 'response_color_'</code>.</p>
 </div>
 </div>
 </div>
@@ -242,11 +287,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Lowe Wilsson.</p>
+  <p></p>
+<p>Developed by Lowe Wilsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -254,6 +301,8 @@
 
   
 
+
+  
 
   </body>
 </html>

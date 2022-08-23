@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">synr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/datalowe/synr/">
+  <a href="https://github.com/datalowe/synr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,13 +84,13 @@
 
       
 
-      </header><script src="quick-start_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>synr: Quick start</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/datalowe/synr/blob/master/vignettes/quick-start.Rmd"><code>vignettes/quick-start.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/datalowe/synr/blob/HEAD/vignettes/quick-start.Rmd" class="external-link"><code>vignettes/quick-start.Rmd</code></a></small>
       <div class="hidden name"><code>quick-start.Rmd</code></div>
 
     </div>
@@ -102,11 +98,12 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://datalowe.github.io/synr/">synr</a></span><span class="op">)</span></code></pre></div>
-<p>This is the ‘quick start’ guide to synr. For an in-depth tutorial, please see the <a href="synr-tutorial.html">main tutorial</a>.</p>
-<div id="rolling-up-the-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#rolling-up-the-data" class="anchor"></a>Rolling up the data</h2>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://datalowe.github.io/synr/">synr</a></span><span class="op">)</span></code></pre></div>
+<p>This is the ‘quick start’ guide to synr. For an in-depth tutorial,
+please see the <a href="synr-tutorial.html">main tutorial</a>.</p>
+<div class="section level2">
+<h2 id="rolling-up-the-data">Rolling up the data<a class="anchor" aria-label="anchor" href="#rolling-up-the-data"></a>
+</h2>
 <p>If you have long format data (otherwise see <a href="synr-creategroup.html">Creating ParticipantGroup objects</a>):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_participantgroup.html">create_participantgroup</a></span><span class="op">(</span>
@@ -118,28 +115,33 @@
   time_col_name<span class="op">=</span><span class="st">"response_time"</span>, <span class="co"># optional, not necessary for core functionality</span>
   color_space_spec<span class="op">=</span><span class="st">"Luv"</span>
 <span class="op">)</span></code></pre></div>
-<p>The resulting object (<code>pg</code>) is a nested structure implemented with <a href="http://adv-r.had.co.nz/OO-essentials.html#rc">reference classes</a>. With this, you can call various methods and access various attributes. Examples of common use cases are included below.</p>
+<p>The resulting object (<code>pg</code>) is a nested structure
+implemented with <a href="http://adv-r.had.co.nz/OO-essentials.html#rc" class="external-link">reference
+classes</a>. With this, you can call various methods and access various
+attributes. Examples of common use cases are included below.</p>
 </div>
-<div id="calculate-participant-consistency-scores" class="section level2">
-<h2 class="hasAnchor">
-<a href="#calculate-participant-consistency-scores" class="anchor"></a>Calculate participant consistency scores</h2>
-<p>Consistency scores for all participants, looking only at trials involving letters.</p>
+<div class="section level2">
+<h2 id="calculate-participant-consistency-scores">Calculate participant consistency scores<a class="anchor" aria-label="anchor" href="#calculate-participant-consistency-scores"></a>
+</h2>
+<p>Consistency scores for all participants, looking only at trials
+involving letters.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cons_scores_letters</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span>symbol_filter<span class="op">=</span><span class="va">LETTERS</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">cons_scores_letters</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">cons_scores_letters</span><span class="op">)</span>
 <span class="co">#&gt; [1] 119.2646 129.1678 145.5045</span></code></pre></div>
 </div>
-<div id="produce-a-plot-of-a-single-participants-responses" class="section level2">
-<h2 class="hasAnchor">
-<a href="#produce-a-plot-of-a-single-participants-responses" class="anchor"></a>Produce a plot of a single participant’s responses</h2>
-<p>Plot of single participant’s per-grapheme consistency scores, looking only at trials involving the graphemes ‘A’ and ‘7’.</p>
+<div class="section level2">
+<h2 id="produce-a-plot-of-a-single-participants-responses">Produce a plot of a single participant’s responses<a class="anchor" aria-label="anchor" href="#produce-a-plot-of-a-single-participants-responses"></a>
+</h2>
+<p>Plot of single participant’s per-grapheme consistency scores, looking
+only at trials involving the graphemes ‘A’ and ‘7’.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">'1'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_plot</span><span class="op">(</span>symbol_filter<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'A'</span>, <span class="st">'7'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">pg</span><span class="op">$</span><span class="va">participants</span><span class="op">[[</span><span class="st">'1'</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_plot</span><span class="op">(</span>symbol_filter<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'A'</span>, <span class="st">'7'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="quick-start_files/figure-html/get_single_plot-1.png" width="576"></p>
 </div>
-<div id="export-relevant-participant-data-to-a-data-frame" class="section level2">
-<h2 class="hasAnchor">
-<a href="#export-relevant-participant-data-to-a-data-frame" class="anchor"></a>Export relevant participant data to a data frame</h2>
+<div class="section level2">
+<h2 id="export-relevant-participant-data-to-a-data-frame">Export relevant participant data to a data frame<a class="anchor" aria-label="anchor" href="#export-relevant-participant-data-to-a-data-frame"></a>
+</h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get mean consistency scores for all participants, filtering first by letters, then digits</span>
 <span class="va">mean_cscores_letters</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_mean_consistency_scores</span><span class="op">(</span>symbol_filter<span class="op">=</span><span class="va">LETTERS</span><span class="op">)</span>
@@ -153,14 +155,14 @@
 
 <span class="va">p_ids</span> <span class="op">&lt;-</span> <span class="va">pg</span><span class="op">$</span><span class="fu">get_ids</span><span class="op">(</span><span class="op">)</span>
 
-<span class="va">mean_scores_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+<span class="va">mean_scores_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>
   participant_id<span class="op">=</span><span class="va">p_ids</span>, 
   cscore_letters<span class="op">=</span><span class="va">mean_cscores_letters</span>,
   cscore_digits<span class="op">=</span><span class="va">mean_cscores_digits</span>,
   num_valid_letters<span class="op">=</span><span class="va">num_valid_letters</span>,
   num_valid_digits<span class="op">=</span><span class="va">num_valid_digits</span>
 <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">mean_scores_df</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mean_scores_df</span><span class="op">)</span>
 <span class="co">#&gt;   participant_id cscore_letters cscore_digits num_valid_letters</span>
 <span class="co">#&gt; 1              1       119.2646       155.089                 2</span>
 <span class="co">#&gt; 2              2       129.1678        45.786                 2</span>
@@ -170,10 +172,13 @@
 <span class="co">#&gt; 2                1</span>
 <span class="co">#&gt; 3                1</span></code></pre></div>
 </div>
-<div id="finding-more-information" class="section level2">
-<h2 class="hasAnchor">
-<a href="#finding-more-information" class="anchor"></a>Finding more information</h2>
-<p>Apart from the aforementioned vignettes, you can find help documentation for fields/attributes and methods of involved objects by running <code><a href="../reference/ParticipantGroup-class.html">help(ParticipantGroup)</a></code>, <code><a href="../reference/Participant-class.html">help(Participant)</a></code> or <code><a href="../reference/Grapheme-class.html">help(Grapheme)</a></code>.</p>
+<div class="section level2">
+<h2 id="finding-more-information">Finding more information<a class="anchor" aria-label="anchor" href="#finding-more-information"></a>
+</h2>
+<p>Apart from the aforementioned vignettes, you can find help
+documentation for fields/attributes and methods of involved objects by
+running <code><a href="../reference/ParticipantGroup-class.html">help(ParticipantGroup)</a></code>,
+<code><a href="../reference/Participant-class.html">help(Participant)</a></code> or <code><a href="../reference/Grapheme-class.html">help(Grapheme)</a></code>.</p>
 </div>
   </div>
 
@@ -188,11 +193,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Lowe Wilsson.</p>
+  <p></p>
+<p>Developed by Lowe Wilsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -200,6 +207,8 @@
 
   
 
+
+  
 
   </body>
 </html>
