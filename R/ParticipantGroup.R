@@ -241,7 +241,7 @@ ParticipantGroup <- setRefClass(
       "Returns an nx3 data frame of mean colors for
       participants in the group, where the columns
       represent chosen color space axis 1, 2, and 3, respectively
-      (e.g. 'R', 'G', 'B' if 'RGB' was specified upon participantgroup
+      (e.g. 'R', 'G', 'B' if 'sRGB' was specified upon participantgroup
       creation).
       
       If na.rm=FALSE, for each
