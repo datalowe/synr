@@ -169,7 +169,7 @@ plot_actual_colors <- function(
 ### Clearly invalid data
 When conducting consistency tests with participants, there might be issues with their response patterns. A clear example of this is if a participant responds with a red color in all but two trials of a consistency test, like this:
 
-```{r echo=FALSE}
+```{r clearly_invalid, echo=FALSE}
 p <- Participant$new()
 g <- Grapheme$new(symbol='A')
 g$set_colors(c("#FF0000", "#000000", "#000000"), "Luv")
@@ -189,7 +189,7 @@ Another instance of invalid data would be a participant who has provided 'no col
 ### Clearly valid data
 A clear example of valid response data is if a participant has used very different colors, like this:
 
-```{r echo=FALSE}
+```{r basic_individual_plot, echo=FALSE}
 # helper function for generating random colors
 get_random_color <- function() {
   r_val <- runif(1, 0, 1)
@@ -231,7 +231,7 @@ Excluding participants based on responses that do have an actual color, but wher
 
 If using a criterion of allowing say only 60% of all responses to be of the 'same color', how does one define boundaries of what a color is? For instance, do teal, turquoise and cyan count as different colors? In the image below, where would you say that the 'blue' graphemes end, and the 'blue-green' graphemes start?
 
-```{r echo=FALSE}
+```{r bluegreen_plot, echo=FALSE}
 # helper function
 get_bluegreenish_color <- function(green_val) {
   hex_val <- rgb(0, green_val, 1, 1)
@@ -259,7 +259,7 @@ p$get_plot()
 
 Even if one is able to consistently define color boundaries, what if a participant happens to respond with colors that are right at the 'border' of two color ranges? Relating back to the previous example, if you've defined where 'blue' ends and 'bluegreen' starts, a participant might give responses like this:
 
-```{r echo=FALSE}
+```{r bluegreen_color_2, echo=FALSE}
 p <- Participant$new(id="1")
 green_vals <- seq(0.65, 0.8, length.out = length(LETTERS) * 3)
 val_counter <- 1
@@ -291,7 +291,7 @@ In order to get away from the arbitrariness of pre-defined 'color ranges', as di
 
 This would give a measure of spread based on the 'mean distance from center of gravity (midpoint)'. To achieve something more analogous to variance as used with one-dimensional data, one may use _squared_ distances from the 'middle' in steps 2 and 3. If you're interested in the details of these calculations, see 'More information' at the end of this article.
 
-```{r echo=FALSE}
+```{r bright_colors, echo=FALSE}
 # helper function for generating random bright colors
 get_random_color_bright_color <- function() {
   r_val <- runif(1, 0.3, 1)
@@ -333,7 +333,7 @@ One way to take into account that there might be patterns to response colors is 
 
 To understand what clustering and specifically DBSCAN does with color data, visualization helps. Let's say a participant has a set of response colors as described by this interactive graph:
 
-```{r echo=FALSE}
+```{r dbscan_ex_1, echo=FALSE}
 p_dbscan_ex <- Participant$new(id="1")
 resp_colors <- c(
   '#FFFFFF', '#050505', '#FAFAFA',
@@ -370,7 +370,7 @@ plot_actual_colors(
 To a typical human observer, it looks like there are groups of black, red and white color responses, respectively. Apart from these, there are a few color responses that don't seem to be part of a particular pattern. (the white color points are hard to make out in the graph because of the white background - it might help to touch/hover with your mouse around the 'white corner' to have them highlighted) 
 
 Applying DBSCAN and __recoloring color points according to what cluster they belong to__, the result might look something like this:
-```{r echo=FALSE}
+```{r dbscan_ex_2, echo=FALSE}
 dbscan_res_dbscan_ex <- dbscan(color_mat_dbscan_ex, eps = 0.15, minPts = 3)
 
 plot_color_clusters(
@@ -393,7 +393,7 @@ We might agree with how DBSCAN clustered together 'white' (cluster 1) and 'black
 
 DBSCAN on its own is however _not_ sufficient for validating color response data. The reason is that it doesn't take into account what happens 'within' clusters. A participant might vary their responses so much that they all end up in the 'noise' cluster. Or, they might have responses similar to what's seen below:
 
-```{r echo=FALSE}
+```{r blugreen_bluered_color, echo=FALSE}
 get_bluereddish_color <- function(red_val) {
   hex_val <- rgb(red_val, 0, 1, 1)
   return(hex_val)
@@ -472,7 +472,7 @@ This approach enables invalidating data from participants who used one or just a
 
 ## Applying synr's validation procedure, `check_valid_get_twcv_scores`
 You first need a participantgroup (see the quickstart/main tutorial if this is new to you)
-```{r}
+```{r synr_validation_1}
 # if you don't already have synr loaded, run 'library(synr)' first
 pg <- create_participantgroup(
   raw_df=synr_exampledf_large,
@@ -487,7 +487,7 @@ pg <- create_participantgroup(
 Note that the color space specification (`color_space_spec`) will also affect synr's validation procedure. It is recommended that you use CIELUV ('Luv') or some other color space that aims to be in line with human perception. You might have noticed that RGB was used in the interactive graphs earlier as it's fairly intuitive, but it is _not_ suitable for validation procedures. 
 
 Now that you have a participantgroup, you want to use the `check_valid_get_twcv_scores` method. This applies a validation procedure, similar to the one outlined above, on a per-participant basis for all participants in the group. The method's parameters and output are explained below.
-```{r}
+```{r synr_validation_2}
 set.seed(1)
 val_df <- pg$check_valid_get_twcv_scores(
   min_complete_graphemes = 4,
@@ -526,7 +526,7 @@ Note the `set.seed(1)` call. This is necessary for replication. DBSCAN uses a pa
 
 Similar to other synr methods' outputs, in order to tell which classification goes with which participant, combine the output with results from `get_ids`.
 
-```{r}
+```{r synr_validation_3}
 val_id_df <- cbind(list(participant_id=pg$get_ids()), val_df)
 
 head(val_id_df)

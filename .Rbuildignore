@@ -6,3 +6,5 @@
 .travis.yml
 ^doc$
 ^Meta$
+^vignettes/articles$
+^\.github$

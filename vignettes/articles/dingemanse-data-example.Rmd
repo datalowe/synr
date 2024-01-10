@@ -139,7 +139,7 @@ print(paste('number of participants after filtering:', nrow(cons_score_df)))
 It's not clear why there are seemingly more participants which fit the exclusion criteria in the data from GitHub compared to what is reported in the original article. (if you notice an error in this article, please write about it to datalowe@posteo.de)
 
 ### Validate participant data
-synr includes a unique procedure for automatically classifying test data as valid or invalid, as explained in a specific [synr article](validate-data.html). Cuskley et al.'s article itself doesn't mention any validation procedure apart from excluding participants with too many "No color" responses, so we might try to apply very lenient criteria in order to only catch obviously invalid data, such as participants having used very similar colors (eg slightly different shades of black) for more than 80% of all their responses. Please see the [validation article](validate-data.html) for details about what's happening here.
+synr includes a unique procedure for automatically classifying test data as valid or invalid, as explained in a specific [synr article available online](https://datalowe.github.io/synr/articles/validate-data.html). Cuskley et al.'s article itself doesn't mention any validation procedure apart from excluding participants with too many "No color" responses, so we might try to apply very lenient criteria in order to only catch obviously invalid data, such as participants having used very similar colors (eg slightly different shades of black) for more than 80% of all their responses. Please see the [validation article online](https://datalowe.github.io/synr/articles/validate-data.html) for details about what's happening here.
 
 ```{r validate_participant_data}
 validation_df <- pg$check_valid_get_twcv_scores(
@@ -165,7 +165,7 @@ cons_score_df[!cons_score_df$data_valid, c("participant_id", "mean_cons_score", 
 ```
 All of the identified data sets that were classified by synr as invalid appear to have 80% or more of all responses be in roughly the same color. One of the participants, 'de916a2b-5041-4ecf-af86-4e11feaa5d4c', very clearly has invalid data even based on just their consistency score (0.034), as it is extremely low (due to having responded with black on all trials). What might be more interesting is to take a closer look at the participant with the highest consistency score (44.2), as their case might be somewhat less clear-cut.
 
-```{r}
+```{r potentially_invalid_data}
 pg$participants[["d47c0e32-e3e2-4acf-84d0-08bf7375308b"]]$get_plot(
   grapheme_size=4
 )

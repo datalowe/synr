@@ -11,3 +11,4 @@ inst/doc
 .build.timestamp
 *.knit.md
 vignettes/*-files
+docs
